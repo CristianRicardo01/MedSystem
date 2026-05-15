@@ -1,0 +1,225 @@
+/* =========================
+   BODY
+========================= */
+
+body {
+
+    margin: 0;
+
+    font-family: 'Inter', sans-serif;
+
+    background: #f8fafc;
+
+}
+
+/* =========================
+   WRAPPER
+========================= */
+
+.login-wrapper {
+
+    display: flex;
+
+    min-height: 100vh;
+
+}
+
+/* =========================
+   LEFT
+========================= */
+
+.login-left {
+
+    flex: 1;
+
+    position: relative;
+
+    background:
+        linear-gradient(135deg,
+            rgba(74, 144, 226, .92),
+            rgba(99, 179, 237, .92)),
+        url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=1600');
+
+    background-size: cover;
+    background-position: center;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+}
+
+.login-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, .15);
+
+}
+
+.login-content {
+
+    position: relative;
+
+    z-index: 10;
+
+    max-width: 500px;
+
+    color: white;
+
+    padding: 40px;
+
+}
+
+.brand-logo {
+
+    width: 90px;
+    height: 90px;
+
+    border-radius: 28px;
+
+    background: rgba(255, 255, 255, .15);
+
+    backdrop-filter: blur(10px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 30px;
+
+    font-size: 40px;
+
+}
+
+.login-content h1 {
+
+    font-size: 48px;
+
+    font-weight: 800;
+
+    margin-bottom: 20px;
+
+}
+
+.login-content p {
+
+    font-size: 18px;
+
+    opacity: .9;
+
+}
+
+/* =========================
+   RIGHT
+========================= */
+
+.login-right {
+
+    width: 100%;
+
+    max-width: 520px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+
+    background: white;
+
+}
+
+/* =========================
+   CARD
+========================= */
+
+.login-card {
+
+    width: 100%;
+
+}
+
+/* =========================
+   INPUT MODERN
+========================= */
+
+.input-modern {
+
+    position: relative;
+
+}
+
+.input-modern i {
+
+    position: absolute;
+
+    top: 50%;
+    left: 18px;
+
+    transform: translateY(-50%);
+
+    color: #94a3b8;
+
+    font-size: 18px;
+
+    z-index: 10;
+
+}
+
+.form-control-lg {
+
+    height: 58px;
+
+    border-radius: 16px;
+
+    border: 1px solid #e2e8f0;
+
+    background: #f8fafc;
+
+    padding-left: 52px;
+
+    transition: .3s;
+
+}
+
+.form-control-lg:focus {
+
+    border-color: #4A90E2;
+
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, .12);
+
+    background: white;
+
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.forgot-link {
+
+    text-decoration: none;
+
+    color: #4A90E2;
+
+    font-weight: 600;
+
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:992px) {
+
+    .login-right {
+
+        max-width: 100%;
+
+    }
+
+}

@@ -1,0 +1,159 @@
+/* =========================
+   USER AVATAR
+========================= */
+
+.user-avatar {
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, #4A90E2, #63B3ED);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+    font-weight: 700;
+
+}
+
+/* =========================
+   INPUT MODERN
+========================= */
+
+.input-modern {
+
+    position: relative;
+
+}
+
+.input-modern i {
+
+    position: absolute;
+
+    top: 20px;
+    left: 18px;
+
+    color: #94a3b8;
+
+    z-index: 10;
+
+}
+
+.input-modern .form-control {
+
+    padding-left: 50px;
+
+}
+
+/* =========================
+   INPUT MODERN
+========================= */
+
+.input-modern {
+
+    position: relative;
+
+}
+
+.input-modern i {
+
+    position: absolute;
+
+    top: 50%;
+    left: 18px;
+
+    transform: translateY(-50%);
+
+    color: #94a3b8;
+
+    font-size: 18px;
+
+    z-index: 10;
+
+}
+
+/* =========================
+   FORM CONTROL
+========================= */
+
+.form-control-lg,
+.form-select-lg {
+
+    height: 58px;
+
+    border-radius: 16px;
+
+    border: 1px solid #e2e8f0;
+
+    background: #f8fafc;
+
+    font-size: 16px;
+
+    transition: all .3s ease;
+
+}
+
+.form-control-lg {
+
+    padding-left: 52px;
+
+}
+
+.form-control-lg:focus,
+.form-select-lg:focus {
+
+    border-color: #4A90E2;
+
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, .12);
+
+    background: white;
+
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-content {
+
+    overflow: hidden;
+
+}
+
+.modal-header {
+
+    padding-bottom: 10px !important;
+
+}
+
+.modal-body {
+
+    padding-top: 20px !important;
+
+}
+
+.modal-footer {
+
+    padding-top: 10px !important;
+
+}
+
+/* =========================
+   LABEL
+========================= */
+
+.form-label {
+
+    font-weight: 600;
+
+    margin-bottom: 10px;
+
+    color: #334155;
+
+}

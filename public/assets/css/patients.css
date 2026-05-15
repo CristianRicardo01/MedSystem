@@ -1,0 +1,292 @@
+/* =========================
+    ANIMAÇÕES
+========================== */
+
+.page-animation {
+    animation: fadeTop .5s ease;
+}
+
+.content-animation {
+    animation: fadeUp .6s ease;
+}
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes fadeTop {
+
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+/* =========================
+    CARDS
+========================== */
+
+.info-card {
+
+    border-radius: 24px;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    min-height: 130px;
+    transition: .3s;
+
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+}
+
+.info-card h3 {
+    font-size: 2rem;
+    margin-top: 10px;
+    font-weight: 700;
+}
+
+.info-card i {
+    font-size: 42px;
+    opacity: .7;
+}
+
+.blue-card {
+    background: linear-gradient(135deg, #4A90E2, #6BA8F0);
+}
+
+.green-card {
+    background: linear-gradient(135deg, #4CAF50, #79C27D);
+}
+
+.beige-card {
+    background: linear-gradient(135deg, #D8B892, #EAD7BE);
+    color: #5d4037;
+}
+
+/* =========================
+    TABLE
+========================== */
+
+.table-container {
+
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .04);
+
+}
+
+.table-header {
+
+    padding: 25px;
+    border-bottom: 1px solid #f1f1f1;
+
+}
+
+.table th {
+
+    background: #f8fafc;
+    border: none;
+    padding: 18px;
+    color: #64748b;
+
+}
+
+.table td {
+
+    padding: 18px;
+    vertical-align: middle;
+
+}
+
+/* =========================
+    INPUTS
+========================== */
+
+.form-control {
+
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+
+}
+
+.form-control:focus {
+
+    border-color: #4A90E2;
+    box-shadow: 0 0 0 .2rem rgba(74, 144, 226, .15);
+
+}
+
+/* =========================
+    TABELA PACIENTES
+========================== */
+
+.table-container {
+
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .04);
+
+}
+
+.table-header {
+
+    padding: 25px;
+    border-bottom: 1px solid #f1f1f1;
+
+}
+
+.patient-table th {
+
+    background: #f8fafc;
+    border: none;
+
+    padding: 18px;
+
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+
+}
+
+.patient-table td {
+
+    padding: 18px;
+    vertical-align: middle;
+
+    border-color: #f1f5f9;
+
+}
+
+/* =========================
+   AVATAR
+========================= */
+
+.patient-avatar {
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, #4A90E2, #63B3ED);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.custom-badge {
+
+    padding: 8px 14px;
+
+    border-radius: 12px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+}
+
+.custom-badge.success {
+
+    background: rgba(76, 175, 80, .12);
+    color: #2e7d32;
+
+}
+
+.custom-badge.danger {
+
+    background: rgba(244, 67, 54, .12);
+    color: #c62828;
+
+}
+
+.custom-badge.warning {
+
+    background: rgba(255, 152, 0, .12);
+    color: #ef6c00;
+
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.btn-action {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 12px;
+
+    border: none;
+
+    background: #f4f7fb;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #64748b;
+
+    transition: .3s;
+
+    text-decoration: none;
+
+}
+
+.btn-action:hover {
+
+    background: #4A90E2;
+    color: white;
+
+    transform: translateY(-2px);
+
+}
+
+/* =========================
+   TABLE HOVER
+========================= */
+
+.patient-table tbody tr {
+
+    transition: .3s;
+
+}
+
+.patient-table tbody tr:hover {
+
+    background: rgba(74, 144, 226, .03);
+
+}

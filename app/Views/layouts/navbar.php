@@ -1,0 +1,70 @@
+<nav class="top-navbar d-flex align-items-center justify-content-between">
+
+    <div class="d-flex align-items-center gap-3">
+
+        <button class="btn btn-light mobile-toggle"
+            id="toggleSidebar">
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+        <div>
+
+            <h5 class="mb-0 fw-bold">
+                Dashboard Hospitalar
+            </h5>
+
+            <small class="text-muted">
+                Sistema de Gestão
+            </small>
+
+        </div>
+
+    </div>
+
+    <div class="d-flex align-items-center gap-4">
+
+        <div class="search-box d-none d-md-block">
+
+            <i class="bi bi-search"></i>
+
+            <input type="text"
+                placeholder="Pesquisar...">
+
+        </div>
+
+        <button class="btn position-relative">
+
+            <i class="bi bi-bell fs-5"></i>
+
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                3
+            </span>
+
+        </button>
+
+        <div class="profile-box">
+
+            <!-- <img src="https://i.pravatar.cc/100"
+                alt=""> -->
+
+            <div class="d-none d-md-block">
+
+                <strong>
+                    Administrador
+                </strong>
+
+                <br>
+
+                <small class="text-muted">
+                    Online
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>

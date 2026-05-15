@@ -1,0 +1,164 @@
+/* =========================
+   HEADER
+========================= */
+
+.hospital-counter {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 15px 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .04);
+
+}
+
+.counter-icon {
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 16px;
+
+    background: linear-gradient(135deg, #F44336, #EF5350);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.table-search {
+
+    position: relative;
+
+}
+
+.table-search input {
+
+    border: none;
+
+    background: #f4f7fb;
+
+    padding: 12px 20px 12px 45px;
+
+    border-radius: 14px;
+
+    width: 280px;
+
+}
+
+.table-search i {
+
+    position: absolute;
+
+    left: 15px;
+    top: 13px;
+
+    color: #9ca3af;
+
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.hospitalization-table th {
+
+    background: #f8fafc;
+
+    border: none;
+
+    padding: 18px;
+
+    color: #64748b;
+
+    font-size: 14px;
+    font-weight: 600;
+
+}
+
+.hospitalization-table td {
+
+    padding: 18px;
+
+    vertical-align: middle;
+
+    border-color: #f1f5f9;
+
+}
+
+.hospitalization-table tbody tr {
+
+    transition: .3s;
+
+}
+
+.hospitalization-table tbody tr:hover {
+
+    background: rgba(244, 67, 54, .03);
+
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:768px) {
+
+    .table-search input {
+
+        width: 100%;
+
+    }
+
+}
+
+/* =========================
+   BTN ACTION DANGER
+========================= */
+
+.btn-action-danger {
+
+    background: rgba(244, 67, 54, .12) !important;
+
+    color: #F44336 !important;
+
+    border: 1px solid rgba(244, 67, 54, .15);
+
+}
+
+.btn-action-danger i {
+
+    color: #F44336 !important;
+
+}
+
+.btn-action-danger:hover {
+
+    background: #F44336 !important;
+
+    color: white !important;
+
+    transform: translateY(-2px);
+
+}
+
+.btn-action-danger:hover i {
+
+    color: white !important;
+
+}
