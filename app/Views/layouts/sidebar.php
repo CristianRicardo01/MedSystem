@@ -4,7 +4,9 @@
 
         <h3>
             <i class="bi bi-heart-pulse-fill"></i>
-            MedSystem
+            <!-- Tracking -->
+            <!-- System -->
+            ERP Hospitalar
         </h3>
 
     </div>
@@ -39,7 +41,7 @@
             Central Triagem
 
         </a>
-        
+
         <a href="<?= base_url('appointments') ?>"
             class="sidebar-link <?= activeMenu('appointments') ?>">
 
