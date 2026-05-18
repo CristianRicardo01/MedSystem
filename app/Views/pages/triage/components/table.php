@@ -1,8 +1,6 @@
 <!-- TABLE -->
 
-<div class="table-container"
-    data-aos="fade-up"
-    data-aos-delay="300">
+<div class="table-container" data-aos="fade-up" data-aos-delay="500">
 
     <!-- HEADER -->
 
@@ -57,181 +55,220 @@
 
             <tbody>
 
-                <!-- ITEM -->
+                <?php if (!empty($patients)): ?>
 
-                <tr>
+                    <?php foreach ($patients as $patient): ?>
 
-                    <!-- PACIENTE -->
+                        <?php
 
-                    <td>
+                        /*
+                        |--------------------------------------------------------------------------
+                        | AVATAR
+                        |--------------------------------------------------------------------------
+                        */
 
-                        <div class="d-flex align-items-center gap-3">
+                        $avatar = strtoupper(substr($patient['name'], 0, 1));
 
-                            <div class="patient-avatar">
+                        /*
+                        |--------------------------------------------------------------------------
+                        | PRAZO
+                        |--------------------------------------------------------------------------
+                        */
 
-                                M
+                        $today = new DateTime(date('Y-m-d'));
 
-                            </div>
+                        $consultation = new DateTime(
+                            $patient['first_consultation_date']
+                        );
 
-                            <div>
+                        $diff = $today->diff($consultation);
 
-                                <strong>
-                                    Maria Silva
-                                </strong>
+                        $days = $diff->days;
 
-                                <small class="d-block text-muted">
-                                    Cardiologia
-                                </small>
+                        /*
+                        |--------------------------------------------------------------------------
+                        | VERIFICA ATRASO
+                        |--------------------------------------------------------------------------
+                        */
 
-                            </div>
+                        $isLate = $diff->invert;
 
-                        </div>
+                        /*
+                        |--------------------------------------------------------------------------
+                        | BADGE PRAZO
+                        |--------------------------------------------------------------------------
+                        */
 
-                    </td>
+                        $deadlineClass = 'success';
 
-                    <!-- PRONTUARIO -->
+                        $deadlineText = $days . ' Dias';
 
-                    <td>
+                        /*
+                        |--------------------------------------------------------------------------
+                        | ATRASADO
+                        |--------------------------------------------------------------------------
+                        */
 
-                        #000001
+                        if ($isLate) {
 
-                    </td>
+                            $deadlineClass = 'danger';
 
-                    <!-- ATENDIMENTO -->
+                            $deadlineText = 'Atrasado';
+                        } else {
 
-                    <td>
+                            /*
+                            |--------------------------------------------------------------------------
+                            | SLA NORMAL
+                            |--------------------------------------------------------------------------
+                            */
 
-                        01/05/2026
+                            if ($days <= 10) {
 
-                    </td>
+                                $deadlineClass = 'danger';
+                            } elseif ($days <= 20) {
 
-                    <!-- CONSULTA -->
+                                $deadlineClass = 'warning';
+                            }
+                        }
 
-                    <td>
 
-                        15/05/2026
+                        /*
+                        |--------------------------------------------------------------------------
+                        | STATUS BADGE
+                        |--------------------------------------------------------------------------
+                        */
 
-                    </td>
+                        $statusClass = 'primary';
 
-                    <!-- PRAZO -->
+                        if ($patient['status'] == 'AGUARDANDO_EXAMES') {
 
-                    <td>
+                            $statusClass = 'warning';
+                        }
 
-                        <span class="custom-badge warning">
+                        if ($patient['status'] == 'NEGADO') {
 
-                            5 Dias
+                            $statusClass = 'danger';
+                        }
 
-                        </span>
+                        ?>
 
-                    </td>
+                        <tr>
 
-                    <!-- STATUS -->
+                            <!-- PACIENTE -->
 
-                    <td>
+                            <td>
 
-                        <span class="custom-badge primary">
+                                <div class="d-flex align-items-center gap-3">
 
-                            Em Andamento
+                                    <div class="patient-avatar">
 
-                        </span>
+                                        <?= esc($avatar) ?>
 
-                    </td>
+                                    </div>
 
-                    <!-- ACTIONS -->
+                                    <div>
 
-                    <td>
+                                        <strong>
+                                            <?= esc($patient['name']) ?>
+                                        </strong>
 
-                        <a href="<?= base_url('triage/show/1') ?>"
-                            class="btn-action">
+                                        <small class="d-block text-muted">
 
-                            <i class="bi bi-eye"></i>
+                                            Especialidade ID:
+                                            <?= esc($patient['specialty_id']) ?>
 
-                        </a>
+                                        </small>
 
-                    </td>
+                                    </div>
 
-                </tr>
+                                </div>
 
-                <!-- ITEM -->
+                            </td>
 
-                <tr>
+                            <!-- PRONTUARIO -->
 
-                    <td>
+                            <td>
 
-                        <div class="d-flex align-items-center gap-3">
+                                #<?= esc($patient['medical_record']) ?>
 
-                            <div class="patient-avatar">
+                            </td>
 
-                                J
+                            <!-- ATENDIMENTO -->
 
-                            </div>
+                            <td>
 
-                            <div>
+                                <?= date(
+                                    'd/m/Y',
+                                    strtotime($patient['first_service_date'])
+                                ) ?>
 
-                                <strong>
-                                    João Pedro
-                                </strong>
+                            </td>
 
-                                <small class="d-block text-muted">
-                                    Neurologia
-                                </small>
+                            <!-- CONSULTA -->
 
-                            </div>
+                            <td>
 
-                        </div>
+                                <?= date(
+                                    'd/m/Y',
+                                    strtotime($patient['first_consultation_date'])
+                                ) ?>
 
-                    </td>
+                            </td>
 
-                    <td>
+                            <!-- PRAZO -->
 
-                        #000002
+                            <td>
 
-                    </td>
+                                <span class="custom-badge <?= $deadlineClass ?>">
 
-                    <td>
+                                    <?= $deadlineText ?>
+                                </span>
 
-                        01/05/2026
+                            </td>
 
-                    </td>
+                            <!-- STATUS -->
 
-                    <td>
+                            <td>
 
-                        20/05/2026
+                                <span class="custom-badge <?= $statusClass ?>">
 
-                    </td>
+                                    <?= esc($patient['status']) ?>
 
-                    <td>
+                                </span>
 
-                        <span class="custom-badge success">
+                            </td>
 
-                            15 Dias
+                            <!-- ACTIONS -->
 
-                        </span>
+                            <td>
 
-                    </td>
+                                <a href="<?= base_url('triage/show/' . $patient['id']) ?>"
+                                    class="btn-action">
 
-                    <td>
+                                    <i class="bi bi-eye"></i>
 
-                        <span class="custom-badge warning">
+                                </a>
 
-                            Aguardando Exames
+                            </td>
 
-                        </span>
+                        </tr>
 
-                    </td>
+                    <?php endforeach; ?>
 
-                    <td>
+                <?php else: ?>
 
-                        <a href="<?= base_url('patients/show/1') ?>"
-                            class="btn-action">
+                    <tr>
 
-                            <i class="bi bi-eye"></i>
+                        <td colspan="7"
+                            class="text-center py-5 text-muted">
 
-                        </a>
+                            Nenhum paciente encontrado.
 
-                    </td>
+                        </td>
 
-                </tr>
+                    </tr>
+
+                <?php endif; ?>
 
             </tbody>
 

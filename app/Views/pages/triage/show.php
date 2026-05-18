@@ -12,4 +12,7 @@
 
 </div>
 
+<!-- MODAL -->
+<?= $this->include('pages/triage/components/show/modal-observation') ?>
+
 <?= $this->endSection() ?>

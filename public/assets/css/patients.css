@@ -218,6 +218,13 @@
 
 }
 
+.custom-badge.primary {
+
+    background: rgba(33, 150, 243, .12);
+    color: #1565c0;
+
+}
+
 .custom-badge.success {
 
     background: rgba(76, 175, 80, .12);

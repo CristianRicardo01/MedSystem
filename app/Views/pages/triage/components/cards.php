@@ -2,9 +2,9 @@
 
 <div class="row g-4 mb-4">
 
-    <!-- CARD -->
+    <!-- CARD Em Triagem-->
 
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="100">
 
         <div class="dashboard-card card-blue">
 
@@ -15,7 +15,7 @@
             </div>
 
             <h3>
-                24
+                <?= $triageCount ?>
             </h3>
 
             <p class="mb-0">
@@ -26,9 +26,9 @@
 
     </div>
 
-    <!-- CARD -->
+    <!-- CARD Finalizados-->
 
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="200">
 
         <div class="dashboard-card card-green">
 
@@ -39,7 +39,7 @@
             </div>
 
             <h3>
-                12
+                <?= $finishedCount ?>
             </h3>
 
             <p class="mb-0">
@@ -50,9 +50,9 @@
 
     </div>
 
-    <!-- CARD -->
+    <!-- CARD Próximos do Prazo-->
 
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="300">
 
         <div class="dashboard-card card-yellow">
 
@@ -63,7 +63,7 @@
             </div>
 
             <h3>
-                7
+                <?= $warningCount ?>
             </h3>
 
             <p class="mb-0">
@@ -74,9 +74,9 @@
 
     </div>
 
-    <!-- CARD -->
+    <!-- CARD Críticos-->
 
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="400">
 
         <div class="dashboard-card card-beige">
 
@@ -87,7 +87,7 @@
             </div>
 
             <h3>
-                2
+                <?= $criticalCount ?>
             </h3>
 
             <p class="mb-0">

@@ -1,3 +1,37 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| PROCESS STATUS
+|--------------------------------------------------------------------------
+*/
+
+$statusClass = 'primary';
+
+if ($patient['status'] == 'NEGADO') {
+
+    $statusClass = 'danger';
+} elseif ($patient['status'] == 'ACEITO') {
+
+    $statusClass = 'success';
+} elseif ($patient['status'] == 'AGUARDANDO_EXAMES') {
+
+    $statusClass = 'warning';
+} elseif ($patient['status'] == 'FINALIZADO') {
+
+    $statusClass = 'dark';
+}
+
+/*
+|--------------------------------------------------------------------------
+| EXAMS
+|--------------------------------------------------------------------------
+*/
+
+$hasExams = !empty($patient['has_exams']);
+
+?>
+
 <!-- STATUS -->
 
 <div class="col-md-6"
@@ -7,6 +41,8 @@
     <div class="card card-modern border-0 h-100">
 
         <div class="card-body p-4">
+
+            <!-- HEADER -->
 
             <div class="card-title-modern">
 
@@ -23,42 +59,46 @@
                     </h5>
 
                     <small class="text-muted">
-                        Controle do processo
+                        Controle operacional
                     </small>
 
                 </div>
 
             </div>
 
+            <!-- STATUS -->
+
             <div class="exam-status mt-4">
 
-                <div class="status-row">
-
-                    <span>
-                        Exames Prontos
-                    </span>
-
-                    <span class="custom-badge success">
-
-                        SIM
-
-                    </span>
-
-                </div>
+                <!-- EXAMES -->
 
                 <div class="status-row">
 
                     <span>
-                        Exames Prévios
+                        Possui Exames
                     </span>
 
-                    <span class="custom-badge danger">
+                    <?php if ($hasExams): ?>
 
-                        NÃO
+                        <span class="custom-badge success">
 
-                    </span>
+                            SIM
+
+                        </span>
+
+                    <?php else: ?>
+
+                        <span class="custom-badge danger">
+
+                            NÃO
+
+                        </span>
+
+                    <?php endif; ?>
 
                 </div>
+
+                <!-- STATUS -->
 
                 <div class="status-row">
 
@@ -66,9 +106,41 @@
                         Processo
                     </span>
 
+                    <span class="custom-badge <?= $statusClass ?>">
+
+                        <?= esc($patient['status']) ?>
+
+                    </span>
+
+                </div>
+
+                <!-- FLUXO -->
+
+                <div class="status-row">
+
+                    <span>
+                        Fluxo
+                    </span>
+
+                    <span class="custom-badge primary">
+
+                        <?= esc($patient['flow_type']) ?>
+
+                    </span>
+
+                </div>
+
+                <!-- SETOR -->
+
+                <div class="status-row">
+
+                    <span>
+                        Setor Atual
+                    </span>
+
                     <span class="custom-badge warning">
 
-                        Em Análise
+                        <?= esc($patient['current_sector']) ?>
 
                     </span>
 

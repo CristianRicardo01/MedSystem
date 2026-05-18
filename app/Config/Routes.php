@@ -30,3 +30,7 @@ $routes->get('/settings/users/', 'Settings\UsersController::index');
 
 $routes->get('/triage', 'TriageController::index');
 $routes->get('/triage/show/(:num)', 'TriageController::show/$1');
+
+$routes->post('/triage/store', 'TriageController::store');
+
+$routes->post('/triage/observation/store', 'TriageController::storeObservation');

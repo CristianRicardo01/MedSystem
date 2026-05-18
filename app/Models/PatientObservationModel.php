@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PatientMovementModel extends Model
+class PatientObservationModel extends Model
 {
-    protected $table = 'patient_movements';
+    protected $table = 'patient_observations';
 
     protected $primaryKey = 'id';
 
@@ -16,10 +16,6 @@ class PatientMovementModel extends Model
 
         'patient_id',
 
-        'sector',
-
-        'movement_type',
-
         'observation',
 
         'created_by'
@@ -27,7 +23,4 @@ class PatientMovementModel extends Model
     ];
 
     protected $useTimestamps = true;
-
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
 }

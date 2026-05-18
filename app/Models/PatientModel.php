@@ -30,7 +30,8 @@ class PatientModel extends Model
         'accepted_at',
         'finalized_at',
         'observations',
-        'created_by'
+        'created_by',
+        'has_exams',
 
     ];
 

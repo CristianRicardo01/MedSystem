@@ -31,7 +31,9 @@
 
             <!-- FORM -->
 
-            <form>
+            <form id="formPatient"
+                action="<?= base_url('triage/store') ?>"
+                method="POST">
 
                 <div class="modal-body px-4">
 
@@ -50,6 +52,7 @@
                                 <i class="bi bi-person"></i>
 
                                 <input type="text"
+                                    name="name"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o nome">
 
@@ -70,6 +73,7 @@
                                 <i class="bi bi-file-earmark-medical"></i>
 
                                 <input type="text"
+                                    name="medical_record"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o prontuário">
 
@@ -85,17 +89,18 @@
                                 Especialidade
                             </label>
 
-                            <select class="form-select form-select-lg">
+                            <select name="specialty_id"
+                                class="form-select form-select-lg">
 
-                                <option>
+                                <option value="1">
                                     Cardiologia
                                 </option>
 
-                                <option>
+                                <option value="2">
                                     Neurologia
                                 </option>
 
-                                <option>
+                                <option value="3">
                                     Ortopedia
                                 </option>
 
@@ -116,6 +121,7 @@
                                 <i class="bi bi-telephone"></i>
 
                                 <input type="text"
+                                    name="phone"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o telefone">
 
@@ -132,6 +138,7 @@
                             </label>
 
                             <input type="date"
+                                name="first_service_date"
                                 class="form-control form-control-lg">
 
                         </div>
@@ -145,6 +152,7 @@
                             </label>
 
                             <input type="date"
+                                name="first_consultation_date"
                                 class="form-control form-control-lg">
 
                         </div>
@@ -154,38 +162,17 @@
                         <div class="col-md-6">
 
                             <label class="form-label">
-                                Exames Prontos
+                                Possui Exames?
                             </label>
 
-                            <select class="form-select form-select-lg">
+                            <select name="has_exams"
+                                class="form-select form-select-lg">
 
-                                <option>
+                                <option value="1">
                                     SIM
                                 </option>
 
-                                <option>
-                                    NÃO
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        <!-- PREVIOS -->
-
-                        <div class="col-md-6">
-
-                            <label class="form-label">
-                                Exames Prévios
-                            </label>
-
-                            <select class="form-select form-select-lg">
-
-                                <option>
-                                    SIM
-                                </option>
-
-                                <option>
+                                <option value="0">
                                     NÃO
                                 </option>
 
@@ -201,7 +188,8 @@
                                 Observação
                             </label>
 
-                            <textarea class="form-control"
+                            <textarea name="observations"
+                                class="form-control"
                                 rows="4"
                                 placeholder="Digite observações da triagem..."></textarea>
 
@@ -223,7 +211,8 @@
 
                     </button>
 
-                    <button type="submit"
+                    <button id="btnSavePatient"
+                        type="submit"
                         class="btn btn-primary btn-lg rounded-4 px-4">
 
                         <i class="bi bi-check-circle me-2"></i>

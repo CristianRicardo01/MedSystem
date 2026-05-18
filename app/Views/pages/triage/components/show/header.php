@@ -1,3 +1,34 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| AVATAR
+|--------------------------------------------------------------------------
+*/
+
+$avatar = strtoupper(substr($patient['name'], 0, 1));
+
+/*
+|--------------------------------------------------------------------------
+| STATUS BADGE
+|--------------------------------------------------------------------------
+*/
+
+$statusClass = 'primary';
+
+if ($patient['status'] == 'NEGADO') {
+
+    $statusClass = 'danger';
+} elseif ($patient['status'] == 'ACEITO') {
+
+    $statusClass = 'success';
+} elseif ($patient['status'] == 'AGUARDANDO_EXAMES') {
+
+    $statusClass = 'warning';
+}
+
+?>
+
 <!-- HEADER -->
 
 <div class="patient-header mb-4"
@@ -13,7 +44,7 @@
 
             <div class="patient-photo">
 
-                M
+                <?= esc($avatar) ?>
 
             </div>
 
@@ -24,12 +55,15 @@
                 <div class="d-flex align-items-center gap-3 flex-wrap mb-2">
 
                     <h2 class="fw-bold mb-0">
-                        Maria Silva
+
+                        <?= esc($patient['name']) ?>
+
                     </h2>
 
-                    <span class="custom-badge warning">
 
-                        Em Triagem
+                    <span class="custom-badge <?= $statusClass ?>">
+
+                        <?= esc($patient['status']) ?>
 
                     </span>
 
@@ -37,27 +71,40 @@
 
                 <div class="patient-meta">
 
+                    <!-- PRONTUARIO -->
+
                     <span>
 
                         <i class="bi bi-file-earmark-medical"></i>
 
-                        Prontuário #0000000
+                        Prontuário
+                        #<?= esc($patient['medical_record']) ?>
 
                     </span>
+
+                    <!-- ESPECIALIDADE -->
 
                     <span>
 
                         <i class="bi bi-heart-pulse"></i>
 
-                        Cardiologia
+                        Especialidade ID:
+                        <?= esc($patient['specialty_id']) ?>
 
                     </span>
+
+                    <!-- DATA -->
 
                     <span>
 
                         <i class="bi bi-calendar"></i>
 
-                        01/05/2026
+                        <?= date(
+                            'd/m/Y',
+                            strtotime(
+                                $patient['first_consultation_date']
+                            )
+                        ) ?>
 
                     </span>
 

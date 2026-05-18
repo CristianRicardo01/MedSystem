@@ -8,6 +8,8 @@
 
         <div class="card-body p-4">
 
+            <!-- HEADER -->
+
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
 
                 <div class="card-title-modern">
@@ -25,23 +27,54 @@
                         </h5>
 
                         <small class="text-muted">
-                            Informações da triagem
+                            Informações operacionais
                         </small>
 
                     </div>
 
                 </div>
 
+                <!-- BTN -->
+
+                <button class="btn btn-primary rounded-4 px-4" data-bs-toggle="modal" data-bs-target="#modalObservation">
+
+                    <i class="bi bi-plus-circle me-2"></i>
+
+                    Adicionar
+
+                </button>
+
             </div>
+
+            <!-- CONTENT -->
 
             <div class="observation-box">
 
-                <p class="text-muted mb-0">
+                <?php if (!empty($patient['observations'])): ?>
 
-                    Paciente aguardando análise documental
-                    para transferência ao fluxo principal.
+                    <p class="text-muted mb-0">
 
-                </p>
+                        <?= nl2br(
+                            esc($patient['observations'])
+                        ) ?>
+
+                    </p>
+
+                <?php else: ?>
+
+                    <div class="text-center py-4">
+
+                        <i class="bi bi-chat-left-text fs-1 text-muted"></i>
+
+                        <p class="text-muted mt-3 mb-0">
+
+                            Nenhuma observação cadastrada.
+
+                        </p>
+
+                    </div>
+
+                <?php endif; ?>
 
             </div>
 
