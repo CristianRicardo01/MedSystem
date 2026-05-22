@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class RequestTypeModel extends Model
+class SpecialtyModel extends Model
 {
-    protected $table = 'request_types';
+    protected $table = 'specialties';
 
     protected $primaryKey = 'id';
 
@@ -16,18 +16,11 @@ class RequestTypeModel extends Model
 
         'name',
 
-        'deadline_days',
-
         'description',
 
-        'is_external',
-        
         'status'
 
     ];
 
     protected $useTimestamps = true;
-
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
 }

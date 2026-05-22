@@ -29,7 +29,6 @@ class PatientModel extends Model
         'first_consultation_date',
         'accepted_at',
         'finalized_at',
-        'observations',
         'created_by',
         'has_exams',
 

@@ -14,5 +14,8 @@
 
 <!-- MODAL -->
 <?= $this->include('pages/triage/components/show/modal-observation') ?>
+<?= $this->include('pages/triage/components/show/modal-request') ?>
+<?= $this->include('pages/triage/components/show/modal-edit-request') ?>
+<?= $this->include('pages/triage/components/show/modal-edit-triage') ?>
 
 <?= $this->endSection() ?>

@@ -1,8 +1,6 @@
 <!-- OBSERVAÇÕES -->
 
-<div class="col-12"
-    data-aos="fade-up"
-    data-aos-delay="200">
+<div class="col-12" data-aos="fade-up" data-aos-delay="200">
 
     <div class="card card-modern border-0">
 
@@ -48,17 +46,56 @@
 
             <!-- CONTENT -->
 
-            <div class="observation-box">
+            <div class="observation-box table-responsive observation-table-wrapper">
 
-                <?php if (!empty($patient['observations'])): ?>
+                <?php if (!empty($observations)): ?>
 
-                    <p class="text-muted mb-0">
+                    <div class="observation-list">
 
-                        <?= nl2br(
-                            esc($patient['observations'])
-                        ) ?>
+                        <?php foreach ($observations as $item): ?>
 
-                    </p>
+                            <div class="observation-item mb-3">
+
+                                <!-- TOP -->
+
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                    <strong>
+
+                                        Observação Operacional
+
+                                    </strong>
+
+                                    <small class="text-muted">
+
+                                        <?= date(
+                                            'd/m/Y H:i',
+                                            strtotime($item['created_at'])
+                                        ) ?>
+
+                                    </small>
+
+                                </div>
+
+                                <!-- CONTENT -->
+
+                                <div class="observation-box">
+
+                                    <p class="text-muted mb-0">
+
+                                        <?= nl2br(
+                                            esc($item['observation'])
+                                        ) ?>
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        <?php endforeach; ?>
+
+                    </div>
 
                 <?php else: ?>
 

@@ -5,7 +5,7 @@
 <div class="container-fluid py-4">
 
     <!-- HEADER -->
-    <?= $this->include('pages/settings/requests/components/header') ?>
+    <?= $this->include('pages/settings/specialties/components/header') ?>
 
     <!-- TABLE -->
     <div class="table-container" data-aos="fade-up" data-aos-delay="200">
@@ -17,11 +17,11 @@
             <div>
 
                 <h5 class="fw-bold mb-1">
-                    Solicitações Cadastradas
+                    Lista de Especialidades
                 </h5>
 
                 <small class="text-muted">
-                    Controle administrativo das solicitações
+                    Controle administrativo das especialidades médicas para categorização de solicitações.
                 </small>
 
             </div>
@@ -40,14 +40,14 @@
         </div>
 
         <!-- TABLE -->
-        <?= $this->include('pages/settings/requests/components/table') ?>
+        <?= $this->include('pages/settings/specialties/components/table') ?>
 
     </div>
 
 </div>
 
 <!-- MODAL -->
-<?= $this->include('pages/settings/requests/components/modal-edit') ?>
-<?= $this->include('pages/settings/requests/components/modal-create') ?>
+<?= $this->include('pages/settings/specialties/components/modal-edit') ?>
+<?= $this->include('pages/settings/specialties/components/modal-create') ?>
 
 <?= $this->endSection() ?>

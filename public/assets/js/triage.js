@@ -1,3 +1,5 @@
+console.log("JS TRIAGEM CARREGADO");
+
 $(document).ready(function () {
   /*
     |--------------------------------------------------------------------------
@@ -130,7 +132,7 @@ $(document).ready(function () {
 
     $.ajax({
       url: form.attr("action"),
-      
+
       method: "POST",
 
       data: form.serialize(),
@@ -216,4 +218,56 @@ $(document).ready(function () {
       },
     });
   });
+
+  /*
+  |--------------------------------------------------------------------------
+  | OPEN EDIT PATIENT
+  |--------------------------------------------------------------------------
+  */
+
+  $(document).on(
+    "click",
+
+    ".btnEditPatient",
+
+    function () {
+      let button = $(this);
+
+      /*
+      |--------------------------------------------------------------------------
+      | FILL
+      |--------------------------------------------------------------------------
+      */
+
+      $("#edit_id").val(button.data("id"));
+
+      $("#edit_name").val(button.data("name"));
+
+      $("#edit_medical_record").val(button.data("medical_record"));
+
+      $("#edit_cpf").val(button.data("cpf"));
+
+      $("#edit_phone").val(button.data("phone"));
+
+      $("#edit_specialty_id").val(button.data("specialty_id"));
+
+      $("#edit_has_exams").val(button.data("has_exams"));
+
+      $("#edit_first_service_date").val(button.data("first_service_date"));
+
+      $("#edit_first_consultation_date").val(
+        button.data("first_consultation_date"),
+      );
+
+      $("#edit_observations").val(button.data("observations"));
+
+      /*
+      |--------------------------------------------------------------------------
+      | MODAL
+      |--------------------------------------------------------------------------
+      */
+
+      $("#modalEditPatient").modal("show");
+    },
+  );
 });

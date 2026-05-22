@@ -13,6 +13,8 @@
             <?= $this->include('pages/triage/components/show/status') ?>
             <!-- OBSERVAÇÕES -->
             <?= $this->include('pages/triage/components/show/observacoes') ?>
+            <!-- SOLICITAÇÕES -->
+            <?= $this->include('pages/triage/components/show/request') ?>
 
         </div>
 

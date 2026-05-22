@@ -88,9 +88,8 @@ if ($patient['status'] == 'NEGADO') {
 
                         <i class="bi bi-heart-pulse"></i>
 
-                        Especialidade ID:
-                        <?= esc($patient['specialty_id']) ?>
-
+                        Especialidade:
+                        <?= esc($patient['specialty_name']) ?>
                     </span>
 
                     <!-- DATA -->
@@ -119,8 +118,10 @@ if ($patient['status'] == 'NEGADO') {
         <div class="d-flex gap-2 flex-wrap">
 
             <!-- TRANSFERIR -->
+            <button
+                class="btn btn-success btn-lg rounded-4 px-4 shadow-sm btnTransferPatient"
 
-            <button class="btn btn-success btn-lg rounded-4 px-4 shadow-sm">
+                data-id="<?= $patient['id'] ?>">
 
                 <i class="bi bi-arrow-left-right me-2"></i>
 
@@ -130,7 +131,26 @@ if ($patient['status'] == 'NEGADO') {
 
             <!-- EDITAR -->
 
-            <button class="btn btn-light btn-lg rounded-4 shadow-sm">
+            <button
+                class="btn btn-light btn-lg rounded-4 shadow-sm btnEditPatient"
+
+                data-id="<?= $patient['id'] ?>"
+
+                data-name="<?= esc($patient['name']) ?>"
+
+                data-medical_record="<?= esc($patient['medical_record']) ?>"
+
+                data-cpf="<?= esc($patient['cpf']) ?>"
+
+                data-phone="<?= esc($patient['phone']) ?>"
+
+                data-specialty_id="<?= $patient['specialty_id'] ?>"
+
+                data-has_exams="<?= $patient['has_exams'] ?>"
+
+                data-first_service_date="<?= $patient['first_service_date'] ?>"
+
+                data-first_consultation_date="<?= $patient['first_consultation_date'] ?>">
 
                 <i class="bi bi-pencil"></i>
 
@@ -138,11 +158,11 @@ if ($patient['status'] == 'NEGADO') {
 
             <!-- PDF -->
 
-            <button class="btn btn-light btn-lg rounded-4 shadow-sm">
+            <a href="<?= base_url('triage/pdf/' . $patient['id']) ?>" target="_blank" class="btn btn-light btn-lg rounded-4 shadow-sm btnPdfPatient">
 
                 <i class="bi bi-file-earmark-pdf"></i>
 
-            </button>
+            </a>
 
         </div>
 

@@ -43,7 +43,7 @@
 
                     <th>Paciente</th>
                     <th>Prontuário</th>
-                    <th>Atendimento</th>
+                    <th>Triagem</th>
                     <th>Consulta</th>
                     <th>Prazo</th>
                     <th>Status</th>
@@ -174,9 +174,8 @@
 
                                         <small class="d-block text-muted">
 
-                                            Especialidade ID:
-                                            <?= esc($patient['specialty_id']) ?>
-
+                                            Especialidade :
+                                            <?= esc($patient['specialty_name']) ?>
                                         </small>
 
                                     </div>

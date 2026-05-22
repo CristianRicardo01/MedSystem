@@ -72,6 +72,15 @@
 
         </a>
 
+        <a href="<?= base_url('settings/specialties') ?>"
+            class="sidebar-link <?= activeMenu('specialties') ?>">
+
+            <i class="bi bi-heart-pulse"></i>
+
+            Especialidades
+
+        </a>
+
         <a href="<?= base_url('#') ?>"
             class="sidebar-link <?= activeMenu('#') ?>">
 

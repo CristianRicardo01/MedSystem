@@ -116,7 +116,7 @@ $hasExams = !empty($patient['has_exams']);
 
                 <!-- FLUXO -->
 
-                <div class="status-row">
+                <!-- <div class="status-row">
 
                     <span>
                         Fluxo
@@ -128,11 +128,11 @@ $hasExams = !empty($patient['has_exams']);
 
                     </span>
 
-                </div>
+                </div> -->
 
                 <!-- SETOR -->
-
-                <div class="status-row">
+                
+                <!-- <div class="status-row">
 
                     <span>
                         Setor Atual
@@ -144,7 +144,7 @@ $hasExams = !empty($patient['has_exams']);
 
                     </span>
 
-                </div>
+                </div> -->
 
             </div>
 

@@ -74,6 +74,20 @@
 
                             </div>
 
+                            <!-- CPF -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    CPF
+                                </label>
+
+                                <input type="text"
+                                    class="form-control form-control-lg"
+                                    placeholder="Número do CPF">
+
+                            </div>
+
                             <!-- ESPECIALIDADE -->
 
                             <div class="col-md-6">

@@ -56,7 +56,7 @@
 
                 <!-- TELEFONE -->
 
-                <div class="info-item">
+                <!-- <div class="info-item">
 
                     <small>
                         Telefone
@@ -71,11 +71,11 @@
 
                     </strong>
 
-                </div>
+                </div> -->
 
                 <!-- NASCIMENTO -->
 
-                <div class="info-item">
+                <!-- <div class="info-item">
 
                     <small>
                         Nascimento
@@ -83,7 +83,7 @@
 
                     <strong>
 
-                        <?= !empty($patient['birth_date'])
+                        <1?= !empty($patient['birth_date'])
                             ? date(
                                 'd/m/Y',
                                 strtotime($patient['birth_date'])
@@ -93,11 +93,11 @@
 
                     </strong>
 
-                </div>
+                </div> -->
 
                 <!-- MUNICIPIO -->
 
-                <div class="info-item">
+                <!-- <div class="info-item">
 
                     <small>
                         Município
@@ -120,11 +120,11 @@
 
                     </strong>
 
-                </div>
+                </div> -->
 
                 <!-- EXAMES -->
 
-                <div class="info-item">
+                <!-- <div class="info-item">
 
                     <small>
                         Possui Exames
@@ -132,7 +132,7 @@
 
                     <strong>
 
-                        <?php if (!empty($patient['has_exams'])): ?>
+                        <1?php if (!empty($patient['has_exams'])): ?>
 
                             <span class="badge bg-success rounded-pill">
 
@@ -140,7 +140,7 @@
 
                             </span>
 
-                        <?php else: ?>
+                        <1?php else: ?>
 
                             <span class="badge bg-danger rounded-pill">
 
@@ -148,11 +148,11 @@
 
                             </span>
 
-                        <?php endif; ?>
+                        <1?php endif; ?>
 
                     </strong>
 
-                </div>
+                </div> -->
 
                 <!-- CONSULTA -->
 

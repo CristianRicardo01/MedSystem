@@ -68,20 +68,44 @@ class PatientFlowService
 
             'status' => 'TRIAGEM',
 
-            'current_sector' => 'CENTRAL_TRIAGEM',
+            'current_sector' => 'CENTRAL TRIAGEM',
 
             'first_service_date' => $data['first_service_date'] ?? null,
 
             'first_consultation_date' => $data['first_consultation_date'] ?? null,
 
-            'observations' => $data['observations'] ?? null,
-
             'created_by' => 1,
 
             'has_exams' => $data['has_exams'] ?? 0,
+
         ];
 
+        /*
+        |--------------------------------------------------------------------------
+        | INSERT PATIENT
+        |--------------------------------------------------------------------------
+        */
+
         $patientId = $this->patientModel->insert($patientData);
+
+        /*
+        |--------------------------------------------------------------------------
+        | FIRST OBSERVATION
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($data['observations'])) {
+
+            $this->observationModel->insert([
+
+                'patient_id' => $patientId,
+
+                'observation' => $data['observations'],
+
+                'created_by' => 1
+
+            ]);
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -121,7 +145,6 @@ class PatientFlowService
 
         return $patientId;
     }
-
     /*
     |--------------------------------------------------------------------------
     | TRANSFER PATIENT
@@ -358,7 +381,7 @@ class PatientFlowService
 
             null,
 
-            'OBSERVACAO',
+            'OBSERVAÇÃO',
 
             $observation
 

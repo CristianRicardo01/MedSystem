@@ -147,22 +147,6 @@
 
 }
 
-.timeline-modern::before {
-
-    content: '';
-
-    position: absolute;
-
-    left: 5px;
-    top: 0;
-
-    width: 2px;
-    height: 100%;
-
-    background: #e5e7eb;
-
-}
-
 .timeline-item {
 
     position: relative;
@@ -287,5 +271,201 @@
 .patient-request-table tbody tr:hover {
 
     background: rgba(74, 144, 226, .03);
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| TIMELINE SCROLL
+|--------------------------------------------------------------------------
+*/
+
+.timeline-modern {
+
+    position: relative;
+
+    max-height: 1170px;
+
+    height: 1170px;
+
+    overflow-y: auto;
+
+    padding-right: 10px;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| SCROLLBAR
+|--------------------------------------------------------------------------
+*/
+
+.timeline-modern::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+.timeline-modern::-webkit-scrollbar-track {
+
+    background: #f1f1f1;
+
+    border-radius: 20px;
+
+}
+
+.timeline-modern::-webkit-scrollbar-thumb {
+
+    background: #c1c1c1;
+
+    border-radius: 20px;
+
+}
+
+.timeline-modern::-webkit-scrollbar-thumb:hover {
+
+    background: #999;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| TIMELINE ITEM LINE
+|--------------------------------------------------------------------------
+*/
+
+.timeline-item {
+
+    position: relative;
+
+    margin-bottom: 30px;
+
+    padding-left: 20px;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| TIMELINE ITEM
+|--------------------------------------------------------------------------
+*/
+
+.timeline-item {
+
+    position: relative;
+
+    padding-left: 40px;
+
+    padding-bottom: 30px;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| TIMELINE LINE
+|--------------------------------------------------------------------------
+*/
+
+.timeline-item::before {
+
+    content: '';
+
+    position: absolute;
+
+    left: -21px;
+
+    top: -2px;
+
+    bottom: -60px;
+
+    width: 2px;
+
+    background: #e5e7eb;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| LAST ITEM
+|--------------------------------------------------------------------------
+*/
+
+.timeline-item:last-child::before {
+
+    display: none;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| LAST ITEM
+|--------------------------------------------------------------------------
+*/
+
+.timeline-item:last-child::before {
+
+    display: none;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| OBSERVATION TABLE
+|--------------------------------------------------------------------------
+*/
+
+.observation-table-wrapper {
+
+    max-height: 350px;
+
+    overflow-y: auto;
+
+    padding-right: 6px;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| REQUEST TABLE
+|--------------------------------------------------------------------------
+*/
+
+.request-table-wrapper {
+
+    max-height: 450px;
+
+    overflow-y: auto;
+
+    padding-right: 6px;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| PDF BUTTON
+|--------------------------------------------------------------------------
+*/
+
+.btnPdfPatient {
+
+    transition: all .3s ease;
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| HOVER
+|--------------------------------------------------------------------------
+*/
+
+.btnPdfPatient:hover {
+
+    background: #dc3545;
+
+    border-color: #dc3545;
+
+    color: #fff;
+
+    transform: translateY(-2px);
 
 }

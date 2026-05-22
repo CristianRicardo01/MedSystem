@@ -4,23 +4,19 @@
 
     <!-- CARD Em Triagem-->
 
-    <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="100">
+    <div class="col-md col-xl" data-aos="fade-up" data-aos-delay="100" style="color: #000000;">
 
-        <div class="dashboard-card card-blue">
+        <div class="info-card blue-card content-animation">
 
-            <div class="icon">
+            <div>
 
-                <i class="bi bi-person-check"></i>
+                <small> Em Triagem </small>
+
+                <h3> <?= $triageCount ?> </h3>
 
             </div>
 
-            <h3>
-                <?= $triageCount ?>
-            </h3>
-
-            <p class="mb-0">
-                Em Triagem
-            </p>
+            <i class="bi bi-person-check"></i>
 
         </div>
 
@@ -28,23 +24,19 @@
 
     <!-- CARD Finalizados-->
 
-    <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="200">
+    <div class="col-md col-xl" data-aos="fade-up" data-aos-delay="200" style="color: #000000;">
 
-        <div class="dashboard-card card-green">
+        <div class="info-card card-green content-animation">
 
-            <div class="icon">
+            <div>
 
-                <i class="bi bi-check-circle"></i>
+                <small> Finalizados </small>
+
+                <h3> <?= $finishedCount ?> </h3>
 
             </div>
 
-            <h3>
-                <?= $finishedCount ?>
-            </h3>
-
-            <p class="mb-0">
-                Finalizados
-            </p>
+            <i class="bi bi-check-circle"></i>
 
         </div>
 
@@ -52,23 +44,19 @@
 
     <!-- CARD Próximos do Prazo-->
 
-    <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="300">
+    <div class="col-md col-xl" data-aos="fade-up" data-aos-delay="300">
 
-        <div class="dashboard-card card-yellow">
+        <div class="info-card card-yellow content-animation" style="color: #000000;">
 
-            <div class="icon bg-white">
+            <div>
 
-                <i class="bi bi-clock text-warning"></i>
+                <small> Próximos do Prazo </small>
+
+                <h3> <?= $warningCount ?> </h3>
 
             </div>
 
-            <h3>
-                <?= $warningCount ?>
-            </h3>
-
-            <p class="mb-0">
-                Próximos do Prazo
-            </p>
+            <i class="bi bi-check-circle"></i>
 
         </div>
 
@@ -76,23 +64,19 @@
 
     <!-- CARD Críticos-->
 
-    <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="400">
+        <div class="col-md col-xl" data-aos="fade-up" data-aos-delay="400">
 
-        <div class="dashboard-card card-beige">
+        <div class="info-card card-beige content-animation" style="color: #000000;">
 
-            <div class="icon bg-white">
+            <div>
 
-                <i class="bi bi-exclamation-triangle text-danger"></i>
+                <small> Críticos </small>
+
+                <h3> <?= $criticalCount ?> </h3>
 
             </div>
 
-            <h3>
-                <?= $criticalCount ?>
-            </h3>
-
-            <p class="mb-0">
-                Críticos
-            </p>
+                <i class="bi bi-exclamation-triangle text-danger"></i>
 
         </div>
 

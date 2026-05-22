@@ -1,6 +1,7 @@
 <script>
     const BASE_URL = "<?= base_url() ?>/";
 </script>
+
 <!-- JQUERY -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -12,6 +13,14 @@
 
 <!-- TRIAGE -->
 <script src="<?= base_url('assets/js/triage.js') ?>"></script>
+
+<!-- SOLICITAÇÕES -->
+<script src="<?= base_url('assets/js/requests.js') ?>"></script>
+<script src="<?= base_url('assets/js/specialties.js') ?>"></script>
+<script src="<?= base_url('assets/js/patient-requests.js') ?>"></script>
+
+<!-- BOOTSTRAP POPOVER -->
+<script src="<?= base_url('assets/js/popover.js') ?>"></script>
 
 <!-- AOS -->
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>

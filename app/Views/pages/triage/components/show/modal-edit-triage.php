@@ -1,6 +1,4 @@
-<div class="modal fade"
-    id="modalPatient"
-    tabindex="-1">
+<div class="modal fade" id="modalEditPatient" tabindex="-1">
 
     <div class="modal-dialog modal-xl modal-dialog-centered">
 
@@ -22,16 +20,17 @@
 
                 </div>
 
-                <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 
             </div>
 
             <!-- FORM -->
 
-            <form id="formPatient" action="<?= base_url('triage/store') ?>" method="POST">
+            <form id="formEditPatient"
+                action="<?= base_url('triage/update-patient') ?>"
+                method="POST">
+
+                <input type="hidden" name="id" id="edit_id">
 
                 <div class="modal-body px-4">
 
@@ -49,6 +48,7 @@
                                 <i class="bi bi-person"></i>
 
                                 <input type="text"
+                                    id="edit_name"
                                     name="name" required
                                     class="form-control form-control-lg"
                                     placeholder="Digite o nome">
@@ -69,6 +69,7 @@
                                 <i class="bi bi-file-earmark-medical"></i>
 
                                 <input type="text"
+                                    id="edit_medical_record"
                                     name="medical_record" required
                                     class="form-control form-control-lg"
                                     placeholder="Digite o prontuário">
@@ -89,6 +90,7 @@
                                 <i class="bi bi-file-earmark-medical"></i>
 
                                 <input type="text"
+                                    id="edit_cpf"
                                     name="cpf"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o CPF">
@@ -109,6 +111,7 @@
                                 <i class="bi bi-telephone"></i>
 
                                 <input type="text"
+                                    id="edit_phone"
                                     name="phone"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o telefone">
@@ -126,10 +129,6 @@
 
                             <select name="specialty_id" required
                                 class="form-select form-select-lg">
-
-                                <option value="" selected disabled>
-                                    Selecione uma opção
-                                </option>
 
                                 <?php foreach ($specialties as $specialty): ?>
 
@@ -155,10 +154,6 @@
                             <select name="has_exams" required
                                 class="form-select form-select-lg">
 
-                                <option value="" selected disabled>
-                                    Selecione uma opção
-                                </option>
-                                
                                 <option value="1">
                                     SIM
                                 </option>
@@ -179,6 +174,7 @@
                             </label>
 
                             <input type="date"
+                                id="edit_first_service_date"
                                 name="first_service_date" required
                                 class="form-control form-control-lg">
 
@@ -192,22 +188,9 @@
                             </label>
 
                             <input type="date"
+                                id="edit_first_consultation_date"
                                 name="first_consultation_date" required
                                 class="form-control form-control-lg">
-
-                        </div>
-
-                        <!-- OBS -->
-                        <div class="col-12">
-
-                            <label class="form-label">
-                                Observação
-                            </label>
-
-                            <textarea name="observations"
-                                class="form-control"
-                                rows="4"
-                                placeholder="Digite observações da triagem..."></textarea>
 
                         </div>
 
@@ -227,7 +210,7 @@
 
                     </button>
 
-                    <button id="btnSavePatient"
+                    <button id="btnUpdatePatient"
                         type="submit"
                         class="btn btn-primary btn-lg rounded-4 px-4">
 
