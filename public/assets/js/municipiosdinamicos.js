@@ -1,26 +1,102 @@
-const municipios = {
-  RO: ["Porto Velho", "Ji-Paraná", "Ariquemes", "Cacoal"],
+console.log("IMPORTADOR IBGE CARREGADO");
 
-  AM: ["Manaus", "Parintins", "Itacoatiara"],
+/*
+|--------------------------------------------------------------------------
+| IMPORT STATES
+|--------------------------------------------------------------------------
+*/
 
-  AC: ["Rio Branco", "Cruzeiro do Sul"],
-};
+$.get(
+  BASE_URL + "/location/import-states",
 
-const estado = document.getElementById("estado");
-const municipio = document.getElementById("municipio");
+  function () {
+    console.log("Estados importados");
+  },
+);
+/*
+|--------------------------------------------------------------------------
+| LOAD CITIES
+|--------------------------------------------------------------------------
+*/
 
-estado.addEventListener("change", function () {
-  const uf = this.value;
+$("#state_id").change(function () {
+  let stateId = $(this).val();
 
-  municipio.innerHTML = "";
+  /*
+  |--------------------------------------------------------------------------
+  | LOADING
+  |--------------------------------------------------------------------------
+  */
 
-  municipio.disabled = false;
+  $("#city_id").html(`
 
-  municipios[uf].forEach(function (cidade) {
-    municipio.innerHTML += `
-            <option value="${cidade}">
-                ${cidade}
-            </option>
-        `;
-  });
+                <option>
+
+                    Carregando municípios...
+
+                </option>
+
+        `);
+
+  /*
+  |--------------------------------------------------------------------------
+  | IMPORT CITIES FIRST
+  |--------------------------------------------------------------------------
+  */
+
+  $.post(
+    BASE_URL + "/location/import-cities/" + stateId,
+
+    function () {
+      /*
+      |--------------------------------------------------------------------------
+      | LOAD CITIES
+      |--------------------------------------------------------------------------
+      */
+
+      $.ajax({
+        url: BASE_URL + "/location/cities-by-state/" + stateId,
+
+        type: "GET",
+
+        dataType: "json",
+
+        success: function (response) {
+          let options = `
+
+                                <option value="">
+
+                                    Selecione o município
+
+                                </option>
+
+                            `;
+
+          response.forEach(function (city) {
+            options += `
+
+                                    <option value="${city.name}">
+
+                                        ${city.name}
+
+                                    </option>
+
+                                `;
+          });
+
+          $("#city_id").html(options);
+        },
+
+        error: function () {
+          Swal.fire({
+            icon: "error",
+
+            title: "Erro",
+
+            text: "Erro ao carregar municípios",
+          });
+        },
+      });
+    },
+  );
 });

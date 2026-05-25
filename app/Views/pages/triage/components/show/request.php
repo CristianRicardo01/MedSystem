@@ -33,7 +33,7 @@
 
                 <!-- BTN -->
 
-                <button class="btn btn-primary rounded-4 px-4" data-bs-toggle="modal" data-bs-target="#modalPatientRequest">
+                <button class="btn btn-primary rounded-4" data-bs-toggle="modal" data-bs-target="#modalPatientRequest">
 
                     <i class="bi bi-plus-circle me-2"></i>
 
@@ -62,23 +62,23 @@
 
                                 <th>Status</th>
 
-                                <th>SLA</th>
+                                <th style="text-align: center;">SLA</th>
 
                                 <th>Alerta</th>
 
                                 <th>Tipo</th>
 
-                                <th width="120">Ações</th>
+                                <th style="text-align: center;" width="120">Ações</th>
 
                             </tr>
 
                         </thead>
 
-                        <tbody>
+                        <tbody style="font-size: 12px;">
 
                             <?php foreach ($patientRequests as $request): ?>
 
-                                <tr style="font-size: 14px;">
+                                <tr>
 
                                     <!-- OBSERVATION -->
 
@@ -181,7 +181,7 @@
 
                                             <span class="custom-badge warning">
 
-                                                Em andamento
+                                                Aguardando
 
                                             </span>
 
@@ -266,25 +266,25 @@
 
                                     <!-- TYPE -->
 
-                                    <td>
+                                    <td style="font-size: 11px;">
 
                                         <?php if ($request['is_external']): ?>
 
-                                            <span class="custom-badge primary">
+                                            <span class=" custom-badge primary">
 
-                                                Externo
+                                        Externo
 
-                                            </span>
+                                        </span>
 
-                                        <?php else: ?>
+                                    <?php else: ?>
 
-                                            <span class="custom-badge success">
+                                        <span class="custom-badge success">
 
-                                                Interno
+                                            Interno
 
-                                            </span>
+                                        </span>
 
-                                        <?php endif; ?>
+                                    <?php endif; ?>
 
                                     </td>
 

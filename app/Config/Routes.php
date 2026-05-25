@@ -17,14 +17,22 @@ $routes->post('/login/auth', 'Auth\AuthController::auth');
 $routes->get('/logout', 'Auth\AuthController::logout');
 
 $routes->get('/dashboard', 'Home::index');
-$routes->get('/patients', 'PatientsController::index');
-$routes->get('/patients/show/(:num)', 'PatientsController::show');
 $routes->get('/hospitalization', 'hospitalizationController::index');
 $routes->get('/appointments', 'AppointmentsController::index');
 
 /*
 |--------------------------------------------------------------------------
 | PATIENT REQUESTS
+|--------------------------------------------------------------------------
+*/
+$routes->get('/patients', 'PatientsController::index');
+
+$routes->post('/patients/store', 'PatientsController::store');
+
+$routes->get('/patients/show/(:num)', 'PatientsController::show');
+/*
+|--------------------------------------------------------------------------
+| TRIAGE REQUESTS
 |--------------------------------------------------------------------------
 */
 
@@ -82,3 +90,15 @@ $routes->get('/settings/specialties/delete/(:num)', 'Settings\SpecialtiesControl
 // DOMPDF
 
 $routes->get('triage/pdf/(:num)', 'TriageController::generatePdf/$1');
+
+// API PARA O IBGE. COMENTAR PARA NAO FAZER O INSERT NO BANCO 
+
+// $routes->get('location/import', 'LocationController::import');
+
+// $routes->get('api/states', 'LocationController::states');
+
+// $routes->get('location/import-states', 'LocationController::importStates');
+
+$routes->post('location/import-cities/(:num)', 'LocationController::importCities/$1');
+
+$routes->get('location/cities-by-state/(:num)', 'LocationController::citiesByState/$1');
