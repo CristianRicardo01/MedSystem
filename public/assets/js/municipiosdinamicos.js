@@ -13,13 +13,85 @@ $.get(
     console.log("Estados importados");
   },
 );
+
 /*
 |--------------------------------------------------------------------------
-| LOAD CITIES
+| LOAD STATES
 |--------------------------------------------------------------------------
 */
 
-$("#state_id").change(function () {
+function loadStates(selectId, selectedValue = null) {
+  $.ajax({
+    url: BASE_URL + "/location/states",
+
+    type: "GET",
+
+    dataType: "json",
+
+    success: function (response) {
+      let options = `
+
+        <option value="">
+
+          Selecione o estado
+
+        </option>
+
+      `;
+
+      response.forEach(function (state) {
+        options += `
+
+          <option value="${state.id}">
+
+            ${state.name}
+
+          </option>
+
+        `;
+      });
+
+      /*
+      |--------------------------------------------------------------------------
+      | RENDER
+      |--------------------------------------------------------------------------
+      */
+
+      $(selectId).html(options);
+
+      /*
+      |--------------------------------------------------------------------------
+      | SELECT CURRENT
+      |--------------------------------------------------------------------------
+      */
+
+      if (selectedValue) {
+        $(selectId)
+          .val(selectedValue)
+
+          .trigger("change");
+      }
+    },
+
+    error: function () {
+      Swal.fire({
+        icon: "error",
+
+        title: "Erro",
+
+        text: "Erro ao carregar estados",
+      });
+    },
+  });
+}
+
+/*
+|--------------------------------------------------------------------------
+| LOAD CREATE CITIES
+|--------------------------------------------------------------------------
+*/
+
+$(document).on("change", "#state_id", function () {
   let stateId = $(this).val();
 
   /*
@@ -30,73 +102,161 @@ $("#state_id").change(function () {
 
   $("#city_id").html(`
 
-                <option>
+    <option>
 
-                    Carregando municípios...
+      Carregando municípios...
 
-                </option>
+    </option>
 
-        `);
+  `);
 
   /*
   |--------------------------------------------------------------------------
-  | IMPORT CITIES FIRST
+  | AJAX
   |--------------------------------------------------------------------------
   */
 
-  $.post(
-    BASE_URL + "/location/import-cities/" + stateId,
+  $.ajax({
+    url: BASE_URL + "/location/cities-by-state/" + stateId,
 
-    function () {
+    type: "GET",
+
+    dataType: "json",
+
+    success: function (response) {
+      let options = `
+
+        <option value="">
+
+          Selecione o município
+
+        </option>
+
+      `;
+
+      response.forEach(function (city) {
+        options += `
+
+          <option value="${city.name}">
+
+            ${city.name}
+
+          </option>
+
+        `;
+      });
+
+      $("#city_id").html(options);
+    },
+
+    error: function () {
+      Swal.fire({
+        icon: "error",
+
+        title: "Erro",
+
+        text: "Erro ao carregar municípios",
+      });
+    },
+  });
+});
+
+/*
+|--------------------------------------------------------------------------
+| LOAD EDIT CITIES
+|--------------------------------------------------------------------------
+*/
+
+$(document).on("change", "#edit_state_id", function () {
+  let stateId = $(this).val();
+
+  /*
+  |--------------------------------------------------------------------------
+  | LOADING
+  |--------------------------------------------------------------------------
+  */
+
+  $("#edit_city_id").html(`
+
+    <option>
+
+      Carregando municípios...
+
+    </option>
+
+  `);
+
+  /*
+  |--------------------------------------------------------------------------
+  | AJAX
+  |--------------------------------------------------------------------------
+  */
+
+  $.ajax({
+    url: BASE_URL + "/location/cities-by-state/" + stateId,
+
+    type: "GET",
+
+    dataType: "json",
+
+    success: function (response) {
+      let options = `
+
+        <option value="">
+
+          Selecione o município
+
+        </option>
+
+      `;
+
+      response.forEach(function (city) {
+        options += `
+
+          <option value="${city.name}">
+
+            ${city.name}
+
+          </option>
+
+        `;
+      });
+
       /*
       |--------------------------------------------------------------------------
-      | LOAD CITIES
+      | RENDER
       |--------------------------------------------------------------------------
       */
 
-      $.ajax({
-        url: BASE_URL + "/location/cities-by-state/" + stateId,
+      $("#edit_city_id").html(options);
 
-        type: "GET",
+      /*
+      |--------------------------------------------------------------------------
+      | SELECT CURRENT CITY
+      |--------------------------------------------------------------------------
+      */
 
-        dataType: "json",
+      if (window.selectedPatientCity) {
+        $("#edit_city_id").val(window.selectedPatientCity);
+      }
+    },
 
-        success: function (response) {
-          let options = `
+    error: function () {
+      Swal.fire({
+        icon: "error",
 
-                                <option value="">
+        title: "Erro",
 
-                                    Selecione o município
-
-                                </option>
-
-                            `;
-
-          response.forEach(function (city) {
-            options += `
-
-                                    <option value="${city.name}">
-
-                                        ${city.name}
-
-                                    </option>
-
-                                `;
-          });
-
-          $("#city_id").html(options);
-        },
-
-        error: function () {
-          Swal.fire({
-            icon: "error",
-
-            title: "Erro",
-
-            text: "Erro ao carregar municípios",
-          });
-        },
+        text: "Erro ao carregar municípios",
       });
     },
-  );
+  });
 });
+
+/*
+|--------------------------------------------------------------------------
+| INIT CREATE STATES
+|--------------------------------------------------------------------------
+*/
+
+loadStates("#state_id");

@@ -228,6 +228,7 @@ class TriageController extends BaseController
 
             'first_consultation_date' => 'required',
 
+
         ];
 
         /*
@@ -264,7 +265,7 @@ class TriageController extends BaseController
 
                 'message' => 'Paciente criado com sucesso',
 
-                'patient_id' => $patientId
+                'patient_id' => $patientId,
 
             ]);
         } catch (\Exception $e) {
@@ -332,6 +333,8 @@ class TriageController extends BaseController
 
             ->where('patient_id', $id)
 
+            ->where('flow_type', 'TRIAGE')
+
             ->orderBy('id', 'DESC')
 
             ->findAll();
@@ -346,6 +349,8 @@ class TriageController extends BaseController
 
             ->where('patient_id', $id)
 
+            ->where('flow_type', 'TRIAGE')
+
             ->orderBy('id', 'DESC')
 
             ->findAll();
@@ -359,6 +364,8 @@ class TriageController extends BaseController
         $observations = $this->patientObservationModel
 
             ->where('patient_id', $id)
+
+            ->where('flow_type', 'TRIAGE')
 
             ->orderBy('id', 'DESC')
 
@@ -422,6 +429,8 @@ class TriageController extends BaseController
 
             ->where('patient_requests.patient_id', $id)
 
+            ->where('patient_requests.flow_type', 'TRIAGE')
+
             ->orderBy('patient_requests.id', 'DESC')
 
             ->findAll();
@@ -435,6 +444,8 @@ class TriageController extends BaseController
         $requestTypes = $this->requestTypeModel
 
             ->where('status', 'ACTIVE')
+
+            ->where('flow_type', 'TRIAGE')
 
             ->orderBy('name', 'ASC')
 
@@ -493,41 +504,23 @@ class TriageController extends BaseController
             $this->patientModel
                 ->update($id, [
 
-                    'name' =>
-                    $this->request
-                        ->getPost('name'),
+                    'name' => $this->request->getPost('name'),
 
-                    'medical_record' =>
-                    $this->request
-                        ->getPost('medical_record'),
+                    'medical_record' => $this->request->getPost('medical_record'),
 
-                    'cpf' =>
-                    $this->request
-                        ->getPost('cpf'),
+                    'cpf' => $this->request->getPost('cpf'),
 
-                    'phone' =>
-                    $this->request
-                        ->getPost('phone'),
+                    'phone' => $this->request->getPost('phone'),
 
-                    'specialty_id' =>
-                    $this->request
-                        ->getPost('specialty_id'),
+                    'specialty_id' => $this->request->getPost('specialty_id'),
 
-                    'has_exams' =>
-                    $this->request
-                        ->getPost('has_exams'),
+                    'has_exams' => $this->request->getPost('has_exams'),
 
-                    'first_service_date' =>
-                    $this->request
-                        ->getPost('first_service_date'),
+                    'first_service_date' => $this->request->getPost('first_service_date'),
 
-                    'first_consultation_date' =>
-                    $this->request
-                        ->getPost('first_consultation_date'),
+                    'first_consultation_date' => $this->request->getPost('first_consultation_date'),
 
-                    'observations' =>
-                    $this->request
-                        ->getPost('observations'),
+                    'observations' => $this->request->getPost('observations'),
 
                 ]);
 
@@ -580,11 +573,9 @@ class TriageController extends BaseController
     {
         try {
 
-            $patientId = $this->request
-                ->getPost('patient_id');
+            $patientId = $this->request->getPost('patient_id');
 
-            $observation = $this->request
-                ->getPost('observation');
+            $observation = $this->request->getPost('observation');
 
             /*
             |--------------------------------------------------------------------------
@@ -633,20 +624,15 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $patientId = $this->request
-            ->getPost('patient_id');
+        $patientId = $this->request->getPost('patient_id');
 
-        $requestTypeId = $this->request
-            ->getPost('request_type_id');
+        $requestTypeId = $this->request->getPost('request_type_id');
 
-        $scheduledDate = $this->request
-            ->getPost('scheduled_date');
+        $scheduledDate = $this->request->getPost('scheduled_date');
 
-        $alertOffsetDays = (int) $this->request
-            ->getPost('alert_offset_days');
+        $alertOffsetDays = (int) $this->request->getPost('alert_offset_days');
 
-        $observation = $this->request
-            ->getPost('observation');
+        $observation = $this->request->getPost('observation');
 
         /*
         |--------------------------------------------------------------------------
@@ -654,8 +640,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $patient = $this->patientModel
-            ->find($patientId);
+        $patient = $this->patientModel->find($patientId);
 
         if (!$patient) {
 
@@ -760,6 +745,7 @@ class TriageController extends BaseController
 
                     'created_by' => 1,
 
+                    'flow_type' => 'TRIAGE',
                 ]);
 
             /*
@@ -838,23 +824,17 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $id = $this->request
-            ->getPost('id');
+        $id = $this->request->getPost('id');
 
-        $requestTypeId = $this->request
-            ->getPost('request_type_id');
+        $requestTypeId = $this->request->getPost('request_type_id');
 
-        $scheduledDate = $this->request
-            ->getPost('scheduled_date');
+        $scheduledDate = $this->request->getPost('scheduled_date');
 
-        $alertOffsetDays = (int) $this->request
-            ->getPost('alert_offset_days');
+        $alertOffsetDays = (int) $this->request->getPost('alert_offset_days');
 
-        $requestStatus = $this->request
-            ->getPost('request_status');
+        $requestStatus = $this->request->getPost('request_status');
 
-        $observation = $this->request
-            ->getPost('observation');
+        $observation = $this->request->getPost('observation');
 
         /*
         |--------------------------------------------------------------------------
@@ -862,8 +842,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $request = $this->patientRequestModel
-            ->find($id);
+        $request = $this->patientRequestModel->find($id);
 
         if (!$request) {
 
@@ -883,8 +862,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $patient = $this->patientModel
-            ->find($request['patient_id']);
+        $patient = $this->patientModel->find($request['patient_id']);
 
         /*
         |--------------------------------------------------------------------------
@@ -892,24 +870,13 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        if (
-
-            strtotime($scheduledDate)
-
-            >
-
-            strtotime(
-                $patient['first_consultation_date']
-            )
-
-        ) {
+        if (strtotime($scheduledDate) > strtotime($patient['first_consultation_date'])) {
 
             return $this->response->setJSON([
 
                 'status' => false,
 
-                'message' =>
-                'O exame não pode ultrapassar a consulta'
+                'message' => 'O exame não pode ultrapassar a consulta'
 
             ]);
         }
@@ -920,23 +887,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $alertDate = date(
-
-            'Y-m-d',
-
-            strtotime(
-
-                $patient['first_consultation_date']
-
-                    . ' '
-
-                    . $alertOffsetDays .
-
-                    ' days'
-
-            )
-
-        );
+        $alertDate = date('Y-m-d', strtotime($patient['first_consultation_date'] . ' ' . $alertOffsetDays . ' days'));
 
         try {
 
@@ -949,23 +900,17 @@ class TriageController extends BaseController
             $this->patientRequestModel
                 ->update($id, [
 
-                    'request_type_id' =>
-                    $requestTypeId,
+                    'request_type_id' => $requestTypeId,
 
-                    'scheduled_date' =>
-                    $scheduledDate,
+                    'scheduled_date' => $scheduledDate,
 
-                    'alert_offset_days' =>
-                    $alertOffsetDays,
+                    'alert_offset_days' => $alertOffsetDays,
 
-                    'alert_date' =>
-                    $alertDate,
+                    'alert_date' => $alertDate,
 
-                    'request_status' =>
-                    $requestStatus,
+                    'request_status' => $requestStatus,
 
-                    'observation' =>
-                    $observation,
+                    'observation' => $observation,
 
                 ]);
 
@@ -975,18 +920,7 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $this->patientFlowService
-                ->createTimeline(
-
-                    $request['patient_id'],
-
-                    null,
-
-                    'SOLICITACAO_EDITADA',
-
-                    'Solicitação atualizada'
-
-                );
+            $this->patientFlowService->createTimeline($request['patient_id'], null, 'SOLICITAÇÃO EDITADA', 'Solicitação atualizada');
 
             /*
             |--------------------------------------------------------------------------
@@ -1305,6 +1239,10 @@ class TriageController extends BaseController
 
             ->where('request_status', 'PENDING')
 
+            ->where('flow_type', 'TRIAGE')
+
+            ->where('request_status', 'PENDING')
+
             ->countAllResults();
 
         /*
@@ -1340,7 +1278,7 @@ class TriageController extends BaseController
                     'PATIENT',
 
                     'status' =>
-                    'EM_FILA',
+                    'EM FILA',
 
                     'current_sector' =>
                     'CENTRAL_PACIENTE',
@@ -1472,6 +1410,8 @@ class TriageController extends BaseController
 
             ->where('patient_id', $id)
 
+            ->where('flow_type', 'TRIAGE')
+
             ->orderBy('id', 'DESC')
 
             ->findAll();
@@ -1496,10 +1436,9 @@ class TriageController extends BaseController
                 'left'
             )
 
-            ->where(
-                'patient_requests.patient_id',
-                $id
-            )
+            ->where('patient_requests.patient_id', $id)
+
+            ->where('patient_requests.flow_type', 'TRIAGE')
 
             ->findAll();
 
@@ -1513,6 +1452,8 @@ class TriageController extends BaseController
 
             ->where('patient_id', $id)
 
+            ->where('flow_type', 'TRIAGE')
+
             ->orderBy('id', 'DESC')
 
             ->findAll();
@@ -1525,7 +1466,7 @@ class TriageController extends BaseController
 
         $html = view(
 
-            'pdf/patient',
+            'pdf/triage',
 
             [
 

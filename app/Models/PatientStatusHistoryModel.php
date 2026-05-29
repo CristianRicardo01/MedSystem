@@ -22,7 +22,9 @@ class PatientStatusHistoryModel extends Model
 
         'observation',
 
-        'changed_by'
+        'changed_by',
+        
+        'flow_type',
 
     ];
 

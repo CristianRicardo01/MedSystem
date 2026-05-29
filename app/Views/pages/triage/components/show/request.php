@@ -60,7 +60,7 @@
 
                                 <th>Agendamento</th>
 
-                                <th>Status</th>
+                                <th>Data Exame</th>
 
                                 <th style="text-align: center;">SLA</th>
 
@@ -133,6 +133,17 @@
 
                                     <td>
 
+                                        <?= date(
+                                            'd/m/Y',
+                                            strtotime($request['requested_at'])
+                                        ) ?>
+
+                                    </td>
+
+                                    <!-- DATE -->
+
+                                    <td>
+
                                         <?php if (!empty($request['scheduled_date'])): ?>
 
                                             <?= date(
@@ -148,17 +159,6 @@
                                             -
 
                                         <?php endif; ?>
-
-                                    </td>
-
-                                    <!-- DATE -->
-
-                                    <td>
-
-                                        <?= date(
-                                            'd/m/Y',
-                                            strtotime($request['requested_at'])
-                                        ) ?>
 
                                     </td>
 
@@ -272,19 +272,19 @@
 
                                             <span class=" custom-badge primary">
 
-                                        Externo
+                                                Externo
 
-                                        </span>
+                                            </span>
 
-                                    <?php else: ?>
+                                        <?php else: ?>
 
-                                        <span class="custom-badge success">
+                                            <span class="custom-badge success">
 
-                                            Interno
+                                                Interno
 
-                                        </span>
+                                            </span>
 
-                                    <?php endif; ?>
+                                        <?php endif; ?>
 
                                     </td>
 

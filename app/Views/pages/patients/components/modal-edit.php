@@ -1,7 +1,4 @@
-<div class="modal fade"
-    id="modalPatient"
-    tabindex="-1"
-    aria-hidden="true">
+<div class="modal fade" id="modalCompletePatient" tabindex="-1" aria-hidden="true">
 
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
 
@@ -14,11 +11,12 @@
                 <div>
 
                     <h3 class="fw-bold mb-1">
-                        Cadastro de Paciente
+                        Completar Cadastro do Paciente
                     </h3>
 
                     <p class="text-muted mb-0">
-                        Preencha as informações do paciente.
+                        Finalize as informações necessárias
+                        para entrada no fluxo hospitalar.
                     </p>
 
                 </div>
@@ -30,14 +28,12 @@
 
             </div>
 
+
             <!-- FORM -->
-
-            <form id="formCreatePatient" action="<?= base_url('patients/store') ?>" method="POST">
-
-                <!-- Status -->
+            <form id="formCompletePatient" action="<?= base_url('patients/update') ?>" method="POST">
                 <input type="hidden" name="status" value="EM ATENDIMENTO">
-                <!-- Data da accepted -->
-                <input type="hidden" name="accepted_at" value="<?= date('Y-m-d H:i:s') ?>">
+
+                <input type="hidden" name="id" id="edit_id">
 
                 <div class="modal-body px-4">
 
@@ -61,6 +57,7 @@
 
                                 <input type="text"
                                     name="name" required
+                                    id="edit_name"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o nome completo">
 
@@ -76,6 +73,7 @@
 
                                 <input type="text"
                                     name="medical_record" required
+                                    id="edit_medical_record"
                                     class="form-control form-control-lg"
                                     placeholder="Número do prontuário">
 
@@ -91,6 +89,7 @@
 
                                 <input type="text"
                                     name="cpf"
+                                    id="edit_cpf"
                                     class="form-control form-control-lg"
                                     placeholder="Número do CPF">
 
@@ -104,13 +103,9 @@
                                     Especialidade
                                 </label>
 
-                                <select
-
-                                    class="form-select form-select-lg"
-
+                                <select class="form-select form-select-lg"
                                     name="specialty_id"
-
-                                    required>
+                                    id="edit_specialty_id">
 
                                     <option value="">
                                         Selecione
@@ -144,7 +139,8 @@
                                 </label>
 
                                 <input type="date"
-                                    nome="first_consultation_date" required
+                                    name="first_consultation_date" required
+                                    id="edit_first_consultation_date"
                                     class="form-control form-control-lg">
 
                             </div>
@@ -171,15 +167,8 @@
                                     Exames Prontos
                                 </label>
 
-                                <select
-
-                                    class="form-select form-select-lg"
-
-                                    name="has_exams"
-
-                                    required>
-
-                                    <option value="">
+                                <select class="form-select form-select-lg" name="has_exams" id="edit_has_exams">
+                                    <option selected disabled>
                                         Selecione
                                     </option>
 
@@ -196,7 +185,7 @@
                             </div>
 
 
-                            <!-- PHONE -->
+                            <!-- NOME -->
 
                             <div class="col-md-6">
 
@@ -206,6 +195,7 @@
 
                                 <input type="text"
                                     name="phone"
+                                    id="edit_phone"
                                     class="form-control form-control-lg"
                                     placeholder="69 99999-9999">
 
@@ -234,9 +224,8 @@
 
                                 <select
                                     class="form-select form-select-lg"
-                                    name="state"
-                                    id="state_id"
-                                    required>
+                                    name="state" required
+                                    id="edit_state_id">
                                     <option selected disabled>
                                         Selecione
                                     </option>
@@ -255,9 +244,9 @@
                                 <select
                                     class="form-select form-select-lg"
                                     name="city"
-                                    id="city_id"
+                                    id="edit_city_id"
                                     required>
-                                    <option selected disabled>
+                                     <option selected disabled>
                                         Selecione o município
                                     </option>
                                 </select>
@@ -283,7 +272,7 @@
                     </button>
 
                     <button type="submit"
-                        id="btnCreatePatient"
+                        id="btnCompletePatient"
                         class="btn btn-primary btn-lg px-5">
 
                         <i class="bi bi-check-circle me-2"></i>

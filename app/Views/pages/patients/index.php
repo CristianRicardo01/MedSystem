@@ -17,5 +17,6 @@
 
 <!-- MODAL -->
 <?= $this->include('pages/patients/components/modal-create') ?>
+<?= $this->include('pages/patients/components/modal-edit') ?>
 
 <?= $this->endSection() ?>

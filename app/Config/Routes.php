@@ -29,7 +29,10 @@ $routes->get('/patients', 'PatientsController::index');
 
 $routes->post('/patients/store', 'PatientsController::store');
 
-$routes->get('/patients/show/(:num)', 'PatientsController::show');
+$routes->post('/patients/update', 'PatientsController::update');
+
+$routes->get('/patients/show/(:num)', 'PatientsController::show/$1');
+
 /*
 |--------------------------------------------------------------------------
 | TRIAGE REQUESTS
@@ -95,10 +98,12 @@ $routes->get('triage/pdf/(:num)', 'TriageController::generatePdf/$1');
 
 // $routes->get('location/import', 'LocationController::import');
 
-// $routes->get('api/states', 'LocationController::states');
-
 // $routes->get('location/import-states', 'LocationController::importStates');
 
+$routes->get('api/states', 'LocationController::states');
+
 $routes->post('location/import-cities/(:num)', 'LocationController::importCities/$1');
+
+$routes->get('location/states', 'LocationController::states');
 
 $routes->get('location/cities-by-state/(:num)', 'LocationController::citiesByState/$1');

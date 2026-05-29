@@ -22,7 +22,9 @@ class RequestTypeModel extends Model
 
         'is_external',
         
-        'status'
+        'status',
+
+        'flow_type',
 
     ];
 

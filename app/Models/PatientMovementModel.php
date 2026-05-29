@@ -22,7 +22,9 @@ class PatientMovementModel extends Model
 
         'observation',
 
-        'created_by'
+        'created_by',
+        
+        'flow_type',
 
     ];
 

@@ -246,6 +246,20 @@
 
 }
 
+.custom-badge.secondary {
+    background: rgba(108, 117, 125, .12);
+    color: #495057;
+}
+
+.custom-badge.dark {
+    background: #ff270a;
+    /* Um cinza quase preto com um toque quente de laranja */
+    color: #ffffff;
+    /* Laranja vibrante para dar o destaque de aviso */
+    border: 1px solid rgba(255, 238, 144, 0.2);
+    /* Borda sutil para o badge não sumir no fundo da tela */
+}
+
 /* =========================
    ACTION BUTTONS
 ========================= */

@@ -297,12 +297,8 @@ class PatientFlowService
     |--------------------------------------------------------------------------
     */
 
-    public function createTimeline(
-        int $patientId,
-        ?string $oldStatus,
-        string $newStatus,
-        ?string $observation = null
-    ) {
+    public function createTimeline(int $patientId, ?string $oldStatus, string $newStatus, ?string $observation = null, string $flowType = 'TRIAGE')
+    {
         $this->statusHistoryModel->insert([
 
             'patient_id' => $patientId,
@@ -313,7 +309,9 @@ class PatientFlowService
 
             'observation' => $observation,
 
-            'changed_by' => 1
+            'changed_by' => 1,
+
+            'flow_type' => $flowType,
 
         ]);
     }
@@ -324,12 +322,8 @@ class PatientFlowService
     |--------------------------------------------------------------------------
     */
 
-    public function createMovement(
-        int $patientId,
-        string $sector,
-        string $movementType,
-        ?string $observation = null
-    ) {
+    public function createMovement(int $patientId, string $sector, string $movementType, ?string $observation = null, string $flowType = 'TRIAGE')
+    {
         $this->movementModel->insert([
 
             'patient_id' => $patientId,
@@ -340,7 +334,9 @@ class PatientFlowService
 
             'observation' => $observation,
 
-            'created_by' => 1
+            'created_by' => 1,
+            
+            'flow_type' => $flowType,
 
         ]);
     }
@@ -350,7 +346,7 @@ class PatientFlowService
     | CREATE OBSERVATION
     |--------------------------------------------------------------------------
     */
-    public function createObservation(int $patientId, string $observation)
+    public function createObservation(int $patientId, string $observation, string $flowType = 'TRIAGE')
     {
 
         /*
@@ -365,7 +361,9 @@ class PatientFlowService
 
             'observation' => $observation,
 
-            'created_by' => 1
+            'created_by' => 1,
+
+            'flow_type' => $flowType,
 
         ]);
 
@@ -375,17 +373,7 @@ class PatientFlowService
         |--------------------------------------------------------------------------
         */
 
-        $this->createTimeline(
-
-            $patientId,
-
-            null,
-
-            'OBSERVAÇÃO',
-
-            $observation
-
-        );
+        $this->createTimeline($patientId, null, 'OBSERVAÇÃO', $observation);
 
         return true;
     }

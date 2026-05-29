@@ -16,6 +16,10 @@
 
 <!-- TRIAGE -->
 <script src="<?= base_url('assets/js/triage.js') ?>"></script>
+<!-- MASCARA -->
+<script src="<?= base_url('assets/js/mascara.js') ?>"></script>
+<!-- MUNICIPIOS -->
+<script src="<?= base_url('assets/js/municipiosdinamicos.js') ?>"></script>
 <!-- TRIAGE -->
 <script src="<?= base_url('assets/js/patient.js') ?>"></script>
 
@@ -98,6 +102,3 @@
 
     });
 </script>
-
-<!-- MUNICIPIOS -->
-<script src="<?= base_url('assets/js/municipiosdinamicos.js') ?>"></script>
