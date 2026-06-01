@@ -31,6 +31,8 @@ $routes->post('/patients/store', 'PatientsController::store');
 
 $routes->post('/patients/update', 'PatientsController::update');
 
+$routes->post('/patients/update-data','PatientsController::updateData');
+
 $routes->get('/patients/show/(:num)', 'PatientsController::show/$1');
 
 /*

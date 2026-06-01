@@ -255,6 +255,98 @@ $(document).on("change", "#edit_state_id", function () {
 
 /*
 |--------------------------------------------------------------------------
+| LOAD EDIT DATA CITIES
+|--------------------------------------------------------------------------
+*/
+
+$(document).on("change", "#edit_data_state_id", function () {
+  let stateId = $(this).val();
+
+  /*
+  |--------------------------------------------------------------------------
+  | LOADING
+  |--------------------------------------------------------------------------
+  */
+
+  $("#edit_data_city_id").html(`
+
+            <option>
+
+                Carregando municípios...
+
+            </option>
+
+        `);
+
+  /*
+  |--------------------------------------------------------------------------
+  | AJAX
+  |--------------------------------------------------------------------------
+  */
+
+  $.ajax({
+    url: BASE_URL + "/location/cities-by-state/" + stateId,
+
+    type: "GET",
+
+    dataType: "json",
+
+    success: function (response) {
+      let options = `
+
+                    <option value="">
+
+                        Selecione o município
+
+                    </option>
+
+                `;
+
+      response.forEach(function (city) {
+        options += `
+
+                        <option value="${city.name}">
+
+                            ${city.name}
+
+                        </option>
+
+                    `;
+      });
+
+      /*
+      |--------------------------------------------------------------------------
+      | RENDER
+      |--------------------------------------------------------------------------
+      */
+
+      $("#edit_data_city_id").html(options);
+
+      /*
+      |--------------------------------------------------------------------------
+      | SELECT CURRENT CITY
+      |--------------------------------------------------------------------------
+      */
+
+      if (window.selectedPatientCity) {
+        $("#edit_data_city_id").val(window.selectedPatientCity);
+      }
+    },
+
+    error: function () {
+      Swal.fire({
+        icon: "error",
+
+        title: "Erro",
+
+        text: "Erro ao carregar municípios",
+      });
+    },
+  });
+});
+
+/*
+|--------------------------------------------------------------------------
 | INIT CREATE STATES
 |--------------------------------------------------------------------------
 */

@@ -1257,8 +1257,7 @@ class TriageController extends BaseController
 
                 'status' => false,
 
-                'message' =>
-                'Existem exames pendentes para este paciente'
+                'message' => 'Existem exames pendentes para este paciente'
 
             ]);
         }
@@ -1274,14 +1273,11 @@ class TriageController extends BaseController
             $this->patientModel
                 ->update($patientId, [
 
-                    'flow_type' =>
-                    'PATIENT',
+                    'flow_type' => 'PATIENT',
 
-                    'status' =>
-                    'EM FILA',
+                    'status' => 'EM FILA',
 
-                    'current_sector' =>
-                    'CENTRAL_PACIENTE',
+                    'current_sector' => 'CENTRAL PACIENTE',
 
                 ]);
 

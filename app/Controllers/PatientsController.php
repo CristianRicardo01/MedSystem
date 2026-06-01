@@ -152,72 +152,31 @@ class PatientsController extends BaseController
 
         $data = [
 
-            'name' =>
+            'name' => $this->request->getPost('name'),
 
-            $this->request
-                ->getPost('name'),
+            'medical_record' => $this->request->getPost('medical_record'),
 
-            'medical_record' =>
+            'cpf' => $this->request->getPost('cpf'),
 
-            $this->request
-                ->getPost(
-                    'medical_record'
-                ),
+            'phone' => $this->request->getPost('phone'),
 
-            'cpf' =>
+            'specialty_id' => $this->request->getPost('specialty_id'),
 
-            $this->request
-                ->getPost('cpf'),
+            'first_consultation_date' => $this->request->getPost('first_consultation_date'),
 
-            'phone' =>
+            'has_exams' => $this->request->getPost('has_exams'),
 
-            $this->request
-                ->getPost('phone'),
+            'state' => $this->request->getPost('state'),
 
-            'specialty_id' =>
+            'city' => $this->request->getPost('city'),
 
-            $this->request
-                ->getPost(
-                    'specialty_id'
-                ),
+            'status' => 'EM ATENDIMENTO',
 
-            'first_consultation_date' =>
+            'accepted_at' => date('Y-m-d'),
 
-            $this->request
-                ->getPost(
-                    'first_consultation_date'
-                ),
+            'flow_type' => 'PATIENT',
 
-            'has_exams' =>
-
-            $this->request
-                ->getPost(
-                    'has_exams'
-                ),
-
-            'state' =>
-
-            $this->request
-                ->getPost('state'),
-
-            'city' =>
-
-            $this->request
-                ->getPost('city'),
-
-            'status' =>
-
-            'EM ATENDIMENTO',
-
-            'accepted_at' =>
-
-            date(
-                'Y-m-d'
-            ),
-
-            'flow_type' =>
-
-            'PATIENT',
+            'current_sector' => 'PACIENTE',
 
         ];
 
@@ -259,22 +218,15 @@ class PatientsController extends BaseController
         $this->patientStatusHistoryModel
             ->insert([
 
-                'patient_id' =>
-                $patientId,
+                'patient_id' => $patientId,
 
-                'old_status' =>
-                null,
+                'old_status' => null,
 
-                'new_status' =>
-                'EM ATENDIMENTO',
+                'new_status' => 'EM ATENDIMENTO',
 
-                'observation' =>
-                'Cadastro inicial do paciente',
+                'observation' => 'Cadastro inicial do paciente',
 
-                'changed_by' =>
-                session()->get(
-                    'user_id'
-                )
+                'changed_by' => session()->get('user_id')
 
             ]);
 
@@ -500,6 +452,102 @@ class PatientsController extends BaseController
             );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE DATA
+    |--------------------------------------------------------------------------
+    */
+
+    public function updateData()
+    {
+        $id = $this->request->getPost('id');
+
+        $patient =
+            $this->patientModel
+            ->find($id);
+
+        if (!$patient) {
+
+            return redirect()
+
+                ->back()
+
+                ->with(
+                    'error',
+                    'Paciente não encontrado.'
+                );
+        }
+
+        $data = [
+
+            'name' =>
+            $this->request
+                ->getPost('name'),
+
+            'medical_record' =>
+            $this->request
+                ->getPost('medical_record'),
+
+            'cpf' =>
+            $this->request
+                ->getPost('cpf'),
+
+            'phone' =>
+            $this->request
+                ->getPost('phone'),
+
+            'specialty_id' =>
+            $this->request
+                ->getPost('specialty_id'),
+
+            'first_consultation_date' =>
+            $this->request
+                ->getPost('first_consultation_date'),
+
+            'has_exams' =>
+            $this->request
+                ->getPost('has_exams'),
+
+            'state' =>
+            $this->request
+                ->getPost('state'),
+
+            'city' =>
+            $this->request
+                ->getPost('city'),
+        ];
+
+        $this->patientModel
+            ->update($id, $data);
+
+        $this->patientMovementModel
+            ->insert([
+
+                'patient_id' => $id,
+
+                'movement_type' =>
+                'DADOS_ATUALIZADOS',
+
+                'description' =>
+                'Dados cadastrais atualizados',
+
+                'created_by' =>
+                session()->get('user_id'),
+
+                'flow_type' =>
+                'PATIENT',
+
+            ]);
+
+        return redirect()
+
+            ->back()
+
+            ->with(
+                'success',
+                'Dados atualizados com sucesso.'
+            );
+    }
     /*
     |--------------------------------------------------------------------------
     | SHOW

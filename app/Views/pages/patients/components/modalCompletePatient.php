@@ -1,7 +1,4 @@
-<div class="modal fade"
-    id="modalPatient"
-    tabindex="-1"
-    aria-hidden="true">
+<div class="modal fade" id="modalEditPatientData" tabindex="-1" aria-hidden="true">
 
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
 
@@ -14,11 +11,11 @@
                 <div>
 
                     <h3 class="fw-bold mb-1">
-                        Cadastro de Paciente
+                        Editar Paciente
                     </h3>
 
                     <p class="text-muted mb-0">
-                        Preencha as informações do paciente.
+                        Atualize os dados cadastrais do paciente.
                     </p>
 
                 </div>
@@ -30,14 +27,11 @@
 
             </div>
 
+
             <!-- FORM -->
+            <form id="formEditPatientData" action="<?= base_url('patients/update-data') ?>" method="POST">
 
-            <form id="formCreatePatient" action="<?= base_url('patients/store') ?>" method="POST">
-
-                <!-- Status -->
-                <input type="hidden" name="status" value="EM ATENDIMENTO">
-                <!-- Data da accepted -->
-                <input type="hidden" name="accepted_at" value="<?= date('Y-m-d H:i:s') ?>">
+                <input type="hidden" name="id" id="edit_data_id">
 
                 <div class="modal-body px-4">
 
@@ -61,6 +55,7 @@
 
                                 <input type="text"
                                     name="name" required
+                                    id="edit_data_name"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o nome completo">
 
@@ -76,6 +71,7 @@
 
                                 <input type="text"
                                     name="medical_record" required
+                                    id="edit_data_medical_record"
                                     class="form-control form-control-lg"
                                     placeholder="Número do prontuário">
 
@@ -91,6 +87,7 @@
 
                                 <input type="text"
                                     name="cpf"
+                                    id="edit_data_cpf"
                                     class="form-control form-control-lg"
                                     placeholder="Número do CPF">
 
@@ -104,13 +101,9 @@
                                     Especialidade
                                 </label>
 
-                                <select
-
-                                    class="form-select form-select-lg"
-
+                                <select class="form-select form-select-lg"
                                     name="specialty_id"
-
-                                    required>
+                                    id="edit_data_specialty_id">
 
                                     <option value="">
                                         Selecione
@@ -145,6 +138,7 @@
 
                                 <input type="date"
                                     name="first_consultation_date" required
+                                    id="edit_data_first_consultation_date"
                                     class="form-control form-control-lg">
 
                             </div>
@@ -171,15 +165,8 @@
                                     Exames Prontos
                                 </label>
 
-                                <select
-
-                                    class="form-select form-select-lg"
-
-                                    name="has_exams"
-
-                                    required>
-
-                                    <option value="">
+                                <select class="form-select form-select-lg" name="has_exams" id="edit_data_has_exams">
+                                    <option selected disabled>
                                         Selecione
                                     </option>
 
@@ -196,7 +183,7 @@
                             </div>
 
 
-                            <!-- PHONE -->
+                            <!-- NOME -->
 
                             <div class="col-md-6">
 
@@ -206,6 +193,7 @@
 
                                 <input type="text"
                                     name="phone"
+                                    id="edit_data_phone"
                                     class="form-control form-control-lg"
                                     placeholder="69 99999-9999">
 
@@ -234,9 +222,8 @@
 
                                 <select
                                     class="form-select form-select-lg"
-                                    name="state"
-                                    id="state_id"
-                                    required>
+                                    name="state" required
+                                    id="edit_data_state_id">
                                     <option selected disabled>
                                         Selecione
                                     </option>
@@ -255,7 +242,7 @@
                                 <select
                                     class="form-select form-select-lg"
                                     name="city"
-                                    id="city_id"
+                                    id="edit_data_city_id"
                                     required>
                                     <option selected disabled>
                                         Selecione o município
@@ -283,7 +270,7 @@
                     </button>
 
                     <button type="submit"
-                        id="btnCreatePatient"
+                        id="btnCompletePatient"
                         class="btn btn-primary btn-lg px-5">
 
                         <i class="bi bi-check-circle me-2"></i>

@@ -18,5 +18,6 @@
 <!-- MODAL -->
 <?= $this->include('pages/patients/components/modal-create') ?>
 <?= $this->include('pages/patients/components/modal-edit') ?>
+<?= $this->include('pages/patients/components/modalCompletePatient') ?>
 
 <?= $this->endSection() ?>

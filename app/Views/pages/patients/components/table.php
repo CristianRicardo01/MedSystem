@@ -355,7 +355,29 @@
 
                                     <!-- EDITAR -->
 
-                                    <button class="btn-action">
+                                    <button
+
+                                        class="btn-action btnEditPatientData"
+
+                                        data-id="<?= $patient['id'] ?>"
+
+                                        data-name="<?= esc($patient['name']) ?>"
+
+                                        data-medical_record="<?= esc($patient['medical_record']) ?>"
+
+                                        data-cpf="<?= esc($patient['cpf']) ?>"
+
+                                        data-phone="<?= esc($patient['phone']) ?>"
+
+                                        data-specialty_id="<?= $patient['specialty_id'] ?>"
+
+                                        data-state="<?= esc($patient['state']) ?>"
+
+                                        data-city="<?= esc($patient['city']) ?>"
+
+                                        data-has_exams="<?= $patient['has_exams'] ?>"
+
+                                        data-first_consultation_date="<?= $patient['first_consultation_date'] ?>">
 
                                         <i class="bi bi-pencil"></i>
 

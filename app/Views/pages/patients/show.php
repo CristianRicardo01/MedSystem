@@ -15,6 +15,5 @@
 <?= $this->include('pages/patients/components/show/modal-observation') ?>
 <?= $this->include('pages/patients/components/show/modal-request') ?>
 <?= $this->include('pages/patients/components/show/modal-edit-request') ?>
-<?= $this->include('pages/patients/components/show/modal-edit-patients') ?>
 
 <?= $this->endSection() ?>
