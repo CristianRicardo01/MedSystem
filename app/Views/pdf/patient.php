@@ -355,7 +355,7 @@
 
                     <h1>
 
-                        HOSPITAL MEDSYSTEM
+                        <!-- HOSPITAL MEDSYSTEM -->
 
                     </h1>
 
@@ -368,7 +368,7 @@
                     <small>
 
                         Prontuário Operacional Hospitalar
-                        
+
                     </small>
 
                 </div>
@@ -405,6 +405,7 @@
                 Identificação do Paciente
 
             </div>
+
             <div class="patient-document">
 
                 <table class="patient-layout">
@@ -452,23 +453,6 @@
 
                             </p>
 
-                            <p>
-
-                                <strong>
-                                    Telefone:
-                                </strong>
-
-                                <?php if (isset($patient['phone']) && !empty($patient['phone'])): ?>
-
-                                    <?= esc($patient['phone']) ?>
-
-                                <?php else: ?>
-
-                                    N/A
-
-                                <?php endif; ?>
-                            </p>
-
                         </td>
 
                         <!-- RIGHT -->
@@ -498,30 +482,226 @@
                             <p>
 
                                 <strong>
-                                    Atendimento:
+                                    Telefone:
                                 </strong>
 
-                                <?= date(
-                                    'd/m/Y',
-                                    strtotime(
-                                        $patient['first_service_date']
+                                <?php if (isset($patient['phone']) && !empty($patient['phone'])): ?>
+
+                                    <?= esc($patient['phone']) ?>
+
+                                <?php else: ?>
+
+                                    N/A
+
+                                <?php endif; ?>
+                            </p>
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- Resumo Executivo -->
+        <div class="section">
+
+            <div class="section-title">
+
+                Resumo Executivo
+            </div>
+
+            <div class="patient-document">
+
+                <table class="patient-layout">
+                    <tr>
+                        <!-- LEFT -->
+                        <td class="patient-side">
+
+                            <p>
+
+                                <strong>Data de Aceite:</strong>
+
+                                <?= !empty($patient['accepted_at'])
+                                    ? date(
+                                        'd/m/Y',
+                                        strtotime($patient['accepted_at'])
                                     )
-                                ) ?>
+                                    : 'Não informado'; ?>
+
+                            </p>
+                            <br>
+
+
+                            <p>
+
+                                <strong>
+
+                                    Data de Finalização:
+
+                                </strong>
+
+                                <?= !empty($patient['finalized_at'])
+
+                                    ? date(
+                                        'd/m/Y H:i',
+                                        strtotime($patient['finalized_at'])
+                                    )
+
+                                    : 'Em andamento'; ?>
+
+                            </p>
+                            <br>
+                            <p>
+
+                                <strong>Dias Tratamento:</strong>
+
+                                <?= $patient['treatment_days'] ?? '-' ?>
+
+                            </p>
+
+                        </td>
+
+                        <!-- RIGHT -->
+
+                        <td class="patient-side">
+                            <p>
+
+                                <strong>Prevista para Atendimento (D60):</strong>
+
+                                <?= !empty($patient['first_consultation_date'])
+                                    ? date(
+                                        'd/m/Y',
+                                        strtotime(
+                                            $patient['first_consultation_date']
+                                        )
+                                    )
+                                    : 'Não informado'; ?>
+                            </p>
+                            <br>
+                            <p>
+                                <?php
+                                $statusLabels = [
+                                    'DENTRO_PRAZO' => 'DENTRO DO PRAZO',
+                                    'FORA_PRAZO'   => 'FORA DO PRAZO',
+                                    'FINALIZADO'   => 'FINALIZADO',
+                                ];
+                                ?>
+
+                            <p>
+                                <strong>Situação D60:</strong>
+
+                                <?= $statusLabels[$patient['d60_status']] ?? 'EM ANDAMENTO' ?>
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+        <?php
+
+        $totalRequests = count($patientRequests);
+
+        $completedRequests = 0;
+
+        $pendingRequests = 0;
+
+        $insideDeadline = 0;
+
+        $outsideDeadline = 0;
+
+        foreach ($patientRequests as $request) {
+
+            if ($request['request_status'] == 'COMPLETED') {
+
+                $completedRequests++;
+
+                if (
+                    !empty($request['completed_at']) &&
+                    !empty($request['requested_at'])
+                ) {
+
+                    $days = floor(
+
+                        (
+                            strtotime($request['completed_at'])
+                            -
+                            strtotime($request['requested_at'])
+                        ) / 86400
+
+                    );
+
+                    if ($days <= $request['deadline_days']) {
+
+                        $insideDeadline++;
+                    } else {
+
+                        $outsideDeadline++;
+                    }
+                }
+            } else {
+
+                $pendingRequests++;
+            }
+        }
+
+        ?>
+        <div class="section">
+
+            <div class="section-title">
+
+                Indicadores das Solicitações
+
+            </div>
+
+            <div class="patient-document">
+
+                <table class="patient-layout">
+
+                    <tr>
+
+                        <td class="patient-side">
+
+                            <p>
+
+                                <strong>Total:</strong>
+
+                                <?= $totalRequests ?>
 
                             </p>
 
                             <p>
 
-                                <strong>
-                                    Consulta:
-                                </strong>
+                                <strong>Finalizadas:</strong>
 
-                                <?= date(
-                                    'd/m/Y',
-                                    strtotime(
-                                        $patient['first_consultation_date']
-                                    )
-                                ) ?>
+                                <?= $completedRequests ?>
+
+                            </p>
+
+                        </td>
+
+                        <td class="patient-side">
+
+                            <p>
+
+                                <strong>Dentro do Prazo:</strong>
+
+                                <?= $insideDeadline ?>
+
+                            </p>
+
+                            <p>
+
+                                <strong>Fora do Prazo:</strong>
+
+                                <?= $outsideDeadline ?>
 
                             </p>
 
@@ -534,127 +714,385 @@
             </div>
 
         </div>
+    </div>
 
-        <!-- SOLICITAÇÕES -->
-        <div class="section">
+    <!-- SOLICITAÇÕES -->
+    <div class="section">
 
-            <div class="section-title">
-                Solicitações
-            </div>
+        <div class="section-title">
+            Solicitações
+        </div>
 
-            <table>
+        <table>
 
-                <thead>
+            <thead>
 
-                    <tr>
-                        <th>Solicitação</th>
-                        <th>Data</th>
-                        <th>Status</th>
-                        <th>Prazo</th>
-                    </tr>
+                <tr>
+                    <th>Solicitação</th>
+                    <th>Solicitado</th>
+                    <th>Prazo Exame</th>
+                    <th>Previsto Para</th>
+                    <th>Finalizado</th>
+                    <th>Tempo Espera </th>
+                    <th>Status</th>
+                    <th>Situação</th>
+                </tr>
 
-                </thead>
+            </thead>
 
-                <tbody>
+            <tbody>
 
-                    <?php if (!empty($patientRequests)): ?>
+                <?php if (!empty($patientRequests)): ?>
 
-                        <?php foreach ($patientRequests as $request): ?>
+                    <?php foreach ($patientRequests as $request): ?>
 
-                            <tr>
+                        <?php
 
-                                <td>
-                                    <?= esc($request['request_type_name']) ?>
-                                </td>
+                        $expectedDate = '-';
 
-                                <td>
-                                    <?= date('d/m/Y', strtotime($request['created_at'])) ?>
-                                </td>
+                        if (
+                            !empty($request['requested_at']) &&
+                            !empty($request['deadline_days'])
+                        ) {
 
-                                <td>
-                                    <?php
+                            $expectedDate = date(
 
-                                    $statusClass = '#f59e0b';
+                                'd/m/Y',
 
-                                    if (
-                                        $request['request_status']
-                                        == 'COMPLETED'
-                                    ) {
+                                strtotime(
 
-                                        $statusClass = '#16a34a';
-                                    }
+                                    $request['requested_at']
 
-                                    ?>
+                                        . ' +'
 
-                                    <span style="
-                                            background: <?= $statusClass ?>;
-                                            color: #fff;
-                                            padding: 6px 10px;
-                                            border-radius: 6px;
-                                            font-size: 12px;
-                                            font-weight: bold;
-                                        ">
+                                        . $request['deadline_days']
 
-                                        <?= esc($request['request_status']) ?>
+                                        . ' days'
 
-                                    </span>
-                                </td>
+                                )
 
-                                <td>
-                                    <?= esc($request['deadline_days']) ?> dias
-                                </td>
+                            );
+                        }
 
-                            </tr>
+                        $waitingDays = '-';
 
-                        <?php endforeach; ?>
+                        if (
+                            !empty($request['completed_at']) &&
+                            !empty($request['requested_at'])
+                        ) {
 
-                    <?php else: ?>
+                            $waitingDays = floor(
+
+                                (
+
+                                    strtotime($request['completed_at'])
+
+                                    -
+
+                                    strtotime($request['requested_at'])
+
+                                )
+
+                                    / 86400
+
+                            ) . ' dias';
+                        }
+
+                        $examSituation = 'Pendente';
+
+                        if (
+                            !empty($request['completed_at']) &&
+                            !empty($request['requested_at'])
+                        ) {
+
+                            $days = floor(
+
+                                (
+                                    strtotime($request['completed_at'])
+                                    -
+                                    strtotime($request['requested_at'])
+                                ) / 86400
+
+                            );
+
+                            $examSituation =
+
+                                $days <= $request['deadline_days']
+
+                                ?
+
+                                'Dentro do Prazo'
+
+                                :
+
+                                'Fora do Prazo';
+                        }
+
+                        $statusLabel = 'Pendente';
+
+                        if ($request['request_status'] == 'COMPLETED') {
+
+                            $statusLabel = 'Finalizado';
+                        }
+
+                        ?>
 
                         <tr>
 
-                            <td colspan="4" style="text-align:center;">
+                            <!-- SOLICITAÇÃO -->
 
-                                Nenhuma solicitação encontrada.
+                            <td>
+
+                                <?= esc($request['request_type_name']) ?>
+
+                            </td>
+
+                            <!-- SOLICITADO -->
+
+                            <td>
+
+                                <?= !empty($request['requested_at'])
+
+                                    ? date(
+                                        'd/m/Y',
+                                        strtotime($request['requested_at'])
+                                    )
+
+                                    : '-' ?>
+
+                            </td>
+
+                            <!-- PRAZO -->
+
+                            <td>
+
+                                <?= $request['deadline_days'] ?> dia(s)
+
+                            </td>
+
+                            <!-- PREVISTO -->
+
+                            <td>
+
+                                <?= $expectedDate ?>
+
+                            </td>
+
+                            <!-- FINALIZADO -->
+
+                            <td>
+
+                                <?= !empty($request['completed_at'])
+
+                                    ? date(
+                                        'd/m/Y',
+                                        strtotime($request['completed_at'])
+                                    )
+
+                                    : '-' ?>
+
+                            </td>
+
+                            <!-- TEMPO -->
+
+                            <td>
+
+                                <?= $waitingDays ?>
+
+                            </td>
+
+                            <td>
+
+                                <?= $examSituation ?>
+
+                            </td>
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <?= $statusLabel ?>
 
                             </td>
 
                         </tr>
 
-                    <?php endif; ?>
+                    <?php endforeach; ?>
 
-                </tbody>
+                <?php else: ?>
 
-            </table>
+                    <tr>
+
+                        <td colspan="7" style="text-align:center;">
+
+                            Nenhuma solicitação encontrada.
+
+                        </td>
+
+                    </tr>
+
+                <?php endif; ?>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- OBSERVAÇÕES -->
+    <div class="section">
+
+        <div class="section-title">
+            Observações
+        </div>
+
+        <?php if (!empty($observations)): ?>
+
+            <?php foreach ($observations as $observation): ?>
+
+                <div class="observation" style="margin-bottom:15px;">
+
+                    <strong>
+
+                        <?= date(
+                            'd/m/Y H:i',
+                            strtotime($observation['created_at'])
+                        ) ?>
+
+                    </strong>
+
+                    <br><br>
+
+                    <?= nl2br(
+                        esc($observation['observation'])
+                    ) ?>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        <?php else: ?>
+
+            <div class="observation">
+
+                Nenhuma observação encontrada.
+
+            </div>
+
+        <?php endif; ?>
+
+    </div>
+
+    <!-- INTERNAÇÕES -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            Histórico de Internações
 
         </div>
 
-        <!-- OBSERVAÇÕES -->
-        <div class="section">
+        <?php if (!empty($hospitalizations)): ?>
 
-            <div class="section-title">
-                Observações
+            <?php foreach ($hospitalizations as $hospitalization): ?>
+
+                <div class="observation">
+
+                    <strong>
+
+                        Internado em:
+
+                        <?= date(
+                            'd/m/Y H:i',
+                            strtotime(
+                                $hospitalization['hospitalized_at']
+                            )
+                        ) ?>
+
+                    </strong>
+
+                    <br><br>
+
+                    <?= nl2br(
+                        esc(
+                            $hospitalization['observation']
+                        )
+                    ) ?>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        <?php else: ?>
+
+            <div class="observation">
+
+                Nenhuma internação registrada.
+
             </div>
 
-            <?php if (!empty($observations)): ?>
+        <?php endif; ?>
 
-                <?php foreach ($observations as $observation): ?>
+    </div>
 
-                    <div class="observation" style="margin-bottom:15px;">
+    <!-- TIMELINE -->
+    <div class="section">
 
-                        <strong>
+        <div class="section-title">
+            Timeline do Atendimento
+        </div>
 
-                            <?= date(
-                                'd/m/Y H:i',
-                                strtotime($observation['created_at'])
-                            ) ?>
+        <div class="timeline">
 
-                        </strong>
+            <?php if (!empty($timeline)): ?>
 
-                        <br><br>
+                <?php foreach ($timeline as $item): ?>
 
-                        <?= nl2br(
-                            esc($observation['observation'])
-                        ) ?>
+                    <div class="timeline-item">
+
+                        <div class="timeline-content">
+
+                            <div class="timeline-date">
+
+                                <?= date(
+                                    'd/m/Y H:i',
+                                    strtotime($item['created_at'])
+                                ) ?>
+
+                            </div>
+
+                            <div class="timeline-text" style="font-size:12px;">
+
+                                <?php if (!empty($item['new_status'])): ?>
+
+                                    <?= esc($item['new_status']) ?>
+
+                                <?php else: ?>
+
+                                    Atualização de Status
+
+                                <?php endif; ?>
+
+                            </div>
+
+                            <?php if (!empty($item['observation'])): ?>
+
+                                <div style="
+                                margin-top:8px;
+                                font-size:14px;
+                                color:#64748b;
+                                line-height:1;
+                            ">
+
+                                    <?= nl2br(
+                                        esc($item['observation'])
+                                    ) ?>
+
+                                </div>
+
+                            <?php endif; ?>
+
+                        </div>
 
                     </div>
 
@@ -662,9 +1100,13 @@
 
             <?php else: ?>
 
-                <div class="observation">
+                <div class="timeline-item">
 
-                    Nenhuma observação encontrada.
+                    <div class="timeline-content">
+
+                        Nenhum histórico encontrado.
+
+                    </div>
 
                 </div>
 
@@ -672,86 +1114,8 @@
 
         </div>
 
-        <!-- TIMELINE -->
-        <div class="section">
+    </div>
 
-            <div class="section-title">
-                Timeline do Atendimento
-            </div>
-
-            <div class="timeline">
-
-                <?php if (!empty($timeline)): ?>
-
-                    <?php foreach ($timeline as $item): ?>
-
-                        <div class="timeline-item">
-
-                            <div class="timeline-content">
-
-                                <div class="timeline-date">
-
-                                    <?= date(
-                                        'd/m/Y H:i',
-                                        strtotime($item['created_at'])
-                                    ) ?>
-
-                                </div>
-
-                                <div class="timeline-text" style="font-size:12px;">
-
-                                    <?php if (!empty($item['new_status'])): ?>
-
-                                        <?= esc($item['new_status']) ?>
-
-                                    <?php else: ?>
-
-                                        Atualização de Status
-
-                                    <?php endif; ?>
-
-                                </div>
-
-                                <?php if (!empty($item['observation'])): ?>
-
-                                    <div style="
-                                margin-top:8px;
-                                font-size:14px;
-                                color:#64748b;
-                                line-height:1;
-                            ">
-
-                                        <?= nl2br(
-                                            esc($item['observation'])
-                                        ) ?>
-
-                                    </div>
-
-                                <?php endif; ?>
-
-                            </div>
-
-                        </div>
-
-                    <?php endforeach; ?>
-
-                <?php else: ?>
-
-                    <div class="timeline-item">
-
-                        <div class="timeline-content">
-
-                            Nenhum histórico encontrado.
-
-                        </div>
-
-                    </div>
-
-                <?php endif; ?>
-
-            </div>
-
-        </div>
 
     </div>
 

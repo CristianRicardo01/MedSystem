@@ -31,10 +31,27 @@ $routes->post('/patients/store', 'PatientsController::store');
 
 $routes->post('/patients/update', 'PatientsController::update');
 
-$routes->post('/patients/update-data','PatientsController::updateData');
+$routes->post('/patients/update-data', 'PatientsController::updateData');
 
 $routes->get('/patients/show/(:num)', 'PatientsController::show/$1');
 
+$routes->post('/patients/observation/store', 'PatientsController::storeObservation');
+
+$routes->post('/patients/request/store', 'PatientsController::storeRequest');
+
+$routes->post('/patients/request/update', 'PatientsController::updateRequest');
+
+$routes->post('/patients/request/finalize', 'PatientsController::finalizeRequest');
+
+$routes->post('/patients/request/delete', 'PatientsController::deleteRequest');
+
+$routes->post('/patients/hospitalize', 'PatientsController::hospitalize');
+
+$routes->post('/patients/return', 'PatientsController::returnPatient');
+
+$routes->get('/patients/pdf/(:num)', 'PatientsController::generatePdf/$1');
+
+$routes->post('/patients/finalize', 'PatientsController::finalizePatient');
 /*
 |--------------------------------------------------------------------------
 | TRIAGE REQUESTS

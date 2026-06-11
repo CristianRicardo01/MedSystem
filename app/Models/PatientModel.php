@@ -27,11 +27,13 @@ class PatientModel extends Model
         'current_sector',
         'first_service_date',
         'first_consultation_date',
+        'deadline_d60',
         'accepted_at',
         'finalized_at',
         'created_by',
         'has_exams',
-
+        'treatment_days',
+        'd60_status',
     ];
 
     protected $useTimestamps = true;

@@ -34,7 +34,11 @@
 
                 <!-- BTN -->
 
-                <button class="btn btn-primary rounded-4 px-4" data-bs-toggle="modal" data-bs-target="#modalObservation">
+                <button
+                    class="btn btn-primary rounded-4 px-4"
+                    <?= ($patient['status'] == 'FINALIZADO') ? 'style="display:none;"' : ''; ?>
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalObservation">
 
                     <i class="bi bi-plus-circle me-2"></i>
 

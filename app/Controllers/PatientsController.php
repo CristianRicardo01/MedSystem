@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\PatientHospitalizationModel;
 use App\Models\PatientModel;
 use App\Models\SpecialtyModel;
 use App\Models\PatientMovementModel;
@@ -33,6 +34,8 @@ class PatientsController extends BaseController
 
     protected $requestTypeModel;
 
+    protected $patientHospitalizationModel;
+
     public function __construct()
     {
         $this->patientFlowService = new PatientFlowService();
@@ -50,6 +53,8 @@ class PatientsController extends BaseController
         $this->patientRequestModel = new PatientRequestModel();
 
         $this->requestTypeModel = new RequestTypeModel();
+
+        $this->patientHospitalizationModel = new PatientHospitalizationModel();
     }
 
     /*
@@ -57,7 +62,6 @@ class PatientsController extends BaseController
     | INDEX
     |--------------------------------------------------------------------------
     */
-
     public function index()
     {
         /*
@@ -67,9 +71,7 @@ class PatientsController extends BaseController
         */
 
         $patients =
-            $this->patientModel
-
-            ->select('
+            $this->patientModel->select('
                 patients.*,
 
                 specialties.name as specialty_name
@@ -87,10 +89,9 @@ class PatientsController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            ->where(
-                'patients.flow_type !=',
-                'TRIAGE'
-            )
+            // ->where('patients.flow_type !=', 'TRIAGE') // Removido para exibir pacientes que vieram da triagem
+
+            ->where('patients.status =', 'EM ATENDIMENTO') // Exibir apenas pacientes em atendimento
 
             ->orderBy(
                 'patients.id',
@@ -105,8 +106,7 @@ class PatientsController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $specialties =
-            $this->specialtyModel
+        $specialties = $this->specialtyModel
 
             ->where(
                 'status',
@@ -141,7 +141,6 @@ class PatientsController extends BaseController
     | STORE
     |--------------------------------------------------------------------------
     */
-
     public function store()
     {
         /*
@@ -149,6 +148,7 @@ class PatientsController extends BaseController
         | DATA
         |--------------------------------------------------------------------------
         */
+        $acceptedAt = date('Y-m-d');
 
         $data = [
 
@@ -162,7 +162,17 @@ class PatientsController extends BaseController
 
             'specialty_id' => $this->request->getPost('specialty_id'),
 
-            'first_consultation_date' => $this->request->getPost('first_consultation_date'),
+            'accepted_at' => $acceptedAt,
+
+            'first_consultation_date' => date(
+
+                'Y-m-d',
+
+                strtotime(
+                    $acceptedAt . ' +60 days'
+                )
+
+            ),
 
             'has_exams' => $this->request->getPost('has_exams'),
 
@@ -171,8 +181,6 @@ class PatientsController extends BaseController
             'city' => $this->request->getPost('city'),
 
             'status' => 'EM ATENDIMENTO',
-
-            'accepted_at' => date('Y-m-d'),
 
             'flow_type' => 'PATIENT',
 
@@ -194,41 +202,99 @@ class PatientsController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $this->patientMovementModel
-            ->insert([
+        $this->patientMovementModel->insert([
 
-                'patient_id' => $patientId,
+            'patient_id' => $patientId,
 
-                'movement_type' => 'CADASTRO_REALIZADO',
+            'movement_type' => 'CADASTRO REALIZADO',
 
-                'description' => 'Paciente cadastrado no sistema',
+            'sector' => 'PACIENTE',
 
-                'created_by' => session()->get('user_id'),
+            'description' => 'Paciente cadastrado no sistema',
 
-                'flow_type' => 'PATIENT',
+            'created_by' => userId(),
 
-            ]);
+            'flow_type' => 'PATIENT',
 
+        ]);
+
+        // $scheduledDate = $this->request->getPost('scheduled_date');
+
+        // $alertDate = $this->request->getPost('alert_date');
+
+        // $alertOffset = $this->request->getPost('alert_offset_days');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CALCULATE ALERT DATE
+        |--------------------------------------------------------------------------
+        */
+
+        // if (!empty($scheduledDate)) {
+
+        //     $alertDate = date(
+
+        //         'Y-m-d',
+
+        //         strtotime(
+        //             $scheduledDate .
+        //                 ' ' .
+        //                 $alertOffset .
+        //                 ' days'
+        //         )
+
+        //     );
+        // } else {
+
+        //     $alertOffset = 0;
+        // }
+
+        $this->patientRequestModel->insert([
+
+            'patient_id' => $patientId,
+
+            'request_type_id' => $requestTypeId,
+
+            'request_status' => 'PENDING',
+
+            'requested_at' => date('Y-m-d'),
+
+            // 'scheduled_date' => $scheduledDate,
+
+            // 'alert_offset_days' => $alertOffset,
+
+            // 'alert_date' => $alertDate,
+
+            'observation' => $observation,
+
+            'created_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
         /*
         |--------------------------------------------------------------------------
         | STATUS HISTORY
         |--------------------------------------------------------------------------
         */
 
-        $this->patientStatusHistoryModel
-            ->insert([
+        $this->patientStatusHistoryModel->insert([
 
-                'patient_id' => $patientId,
+            'patient_id' => $patientId,
 
-                'old_status' => null,
+            'old_status' => null,
 
-                'new_status' => 'EM ATENDIMENTO',
+            'new_status' => 'EM ATENDIMENTO',
 
-                'observation' => 'Cadastro inicial do paciente',
+            'observation' => 'Cadastro inicial do paciente',
 
-                'changed_by' => session()->get('user_id')
+            'changed_by' => userId(),
 
-            ]);
+            'flow_type' => 'PATIENT',
+
+        ]);
+
 
         /*
         |--------------------------------------------------------------------------
@@ -251,10 +317,161 @@ class PatientsController extends BaseController
 
     /*
     |--------------------------------------------------------------------------
+    | STORE REQUEST
+    |--------------------------------------------------------------------------
+    */
+    public function storeRequest()
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | DATA
+        |--------------------------------------------------------------------------
+        */
+
+        $patientId = $this->request->getPost('patient_id');
+
+        $requestTypeId = $this->request->getPost('request_type_id');
+
+        $scheduledDate = $this->request->getPost('scheduled_date');
+
+        $alertOffset = $this->request->getPost('alert_offset_days');
+
+        $alertDate = $this->request->getPost('alert_date');
+
+        $observation = $this->request->getPost('observation');
+
+        /*
+        |--------------------------------------------------------------------------
+        | CALCULATE ALERT DATE
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($scheduledDate)) {
+
+            $alertDate = date(
+
+                'Y-m-d',
+
+                strtotime(
+
+                    $scheduledDate .
+
+                        ' -' .
+
+                        abs($alertOffset) .
+
+                        ' days'
+
+                )
+
+            );
+        } else {
+
+            $alertOffset = 0;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SAVE REQUEST
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientRequestModel->insert([
+
+            'patient_id' => $patientId,
+
+            'request_type_id' => $requestTypeId,
+
+            'request_status' => 'PENDING',
+
+            'requested_at' => date('Y-m-d'),
+
+            'scheduled_date' => $scheduledDate,
+
+            'alert_offset_days' => $alertOffset,
+
+            'alert_date' => $alertDate,
+
+            'observation' => $observation,
+
+            'created_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST TYPE
+        |--------------------------------------------------------------------------
+        */
+
+        $requestType = $this->requestTypeModel->find($requestTypeId);
+
+        if (!$requestType) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Tipo de solicitação não encontrado.'
+
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $patientId,
+
+            'old_status' => null,
+
+            'new_status' => 'SOLICITAÇÃO',
+
+            'observation' =>
+
+            'Solicitação criada: ' .
+
+                $requestType['name'] .
+
+                '. Alerta programado para ' .
+
+                date(
+                    'd/m/Y',
+                    strtotime($alertDate)
+                ),
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUCCESS
+        |--------------------------------------------------------------------------
+        */
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Solicitação cadastrada com sucesso.'
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | UPDATE
     |--------------------------------------------------------------------------
     */
-
     public function update()
     {
         /*
@@ -306,49 +523,23 @@ class PatientsController extends BaseController
 
         $data = [
 
-            'name' =>
-            $this->request
-                ->getPost('name'),
+            'name' => $this->request->getPost('name'),
 
-            'medical_record' =>
-            $this->request
-                ->getPost(
-                    'medical_record'
-                ),
+            'medical_record' => $this->request->getPost('medical_record'),
 
-            'cpf' =>
-            $this->request
-                ->getPost('cpf'),
+            'cpf' => $this->request->getPost('cpf'),
 
-            'phone' =>
-            $this->request
-                ->getPost('phone'),
+            'phone' => $this->request->getPost('phone'),
 
-            'specialty_id' =>
-            $this->request
-                ->getPost(
-                    'specialty_id'
-                ),
+            'specialty_id' => $this->request->getPost('specialty_id'),
 
-            'first_consultation_date' =>
-            $this->request
-                ->getPost(
-                    'first_consultation_date'
-                ),
+            // 'first_consultation_date' => $this->request->getPost('first_consultation_date'),
 
-            'has_exams' =>
-            $this->request
-                ->getPost(
-                    'has_exams'
-                ),
+            'has_exams' => $this->request->getPost('has_exams'),
 
-            'state' =>
-            $this->request
-                ->getPost('state'),
+            'state' => $this->request->getPost('state'),
 
-            'city' =>
-            $this->request
-                ->getPost('city'),
+            'city' => $this->request->getPost('city'),
 
             /*
             |--------------------------------------------------------------------------
@@ -356,8 +547,7 @@ class PatientsController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            'status' =>
-            'EM ATENDIMENTO',
+            'status' => 'EM ATENDIMENTO',
 
         ];
 
@@ -381,8 +571,7 @@ class PatientsController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $this->patientModel
-            ->update($id, $data);
+        $this->patientModel->update($id, $data);
 
         /*
         |--------------------------------------------------------------------------
@@ -390,19 +579,20 @@ class PatientsController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $this->patientMovementModel
-            ->insert([
+        $this->patientMovementModel->insert([
 
-                'patient_id' => $id,
+            'patient_id' => $id,
 
-                'movement_type' => 'CADASTRO COMPLEMENTADO',
+            'movement_type' => 'CADASTRO COMPLEMENTADO',
 
-                'description' => 'Cadastro do paciente complementado',
+            'sector' => 'PACIENTE',
 
-                'created_by' => session()->get('user_id'),
+            'description' => 'Cadastro do paciente complementado',
 
-                'flow_type' => 'PATIENT',
-            ]);
+            'created_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+        ]);
 
         /*
         |--------------------------------------------------------------------------
@@ -410,28 +600,21 @@ class PatientsController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $this->patientStatusHistoryModel
-            ->insert([
+        $this->patientStatusHistoryModel->insert([
 
-                'patient_id' => $id,
+            'patient_id' => $id,
 
-                'old_status' =>
+            'old_status' => 'EM FILA',
 
-                'EM FILA',
+            'new_status' => 'EM ATENDIMENTO',
 
-                'new_status' =>
+            'observation' => 'Cadastro complementar realizado',
 
-                'EM ATENDIMENTO',
+            'changed_by' => userId(),
 
-                'observation' =>
+            'flow_type' => 'PATIENT',
 
-                'Cadastro complementar realizado',
-
-                'changed_by' =>
-
-                session()->get('user_id')
-
-            ]);
+        ]);
 
         /*
         |--------------------------------------------------------------------------
@@ -457,14 +640,11 @@ class PatientsController extends BaseController
     | UPDATE DATA
     |--------------------------------------------------------------------------
     */
-
     public function updateData()
     {
         $id = $this->request->getPost('id');
 
-        $patient =
-            $this->patientModel
-            ->find($id);
+        $patient = $this->patientModel->find($id);
 
         if (!$patient) {
 
@@ -480,64 +660,42 @@ class PatientsController extends BaseController
 
         $data = [
 
-            'name' =>
-            $this->request
-                ->getPost('name'),
+            'name' => $this->request->getPost('name'),
 
-            'medical_record' =>
-            $this->request
-                ->getPost('medical_record'),
+            'medical_record' => $this->request->getPost('medical_record'),
 
-            'cpf' =>
-            $this->request
-                ->getPost('cpf'),
+            'cpf' => $this->request->getPost('cpf'),
 
-            'phone' =>
-            $this->request
-                ->getPost('phone'),
+            'phone' => $this->request->getPost('phone'),
 
-            'specialty_id' =>
-            $this->request
-                ->getPost('specialty_id'),
+            'specialty_id' => $this->request->getPost('specialty_id'),
 
-            'first_consultation_date' =>
-            $this->request
-                ->getPost('first_consultation_date'),
+            // 'first_consultation_date' => $this->request->getPost('first_consultation_date'),
 
-            'has_exams' =>
-            $this->request
-                ->getPost('has_exams'),
+            'has_exams' => $this->request->getPost('has_exams'),
 
-            'state' =>
-            $this->request
-                ->getPost('state'),
+            'state' => $this->request->getPost('state'),
 
-            'city' =>
-            $this->request
-                ->getPost('city'),
+            'city' => $this->request->getPost('city'),
         ];
 
-        $this->patientModel
-            ->update($id, $data);
+        $this->patientModel->update($id, $data);
 
-        $this->patientMovementModel
-            ->insert([
+        $this->patientMovementModel->insert([
 
-                'patient_id' => $id,
+            'patient_id' => $id,
 
-                'movement_type' =>
-                'DADOS_ATUALIZADOS',
+            'sector' => 'PACIENTE',
 
-                'description' =>
-                'Dados cadastrais atualizados',
+            'movement_type' => 'DADOS ATUALIZADOS',
 
-                'created_by' =>
-                session()->get('user_id'),
+            'description' => 'Dados cadastrais atualizados',
 
-                'flow_type' =>
-                'PATIENT',
+            'created_by' => userId(),
 
-            ]);
+            'flow_type' => 'PATIENT',
+
+        ]);
 
         return redirect()
 
@@ -548,12 +706,182 @@ class PatientsController extends BaseController
                 'Dados atualizados com sucesso.'
             );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE REQUEST
+    |--------------------------------------------------------------------------
+    */
+    public function updateRequest()
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | DATA
+        |--------------------------------------------------------------------------
+        */
+
+        $id = $this->request->getPost('id');
+
+        $requestTypeId = $this->request->getPost('request_type_id');
+
+        $scheduledDate = $this->request->getPost('scheduled_date');
+
+        $alertOffset = $this->request->getPost('alert_offset_days');
+
+        $alertDate = $this->request->getPost('alert_date');
+
+        $observation = $this->request->getPost('observation');
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST
+        |--------------------------------------------------------------------------
+        */
+
+        $request = $this->patientRequestModel->find($id);
+
+        if (!$request) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Solicitação não encontrada.'
+
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST TYPE
+        |--------------------------------------------------------------------------
+        */
+
+        $requestType = $this->requestTypeModel->find($requestTypeId);
+
+        if (!$requestType) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Tipo de solicitação não encontrado.'
+
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CALCULATE ALERT DATE
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($scheduledDate)) {
+
+            $alertDate = date(
+
+                'Y-m-d',
+
+                strtotime(
+
+                    $scheduledDate .
+
+                        ' -' .
+
+                        abs($alertOffset) .
+
+                        ' days'
+
+                )
+
+            );
+        } else {
+
+            $alertOffset = 0;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientRequestModel->update(
+
+            $id,
+
+            [
+
+                'request_type_id' => $requestTypeId,
+
+                'scheduled_date' => $scheduledDate,
+
+                'alert_offset_days' => $alertOffset,
+
+                'alert_date' => $alertDate,
+
+                'observation' => $observation,
+
+            ]
+
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $request['patient_id'],
+
+            'old_status' => null,
+
+            'new_status' => 'SOLICITAÇÃO',
+
+            'observation' =>
+
+            'Solicitação atualizada: ' .
+
+                $requestType['name'] .
+
+                '. Alerta programado para ' .
+
+                date(
+
+                    'd/m/Y',
+
+                    strtotime($alertDate)
+
+                ),
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUCCESS
+        |--------------------------------------------------------------------------
+        */
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Solicitação atualizada com sucesso.'
+
+        ]);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SHOW
     |--------------------------------------------------------------------------
     */
-
     public function show($id)
     {
         /*
@@ -672,6 +1000,13 @@ class PatientsController extends BaseController
 
         /*
         |--------------------------------------------------------------------------
+        | REQUEST TYPES
+        |--------------------------------------------------------------------------
+        */
+        $requestTypes = $this->requestTypeModel->findAll();
+
+        /*
+        |--------------------------------------------------------------------------
         | RETURN
         |--------------------------------------------------------------------------
         */
@@ -691,6 +1026,897 @@ class PatientsController extends BaseController
                 'requests' => $requests,
 
                 'statusHistory' => $statusHistory,
+
+                'requestTypes' => $requestTypes,
+
+            ]
+
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | STORE OBSERVATION
+    |--------------------------------------------------------------------------
+    */
+    public function storeObservation()
+    {
+        $patientId = $this->request->getPost('patient_id');
+
+        $observation = $this->request->getPost('observation');
+
+        /*
+        |--------------------------------------------------------------------------
+        | SAVE OBSERVATION
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientObservationModel->insert([
+
+            'patient_id' => $patientId,
+
+            'observation' => $observation,
+
+            'created_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $patientId,
+
+            'old_status' => null,
+
+            'new_status' => 'OBSERVAÇÃO',
+
+            'observation' => $observation,
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        return redirect()
+
+            ->back()
+
+            ->with(
+
+                'success',
+
+                'Observação adicionada com sucesso.'
+
+            );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FINALIZE REQUEST
+    |--------------------------------------------------------------------------
+    */
+    public function finalizeRequest()
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | ID
+        |--------------------------------------------------------------------------
+        */
+
+        $id = $this->request->getPost('id');
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST
+        |--------------------------------------------------------------------------
+        */
+
+        $request = $this->patientRequestModel->find($id);
+
+        if (!$request) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Solicitação não encontrada.'
+
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientRequestModel->update(
+
+            $id,
+
+            [
+
+                'request_status' => 'COMPLETED',
+
+                'completed_at' => date('Y-m-d H:i:s')
+                
+            ]
+
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST TYPE
+        |--------------------------------------------------------------------------
+        */
+
+        $requestType =
+            $this->requestTypeModel
+            ->find($request['request_type_id']);
+
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientStatusHistoryModel
+            ->insert([
+
+                'patient_id' => $request['patient_id'],
+
+                'old_status' => null,
+
+                'new_status' => 'SOLICITAÇÃO',
+
+                'observation' =>
+
+                'Solicitação finalizada: '
+
+                    . $requestType['name'],
+
+                'changed_by' => userId(),
+
+                'flow_type' => 'PATIENT',
+
+            ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUCCESS
+        |--------------------------------------------------------------------------
+        */
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Solicitação finalizada com sucesso.'
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE REQUEST
+    |--------------------------------------------------------------------------
+    */
+    public function deleteRequest()
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | ID
+        |--------------------------------------------------------------------------
+        */
+
+        $id = $this->request->getPost('id');
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST
+        |--------------------------------------------------------------------------
+        */
+
+        $request =
+            $this->patientRequestModel
+            ->find($id);
+
+        if (!$request) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Solicitação não encontrada.'
+
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST TYPE
+        |--------------------------------------------------------------------------
+        */
+
+        $requestType = $this->requestTypeModel->find($request['request_type_id']);
+
+        /*
+        |--------------------------------------------------------------------------
+        | DELETE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientRequestModel->delete($id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $request['patient_id'],
+
+            'old_status' => null,
+
+            'new_status' => 'SOLICITAÇÃO REMOVIDA',
+
+            'observation' =>
+
+            'Solicitação removida: '
+
+                . $requestType['name'],
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUCCESS
+        |--------------------------------------------------------------------------
+        */
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Solicitação removida com sucesso.'
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HOSPITALIZE PATIENT
+    |--------------------------------------------------------------------------
+    */
+    public function hospitalize()
+    {
+        $patientId = $this->request->getPost('patient_id');
+
+        $observation = $this->request->getPost('observation');
+
+        $patient = $this->patientModel->find($patientId);
+
+        if (!$patient) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Paciente não encontrado.'
+
+            ]);
+        }
+
+        if ($patient['status'] == 'INTERNADO') {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Paciente já está internado.'
+
+            ]);
+        }
+        /*
+        |--------------------------------------------------------------------------
+        | SAVE HOSPITALIZATION
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientHospitalizationModel->insert([
+
+            'patient_id' => $patientId,
+
+            'hospitalized_at' => date('Y-m-d H:i:s'),
+
+            'observation' => $observation,
+
+            'created_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE STATUS
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientModel->update(
+
+            $patientId,
+
+            [
+
+                'status' => 'INTERNADO'
+
+            ]
+
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOVEMENT PACIENTE INTERNADO
+        |--------------------------------------------------------------------------
+        */
+        $this->patientMovementModel->insert([
+
+            'patient_id' => $patientId,
+
+            'sector' => 'INTERNAÇÃO',
+
+            'movement_type' => 'PACIENTE INTERNADO',
+
+            'description' => $observation,
+
+            'created_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $patientId,
+
+            'old_status' => 'EM ATENDIMENTO',
+
+            'new_status' => 'INTERNADO',
+
+            'observation' =>
+
+            'Paciente internado: '
+
+                . $observation,
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Paciente internado com sucesso.'
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RETURN PATIENT
+    |--------------------------------------------------------------------------
+    */
+    public function returnPatient()
+    {
+        $patientId = $this->request->getPost('patient_id');
+
+        $observation = $this->request->getPost('observation');
+
+        /*
+        |--------------------------------------------------------------------------
+        | PATIENT
+        |--------------------------------------------------------------------------
+        */
+
+        $patient = $this->patientModel->find($patientId);
+
+        if (!$patient) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Paciente não encontrado.'
+
+            ]);
+        }
+
+        if ($patient['status'] != 'INTERNADO') {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Paciente não está internado.'
+
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE STATUS
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientModel->update(
+
+            $patientId,
+
+            [
+
+                'status' => 'EM ATENDIMENTO'
+
+            ]
+
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOVEMENT
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientMovementModel->insert([
+
+            'patient_id' => $patientId,
+
+            'sector' => 'PACIENTE',
+
+            'movement_type' => 'RETORNO INTERNAÇÃO',
+
+            'description' => $observation,
+
+            'created_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $patientId,
+
+            'old_status' => 'INTERNADO',
+
+            'new_status' => 'EM ATENDIMENTO',
+
+            'observation' =>
+
+            'Paciente retornou da internação: '
+
+                . $observation,
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUCCESS
+        |--------------------------------------------------------------------------
+        */
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Paciente retornado para atendimento.'
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FINALIZE PATIENT
+    |--------------------------------------------------------------------------
+    */
+    public function finalizePatient()
+    {
+        $patientId = $this->request->getPost('patient_id');
+
+        $observation = $this->request->getPost('observation');
+
+        $patient = $this->patientModel->find($patientId);
+
+        if (!$patient) {
+
+            return $this->response
+                ->setJSON([
+
+                    'status' => false,
+
+                    'message' => 'Paciente não encontrado.'
+
+                ]);
+        }
+
+        if (
+            $patient['status']
+            == 'INTERNADO'
+        ) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Paciente internado não pode ser finalizado.'
+
+            ]);
+        }
+
+        $acceptedAt = new DateTime($patient['accepted_at']);
+
+        $finalizedAt = new DateTime();
+
+        $days = $acceptedAt->diff($finalizedAt)->days;
+
+        $d60Status = $days <= 60
+            ? 'DENTRO_PRAZO'
+            : 'FORA_PRAZO';
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE PATIENT
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientModel->update(
+
+            $patientId,
+
+            [
+
+                'status' => 'FINALIZADO',
+
+                'finalized_at' => date('Y-m-d H:i:s'),
+
+                'treatment_days' => $days,
+
+                'd60_status' => $d60Status
+
+            ]
+
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOVEMENT
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientMovementModel->insert([
+
+            'patient_id' => $patientId,
+
+            'sector' => 'PACIENTE',
+
+            'movement_type' => 'ATENDIMENTO FINALIZADO',
+
+            'description' => $observation,
+
+            'created_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $patientId,
+
+            'old_status' => $patient['status'],
+
+            'new_status' => 'FINALIZADO',
+
+            'observation' =>
+
+            'Paciente finalizado: '
+
+                . $observation,
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT',
+
+        ]);
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Atendimento finalizado com sucesso.'
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | REQUEST PDF
+    |--------------------------------------------------------------------------
+    */
+    public function pdf($id)
+    {
+        $patient = $this->patientModel->find($id);
+
+        $patientRequests = $this->patientRequestModel
+
+            ->select('
+                patient_requests.*,
+                request_types.name AS request_type_name,
+                request_types.deadline_days
+            ')
+
+            ->join(
+                'request_types',
+                'request_types.id = patient_requests.request_type_id',
+                'left'
+            )
+
+            ->where(
+                'patient_requests.patient_id',
+                $id
+            )
+
+            ->findAll();
+
+        return view('pdf/patient', [
+
+            'patient' => $patient,
+
+            'patientRequests' => $patientRequests
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | GENERATE PDF
+    |--------------------------------------------------------------------------
+    */
+
+    public function generatePdf($id)
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | PATIENT
+        |--------------------------------------------------------------------------
+        */
+
+        $patient = $this->patientModel
+
+            ->select('
+            patients.*,
+
+            specialties.name as specialty_name
+        ')
+
+            ->join(
+                'specialties',
+                'specialties.id = patients.specialty_id',
+                'left'
+            )
+
+            ->find($id);
+
+        if (!$patient) {
+
+            return redirect()
+
+                ->back()
+
+                ->with(
+
+                    'error',
+
+                    'Paciente não encontrado.'
+
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | OBSERVATIONS
+        |--------------------------------------------------------------------------
+        */
+
+        $observations = $this->patientObservationModel
+
+            ->where('patient_id', $id)
+
+            ->where('flow_type', 'PATIENT')
+
+            ->orderBy('id', 'DESC')
+
+            ->findAll();
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUESTS
+        |--------------------------------------------------------------------------
+        */
+
+        $patientRequests = $this->patientRequestModel
+
+            ->select('
+            patient_requests.*,
+            request_types.name as request_type_name,
+            request_types.deadline_days
+            ')
+
+            ->join(
+                'request_types',
+                'request_types.id = patient_requests.request_type_id',
+                'left'
+            )
+
+            ->where('patient_requests.patient_id', $id)
+
+            ->where('patient_requests.flow_type', 'PATIENT')
+
+            ->findAll();
+
+        /*
+        |--------------------------------------------------------------------------
+        | TIMELINE
+        |--------------------------------------------------------------------------
+        */
+
+        $timeline = $this->patientStatusHistoryModel
+
+            ->where('patient_id', $id)
+
+            ->where('flow_type', 'PATIENT')
+
+            ->orderBy('id', 'DESC')
+
+            ->findAll();
+
+        /*
+        |--------------------------------------------------------------------------
+        | HOSPITALIZATIONS
+        |--------------------------------------------------------------------------
+        */
+
+        $hospitalizations = $this->patientHospitalizationModel
+
+            ->where('patient_id', $id)
+
+            ->where('flow_type', 'PATIENT')
+
+            ->orderBy('hospitalized_at', 'DESC')
+
+            ->findAll();
+
+        /*
+        |--------------------------------------------------------------------------
+        | D60
+        |--------------------------------------------------------------------------
+        */
+
+        $deadlineDate = null;
+
+        if (!empty($patient['accepted_at'])) {
+
+            $deadlineDate = date(
+
+                'd/m/Y',
+
+                strtotime(
+                    $patient['accepted_at'] . ' +60 days'
+                )
+
+            );
+        } else {
+
+            $deadlineDate = 'N/A';
+        }
+        /*
+        |--------------------------------------------------------------------------
+        | VIEW
+        |--------------------------------------------------------------------------
+        */
+
+        $html = view(
+
+            'pdf/patient',
+
+            [
+
+                'patient' => $patient,
+
+                'observations' => $observations,
+
+                'patientRequests' => $patientRequests,
+
+                'timeline' => $timeline,
+
+                'hospitalizations' => $hospitalizations,
+
+                'deadlineDate' => $deadlineDate,
+
+
+            ]
+
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | DOMPDF
+        |--------------------------------------------------------------------------
+        */
+
+        $options = new Options();
+
+        $options->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($options);
+
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', 'portrait');
+
+        $dompdf->render();
+
+        /*
+        |--------------------------------------------------------------------------
+        | STREAM
+        |--------------------------------------------------------------------------
+        */
+
+        $dompdf->stream(
+
+            'paciente-' . $patient['id'],
+
+            [
+
+                'Attachment' => false
 
             ]
 

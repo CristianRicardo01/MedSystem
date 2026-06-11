@@ -1,6 +1,4 @@
-<div class="modal fade"
-    id="modalRequest"
-    tabindex="-1">
+<div class="modal fade" id="modalRequest" tabindex="-1">
 
     <div class="modal-dialog modal-dialog-centered">
 

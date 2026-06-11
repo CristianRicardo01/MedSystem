@@ -26,8 +26,24 @@
                         <?= esc($patient['name']) ?>
                     </h2>
 
-                    <span class="custom-badge success">
+                    <?php
+
+                    $badgeClass = 'success';
+
+                    if ($patient['status'] == 'INTERNADO') {
+
+                        $badgeClass = 'danger';
+                    } elseif ($patient['status'] == 'FINALIZADO') {
+
+                        $badgeClass = 'dark';
+                    }
+
+                    ?>
+
+                    <span class="custom-badge <?= $badgeClass ?>">
+
                         <?= esc($patient['status']) ?>
+
                     </span>
 
                 </div>
@@ -59,44 +75,64 @@
 
         <div class="d-flex gap-2 flex-wrap">
 
-            <!-- FINALIZAR -->
+            <?php if ($patient['status'] == 'INTERNADO'): ?>
 
-            <button class="btn btn-success btn-lg rounded-4 px-4 shadow-sm">
+                <!-- VOLTAR -->
 
-                <i class="bi bi-check-circle me-2"></i>
+                <button
+                    class="btn btn-warning btnReturnPatient"
+                    data-id="<?= $patient['id'] ?>">
 
-                Finalizar
+                    <i class="bi bi-arrow-counterclockwise me-2"></i>
 
-            </button>
+                    Voltar para Atendimento
 
-            <!-- INTERNAÇÃO -->
+                </button>
 
-            <button class="btn btn-danger btn-lg rounded-4 px-4 shadow-sm">
+            <?php elseif ($patient['status'] == 'FINALIZADO'): ?>
 
-                <i class="bi bi-hospital me-2"></i>
+                <!-- APENAS PDF -->
 
-                Internação
+            <?php else: ?>
 
-            </button>
+                <!-- FINALIZAR -->
 
-            <!-- EDITAR -->
+                <button
+                    class="btn btn-success btn-lg rounded-4 px-4 shadow-sm btnFinalizePatient"
+                    data-id="<?= $patient['id'] ?>">
 
-            <button class="btn btn-light btn-lg rounded-4 shadow-sm">
+                    <i class="bi bi-check-circle me-2"></i>
 
-                <i class="bi bi-pencil"></i>
+                    Finalizar
 
-            </button>
+                </button>
+
+                <!-- INTERNAÇÃO -->
+
+                <button
+                    class="btn btn-danger btn-lg rounded-4 px-4 shadow-sm btnHospitalizePatient"
+                    data-id="<?= $patient['id'] ?>">
+
+                    <i class="bi bi-hospital me-2"></i>
+
+                    Internação
+
+                </button>
+
+            <?php endif; ?>
 
             <!-- PDF -->
 
-            <button class="btn btn-light btn-lg rounded-4 shadow-sm">
+            <a
+                href="<?= base_url('patients/pdf/' . $patient['id']) ?>"
+                target="_blank"
+                class="btn btn-light btn-lg rounded-4 shadow-sm btnPdfPatient">
 
                 <i class="bi bi-file-earmark-pdf"></i>
 
-            </button>
+            </a>
 
         </div>
-
     </div>
 
 </div>

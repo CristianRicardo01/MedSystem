@@ -22,16 +22,15 @@
 
                 </div>
 
-                <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"> </button>
 
             </div>
 
             <!-- FORM -->
 
-            <form>
+            <form action="<?= base_url('patients/observation/store') ?>" method="POST">
+
+                <input type="hidden" name="patient_id" value="<?= $patient['id'] ?>">
 
                 <div class="modal-body px-4">
 
@@ -41,9 +40,12 @@
                             Observação
                         </label>
 
-                        <textarea class="form-control"
+                        <textarea
+                            class="form-control"
+                            name="observation"
                             rows="6"
-                            placeholder="Digite a observação..."></textarea>
+                            placeholder="Digite a observação..."
+                            required></textarea>
 
                     </div>
 

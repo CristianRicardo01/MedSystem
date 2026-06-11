@@ -141,3 +141,51 @@ $(document).on("click", ".btnEditPatientData", function () {
     window.selectedPatientState,
   );
 });
+
+$(document).on("change", "#patient_request_type_id", function () {
+  let option = $(this).find(":selected");
+
+  let isExternal = option.data("external");
+
+  let deadline = option.data("deadline");
+
+  console.log("EXTERNAL:", isExternal);
+
+  console.log("DEADLINE:", deadline);
+
+  /*
+  |--------------------------------------------------------------------------
+  | AUTO FILL DEADLINE
+  |--------------------------------------------------------------------------
+  */
+
+  $("input[name='alert_offset_days']").val(deadline);
+
+  /*
+  |--------------------------------------------------------------------------
+  | EXTERNAL
+  |--------------------------------------------------------------------------
+  */
+
+  if (isExternal == 1) {
+    $("#patient_scheduled_date_container").addClass("d-none");
+
+    $("#patient_offset_container").addClass("d-none");
+
+    $("#patient_alert_date_container").removeClass("d-none");
+
+    $("#patient_scheduled_date").prop("required", false).val("");
+
+    $("#patient_alert_date").prop("required", true);
+  } else {
+    $("#patient_scheduled_date_container").removeClass("d-none");
+
+    $("#patient_offset_container").removeClass("d-none");
+
+    $("#patient_alert_date_container").addClass("d-none");
+
+    $("#patient_scheduled_date").prop("required", true);
+
+    $("#patient_alert_date").prop("required", false).val("");
+  }
+});

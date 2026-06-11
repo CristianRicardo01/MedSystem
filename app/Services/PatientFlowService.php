@@ -74,7 +74,7 @@ class PatientFlowService
 
             'first_consultation_date' => $data['first_consultation_date'] ?? null,
 
-            'created_by' => 1,
+            'created_by' => userId(),
 
             'has_exams' => $data['has_exams'] ?? 0,
 
@@ -102,7 +102,7 @@ class PatientFlowService
 
                 'observation' => $data['observations'],
 
-                'created_by' => 1
+                'created_by' => userId(),
 
             ]);
         }
@@ -135,7 +135,7 @@ class PatientFlowService
 
             $patientId,
 
-            'CENTRAL_TRIAGEM',
+            'CENTRAL TRIAGEM',
 
             'ENTRY',
 
@@ -280,7 +280,7 @@ class PatientFlowService
 
             $patientId,
 
-            'CENTRAL_TRIAGEM',
+            'CENTRAL TRIAGEM',
 
             'FINALIZED',
 
@@ -309,8 +309,8 @@ class PatientFlowService
 
             'observation' => $observation,
 
-            'changed_by' => 1,
-
+            'changed_by' => userId(),
+            
             'flow_type' => $flowType,
 
         ]);
@@ -334,8 +334,8 @@ class PatientFlowService
 
             'observation' => $observation,
 
-            'created_by' => 1,
-            
+            'created_by' => userId(),
+
             'flow_type' => $flowType,
 
         ]);
@@ -361,7 +361,7 @@ class PatientFlowService
 
             'observation' => $observation,
 
-            'created_by' => 1,
+            'created_by' => userId(),
 
             'flow_type' => $flowType,
 

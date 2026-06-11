@@ -49,358 +49,373 @@
             </thead>
 
             <tbody>
+                <?php if (!empty($patients)): ?>
 
-                <?php foreach ($patients as $patient): ?>
+                    <?php foreach ($patients as $patient): ?>
 
-                    <tr>
+                        <tr>
 
-                        <!-- PACIENTE -->
+                            <!-- PACIENTE -->
 
-                        <td>
+                            <td>
 
-                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-flex align-items-center gap-3">
 
-                                <div class="patient-avatar">
+                                    <div class="patient-avatar">
 
-                                    <?= strtoupper(substr($patient['name'], 0, 1)) ?>
+                                        <?= strtoupper(substr($patient['name'], 0, 1)) ?>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+
+                                            <?= esc($patient['name']) ?>
+
+                                        </strong>
+
+                                        <small class="d-block text-muted">
+
+                                            <?= esc($patient['specialty_name']) ?>
+
+                                        </small>
+
+                                    </div>
 
                                 </div>
 
-                                <div>
+                            </td>
 
-                                    <strong>
+                            <!-- PRONTUARIO -->
 
-                                        <?= esc($patient['name']) ?>
+                            <td>
 
-                                    </strong>
+                                <span class="fw-semibold">
 
-                                    <small class="d-block text-muted">
-
-                                        <?= esc($patient['specialty_name']) ?>
-
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-                        </td>
-
-                        <!-- PRONTUARIO -->
-
-                        <td>
-
-                            <span class="fw-semibold">
-
-                                #<?= esc($patient['medical_record']) ?>
-
-                            </span>
-
-                        </td>
-
-                        <!-- DATA -->
-
-                        <td>
-                            <?php if (
-                                $patient['status']
-                                == 'EM FILA'
-                            ): ?>
-
-                                <span class="text-muted">
-
-                                    --
+                                    #<?= esc($patient['medical_record']) ?>
 
                                 </span>
 
-                            <?php else: ?>
+                            </td>
 
-                                <?= date(
-                                    'd/m/Y',
-                                    strtotime(
-                                        $patient['first_consultation_date']
-                                    )
-                                ) ?>
+                            <!-- DATA -->
 
-                            <?php endif; ?>
-                        </td>
+                            <td>
+                                <?php if (
+                                    $patient['status']
+                                    == 'EM FILA'
+                                ): ?>
 
-                        <!-- EXAMES -->
+                                    <span class="text-muted">
 
-                        <td>
-
-                            <?php if ($patient['status'] == 'EM FILA'): ?>
-
-                                <span class="custom-badge secondary">
-
-                                    Aguardando
-
-                                </span>
-
-                            <?php else: ?>
-
-                                <?php if ($patient['has_exams']): ?>
-
-                                    <span class="custom-badge success">
-
-                                        SIM
+                                        --
 
                                     </span>
 
                                 <?php else: ?>
 
-                                    <span class="custom-badge danger">
+                                    <?= date(
+                                        'd/m/Y',
+                                        strtotime(
+                                            $patient['first_consultation_date']
+                                        )
+                                    ) ?>
 
-                                        NÃO
+                                <?php endif; ?>
+                            </td>
+
+                            <!-- EXAMES -->
+
+                            <td>
+
+                                <?php if ($patient['status'] == 'EM FILA'): ?>
+
+                                    <span class="custom-badge secondary">
+
+                                        Aguardando
 
                                     </span>
 
+                                <?php else: ?>
+
+                                    <?php if ($patient['has_exams']): ?>
+
+                                        <span class="custom-badge success">
+
+                                            SIM
+
+                                        </span>
+
+                                    <?php else: ?>
+
+                                        <span class="custom-badge danger">
+
+                                            NÃO
+
+                                        </span>
+
+                                    <?php endif; ?>
+
                                 <?php endif; ?>
 
-                            <?php endif; ?>
+                            </td>
+                            <?php
 
-                        </td>
-                        <?php
+                            $d60Days = null;
 
-                        $d60Days = null;
+                            if (
+                                !empty($patient['accepted_at'])
+                            ) {
 
-                        if (
-                            !empty($patient['accepted_at'])
-                        ) {
+                                $acceptedDate =
+                                    new DateTime(
+                                        $patient['accepted_at']
+                                    );
 
-                            $acceptedDate =
-                                new DateTime(
-                                    $patient['accepted_at']
-                                );
+                                $today =
+                                    new DateTime();
 
-                            $today =
-                                new DateTime();
+                                $d60Days =
+                                    (int)
 
-                            $d60Days =
-                                (int)
+                                    $acceptedDate
+                                        ->diff($today)
 
-                                $acceptedDate
-                                    ->diff($today)
+                                        ->format('%r%a');
+                            }
+                            ?>
+                            <!-- 60D -->
+                            <td>
 
-                                    ->format('%r%a');
-                        }
-                        ?>
-                        <!-- 60D -->
-                        <td>
+                                <?php if (
+                                    $patient['status']
+                                    == 'EM FILA'
+                                ): ?>
 
-                            <?php if (
-                                $patient['status']
-                                == 'EM FILA'
-                            ): ?>
+                                    <span class="text-muted">
 
-                                <span class="text-muted">
+                                        --
 
-                                    --
+                                    </span>
 
-                                </span>
+                                <?php else: ?>
 
-                            <?php else: ?>
+                                    <?php
 
-                                <?php
+                                    $badgeClass =
+                                        'success';
 
-                                $badgeClass =
-                                    'success';
+                                    $badgeText =
+                                        'NORMAL';
 
-                                $badgeText =
-                                    'NORMAL';
-
-                                /*
+                                    /*
                                 |--------------------------------------------------------------------------
                                 | 21 - 40
                                 |--------------------------------------------------------------------------
                                 */
 
-                                if (
-                                    $d60Days >= 21 &&
-                                    $d60Days <= 40
-                                ) {
+                                    if (
+                                        $d60Days >= 21 &&
+                                        $d60Days <= 40
+                                    ) {
 
-                                    $badgeClass =
-                                        'warning';
+                                        $badgeClass =
+                                            'warning';
 
-                                    $badgeText =
-                                        'ATENÇÃO';
-                                }
+                                        $badgeText =
+                                            'ATENÇÃO';
+                                    }
 
-                                /*
+                                    /*
                                 |--------------------------------------------------------------------------
                                 | 41 - 60
                                 |--------------------------------------------------------------------------
                                 */
 
-                                if (
-                                    $d60Days >= 41 &&
-                                    $d60Days <= 60
-                                ) {
+                                    if (
+                                        $d60Days >= 41 &&
+                                        $d60Days <= 60
+                                    ) {
 
-                                    $badgeClass =
-                                        'danger';
+                                        $badgeClass =
+                                            'danger';
 
-                                    $badgeText =
-                                        'PRIORIDADE';
-                                }
+                                        $badgeText =
+                                            'PRIORIDADE';
+                                    }
 
-                                /*
+                                    /*
                                 |--------------------------------------------------------------------------
                                 | 61+
                                 |--------------------------------------------------------------------------
                                 */
 
-                                if (
-                                    $d60Days > 60
+                                    if (
+                                        $d60Days > 60
+                                    ) {
+
+                                        $badgeClass =
+                                            'dark';
+
+                                        $badgeText =
+                                            'URGENTE';
+                                    }
+
+                                    ?>
+
+                                    <span
+                                        class="custom-badge <?= $badgeClass ?>">
+
+                                        <?= $d60Days ?>
+
+                                        Dias
+
+                                        -
+
+                                        <?= $badgeText ?>
+
+                                    </span>
+
+                                <?php endif; ?>
+
+                            </td>
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <?php
+
+                                $statusClass = 'secondary';
+
+                                if ($patient['status'] == 'EM FILA') {
+
+                                    $statusClass = 'warning';
+                                } elseif (
+                                    $patient['status']
+                                    == 'EM ATENDIMENTO'
                                 ) {
 
-                                    $badgeClass =
-                                        'dark';
+                                    $statusClass = 'primary';
+                                } elseif (
+                                    $patient['status']
+                                    == 'FINALIZADO'
+                                ) {
 
-                                    $badgeText =
-                                        'URGENTE';
+                                    $statusClass = 'success';
                                 }
 
                                 ?>
 
-                                <span
-                                    class="custom-badge <?= $badgeClass ?>">
+                                <span class="custom-badge <?= $statusClass ?>">
 
-                                    <?= $d60Days ?>
-
-                                    Dias
-
-                                    -
-
-                                    <?= $badgeText ?>
+                                    <?= esc($patient['status']) ?>
 
                                 </span>
 
-                            <?php endif; ?>
+                            </td>
 
-                        </td>
+                            <!-- AÇÕES -->
 
-                        <!-- STATUS -->
+                            <td>
 
-                        <td>
+                                <div class="d-flex gap-2">
 
-                            <?php
+                                    <!-- COMPLETAR CADASTRO -->
 
-                            $statusClass = 'secondary';
+                                    <?php if ($patient['status'] == 'EM FILA'): ?>
 
-                            if ($patient['status'] == 'EM FILA') {
+                                        <button
+                                            class="btn-action btnCompletePatient"
 
-                                $statusClass = 'warning';
-                            } elseif (
-                                $patient['status']
-                                == 'EM ATENDIMENTO'
-                            ) {
+                                            data-id="<?= $patient['id'] ?>"
 
-                                $statusClass = 'primary';
-                            } elseif (
-                                $patient['status']
-                                == 'FINALIZADO'
-                            ) {
+                                            data-name="<?= esc($patient['name']) ?>"
 
-                                $statusClass = 'success';
-                            }
+                                            data-medical_record="<?= esc($patient['medical_record']) ?>"
 
-                            ?>
+                                            data-cpf="<?= esc($patient['cpf']) ?>"
 
-                            <span class="custom-badge <?= $statusClass ?>">
+                                            data-phone="<?= esc($patient['phone']) ?>"
 
-                                <?= esc($patient['status']) ?>
+                                            data-specialty_id="<?= $patient['specialty_id'] ?>"
 
-                            </span>
+                                            data-state="<?= esc($patient['state']) ?>"
 
-                        </td>
+                                            data-city="<?= esc($patient['city']) ?>"
 
-                        <!-- AÇÕES -->
+                                            data-has_exams="<?= $patient['has_exams'] ?>">
+                                            <!-- (Removido para que seja inserido o valor manual.) data-first_consultation_date="<1?= $patient['first_consultation_date'] ?>" -->
 
-                        <td>
+                                            <i class="bi bi-ui-checks-grid"></i>
 
-                            <div class="d-flex gap-2">
+                                        </button>
 
-                                <!-- COMPLETAR CADASTRO -->
+                                    <?php else: ?>
 
-                                <?php if ($patient['status'] == 'EM FILA'): ?>
+                                        <!-- EDITAR -->
 
-                                    <button
-                                        class="btn-action btnCompletePatient"
+                                        <button
 
-                                        data-id="<?= $patient['id'] ?>"
+                                            class="btn-action btnEditPatientData"
 
-                                        data-name="<?= esc($patient['name']) ?>"
+                                            data-id="<?= $patient['id'] ?>"
 
-                                        data-medical_record="<?= esc($patient['medical_record']) ?>"
+                                            data-name="<?= esc($patient['name']) ?>"
 
-                                        data-cpf="<?= esc($patient['cpf']) ?>"
+                                            data-medical_record="<?= esc($patient['medical_record']) ?>"
 
-                                        data-phone="<?= esc($patient['phone']) ?>"
+                                            data-cpf="<?= esc($patient['cpf']) ?>"
 
-                                        data-specialty_id="<?= $patient['specialty_id'] ?>"
+                                            data-phone="<?= esc($patient['phone']) ?>"
 
-                                        data-state="<?= esc($patient['state']) ?>"
+                                            data-specialty_id="<?= $patient['specialty_id'] ?>"
 
-                                        data-city="<?= esc($patient['city']) ?>"
+                                            data-state="<?= esc($patient['state']) ?>"
 
-                                        data-has_exams="<?= $patient['has_exams'] ?>">
-                                        <!-- (Removido para que seja inserido o valor manual.) data-first_consultation_date="<1?= $patient['first_consultation_date'] ?>" -->
+                                            data-city="<?= esc($patient['city']) ?>"
 
-                                        <i class="bi bi-ui-checks-grid"></i>
+                                            data-has_exams="<?= $patient['has_exams'] ?>"
 
-                                    </button>
+                                            data-first_consultation_date="<?= $patient['first_consultation_date'] ?>">
 
-                                <?php else: ?>
+                                            <i class="bi bi-pencil"></i>
 
-                                    <!-- EDITAR -->
-
-                                    <button
-
-                                        class="btn-action btnEditPatientData"
-
-                                        data-id="<?= $patient['id'] ?>"
-
-                                        data-name="<?= esc($patient['name']) ?>"
-
-                                        data-medical_record="<?= esc($patient['medical_record']) ?>"
-
-                                        data-cpf="<?= esc($patient['cpf']) ?>"
-
-                                        data-phone="<?= esc($patient['phone']) ?>"
-
-                                        data-specialty_id="<?= $patient['specialty_id'] ?>"
-
-                                        data-state="<?= esc($patient['state']) ?>"
-
-                                        data-city="<?= esc($patient['city']) ?>"
-
-                                        data-has_exams="<?= $patient['has_exams'] ?>"
-
-                                        data-first_consultation_date="<?= $patient['first_consultation_date'] ?>">
-
-                                        <i class="bi bi-pencil"></i>
-
-                                    </button>
+                                        </button>
 
 
-                                    <!-- VISUALIZAR -->
+                                        <!-- VISUALIZAR -->
 
-                                    <a href="<?= base_url('patients/show/' . $patient['id']) ?>" class="btn-action">
+                                        <a href="<?= base_url('patients/show/' . $patient['id']) ?>" class="btn-action">
 
-                                        <i class="bi bi-eye"></i>
+                                            <i class="bi bi-eye"></i>
 
-                                    </a>
-                                <?php endif; ?>
+                                        </a>
+                                    <?php endif; ?>
 
-                            </div>
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    <?php endforeach; ?>
+                    
+                <?php else: ?>
+
+                    <tr>
+
+                        <td colspan="7"
+                            class="text-center py-5 text-muted">
+
+                            Nenhum paciente encontrado.
 
                         </td>
 
                     </tr>
 
-                <?php endforeach; ?>
-
+                <?php endif; ?>
             </tbody>
 
         </table>

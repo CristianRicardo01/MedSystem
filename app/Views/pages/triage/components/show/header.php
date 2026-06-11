@@ -22,7 +22,7 @@ if ($patient['status'] == 'NEGADO') {
 } elseif ($patient['status'] == 'ACEITO') {
 
     $statusClass = 'success';
-} elseif ($patient['status'] == 'AGUARDANDO_EXAMES') {
+} elseif ($patient['status'] == 'AGUARDANDO EXAMES') {
 
     $statusClass = 'warning';
 }

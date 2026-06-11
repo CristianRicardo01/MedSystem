@@ -355,7 +355,7 @@
 
                     <h1>
 
-                        HOSPITAL MEDSYSTEM
+                        <!-- HOSPITAL MEDSYSTEM -->
 
                     </h1>
 

@@ -32,9 +32,17 @@
 
             <div class="timeline-modern">
 
-                <?php foreach ($movements as $movement): ?>
+                <?php foreach ($statusHistory as $item): ?>
 
-                    <div class="timeline-item primary">
+                    <?php
+                    // Helper para definir classes e ícones com base no status da triagem
+                    helper('timeline');
+
+                    $config = getTimelineConfig($item['new_status']);
+
+                    ?>
+
+                    <div class="timeline-item <?= $config['class'] ?>">
 
                         <div class="timeline-dot"></div>
 
@@ -42,15 +50,30 @@
 
                             <strong>
 
-                                <?= esc($movement['movement_type']) ?>
+                                <i class="bi <?= $config['icon'] ?>"></i>
+
+                                <?= esc($item['new_status']) ?>
 
                             </strong>
 
-                            <p class="text-muted mb-0">
+                            <p class="text-muted mb-1">
 
-                                <?= date('d/m/Y H:i', strtotime($movement['created_at'])) ?>
+                                <?= date(
+                                    'd/m/Y H:i',
+                                    strtotime($item['created_at'])
+                                ) ?>
 
                             </p>
+
+                            <?php if (!empty($item['observation'])): ?>
+
+                                <small class="text-muted">
+
+                                    <?= esc($item['observation']) ?>
+
+                                </small>
+
+                            <?php endif; ?>
 
                         </div>
 

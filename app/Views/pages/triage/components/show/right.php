@@ -1,7 +1,6 @@
 <!-- RIGHT -->
 
-<div class="col-lg-4"
-    data-aos="fade-left">
+<div class="col-lg-4" data-aos="fade-left">
 
     <div class="card card-modern border-0 h-100">
 
@@ -40,36 +39,14 @@
                     <?php foreach ($timeline as $item): ?>
 
                         <?php
+                        // Helper para definir classes e ícones com base no status da triagem
+                        helper('timeline');
 
-                        /*
-                        |--------------------------------------------------------------------------
-                        | STATUS COLOR
-                        |--------------------------------------------------------------------------
-                        */
-
-                        $timelineClass = 'primary';
-
-                        if ($item['new_status'] == 'NEGADO') {
-
-                            $timelineClass = 'danger';
-                        } elseif ($item['new_status'] == 'ACEITO') {
-
-                            $timelineClass = 'success';
-                        } elseif (
-                            $item['new_status'] == 'AGUARDANDO_EXAMES'
-                        ) {
-
-                            $timelineClass = 'warning';
-                        } elseif (
-                            $item['new_status'] == 'FINALIZADO'
-                        ) {
-
-                            $timelineClass = 'dark';
-                        }
+                        $config = getTimelineConfig($item['new_status']);
 
                         ?>
 
-                        <div class="timeline-item <?= $timelineClass ?>">
+                        <div class="timeline-item <?= $config['class'] ?>">
 
                             <!-- DOT -->
 
@@ -82,6 +59,8 @@
                                 <!-- STATUS -->
 
                                 <strong>
+
+                                    <i class="bi <?= $config['icon'] ?>"></i>
 
                                     <?= esc($item['new_status']) ?>
 

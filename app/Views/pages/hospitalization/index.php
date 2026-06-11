@@ -6,8 +6,7 @@
 
     <!-- HEADER -->
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4"
-        data-aos="fade-down">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4" data-aos="fade-down">
 
         <div>
 
@@ -36,7 +35,9 @@
                 <div>
 
                     <strong>
-                        12
+
+                        <?= count($patients) ?>
+
                     </strong>
 
                     <small>
@@ -53,9 +54,7 @@
 
     <!-- TABLE -->
 
-    <div class="table-container"
-        data-aos="fade-up"
-        data-aos-delay="200">
+    <div class="table-container" data-aos="fade-up" data-aos-delay="200">
 
         <!-- HEADER TABLE -->
 
@@ -107,179 +106,117 @@
                 </thead>
 
                 <tbody>
+                    <?php if (!empty($patients)): ?>
 
-                    <!-- ITEM -->
+                        <?php foreach ($patients as $patient): ?>
+                            <tr>
+                                <!-- PACIENTE -->
 
-                    <tr>
+                                <td>
 
-                        <!-- PACIENTE -->
+                                    <div class="d-flex align-items-center gap-3">
 
-                        <td>
+                                        <div class="patient-avatar">
 
-                            <div class="d-flex align-items-center gap-3">
+                                            <?= strtoupper(substr($patient['name'], 0, 1)) ?>
 
-                                <div class="patient-avatar">
+                                        </div>
 
-                                    M
+                                        <div>
 
-                                </div>
+                                            <strong>
 
-                                <div>
+                                                <?= esc($patient['name']) ?>
 
-                                    <strong>
-                                        Maria Silva
-                                    </strong>
+                                            </strong>
 
-                                    <small class="d-block text-muted">
-                                        Cardiologia
-                                    </small>
+                                            <small class="d-block text-muted">
 
-                                </div>
+                                                <?= esc($patient['specialty_name']) ?>
 
-                            </div>
+                                            </small>
 
-                        </td>
+                                        </div>
 
-                        <!-- PRONTUARIO -->
+                                    </div>
 
-                        <td>
+                                </td>
 
-                            <span class="fw-semibold">
-                                #0000000
-                            </span>
+                                <!-- PRONTUARIO -->
 
-                        </td>
+                                <td>
 
-                        <!-- DATA -->
+                                    <span class="fw-semibold">
 
-                        <td>
+                                        #<?= esc($patient['medical_record']) ?>
 
-                            14/05/2026
+                                    </span>
 
-                        </td>
+                                </td>
 
-                        <!-- OBSERVAÇÃO -->
+                                <!-- DATA -->
 
-                        <td>
+                                <td>
 
-                            <span class="text-muted">
+                                    <?= date('d/m/Y', strtotime($patient['hospitalized_at'])) ?>
 
-                                Paciente em observação clínica.
+                                </td>
 
-                            </span>
+                                <!-- OBSERVAÇÃO -->
 
-                        </td>
+                                <td>
 
-                        <!-- ACTIONS -->
+                                    <span
+                                        class="fw-semibold"
+                                        title="<?= esc($patient['observation']) ?>">
 
-                        <td>
+                                        <?= esc(
+                                            mb_strimwidth(
+                                                $patient['observation'],
+                                                0,
+                                                50,
+                                                '...'
+                                            )
+                                        ) ?>
 
-                            <div class="d-flex gap-2">
+                                    </span>
 
-                                <!-- SHOW -->
+                                </td>
+                                <!-- AÇÕES -->
 
-                                <a href="<?= base_url('patients/show/1') ?>"
-                                    class="btn-action">
+                                <td>
 
-                                    <i class="bi bi-eye"></i>
+                                    <div class="d-flex gap-2">
 
-                                </a>
+                                        <!-- VISUALIZAR -->
 
-                                <!-- REMOVER -->
+                                        <a href="<?= base_url('patients/show/' . $patient['id']) ?>" class="btn-action">
 
-                                <button class="btn-action btn-action-danger">
+                                            <i class="bi bi-eye"></i>
 
-                                    <i class="bi bi-hospital"></i>
+                                        </a>
 
-                                </button>
+                                    </div>
 
-                            </div>
+                                </td>
+                            </tr>
 
-                        </td>
+                        <?php endforeach; ?>
 
-                    </tr>
+                    <?php else: ?>
 
-                    <!-- ITEM -->
+                        <tr>
 
-                    <tr>
+                            <td colspan="7"
+                                class="text-center py-5 text-muted">
 
-                        <td>
+                                Nenhum paciente encontrado.
 
-                            <div class="d-flex align-items-center gap-3">
+                            </td>
 
-                                <div class="patient-avatar">
+                        </tr>
 
-                                    J
-
-                                </div>
-
-                                <div>
-
-                                    <strong>
-                                        João Pedro
-                                    </strong>
-
-                                    <small class="d-block text-muted">
-                                        Neurologia
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-                        </td>
-
-                        <td>
-
-                            <span class="fw-semibold">
-                                #0000001
-                            </span>
-
-                        </td>
-
-                        <td>
-
-                            13/05/2026
-
-                        </td>
-
-                        <td>
-
-                            <span class="text-muted">
-
-                                Aguardando avaliação médica.
-
-                            </span>
-
-                        </td>
-
-                        <td>
-
-                            <div class="d-flex gap-2">
-
-                                <!-- SHOW -->
-
-                                <a href="<?= base_url('patients/show/1') ?>"
-                                    class="btn-action">
-
-                                    <i class="bi bi-eye"></i>
-
-                                </a>
-
-                                <!-- REMOVER -->
-
-                                <button class="btn-action btn-action-danger">
-
-                                    <i class="bi bi-hospital"></i>
-
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
+                    <?php endif; ?>
                 </tbody>
 
             </table>

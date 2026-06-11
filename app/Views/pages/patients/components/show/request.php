@@ -34,7 +34,11 @@
 
                 <!-- BTN -->
 
-                <button class="btn btn-primary rounded-4 px-4">
+                <button
+                    class="btn btn-primary rounded-4 px-4"
+                    <?= ($patient['status'] == 'FINALIZADO') ? 'style="display:none;"' : ''; ?>
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalPatientRequest">
 
                     <i class="bi bi-plus-circle me-2"></i>
 
@@ -53,7 +57,7 @@
                         <thead>
 
                             <tr>
-
+                                <th width="50">Obs</th>
                                 <th>Solicitação</th>
                                 <th>Especialidade</th>
                                 <th>Data</th>
@@ -75,10 +79,10 @@
                                 <?php
 
                                 /*
-                            |--------------------------------------------------------------------------
-                            | D60
-                            |--------------------------------------------------------------------------
-                            */
+                                    |--------------------------------------------------------------------------
+                                    | D60
+                                    |--------------------------------------------------------------------------
+                                    */
 
                                 $requestDays = 0;
 
@@ -105,22 +109,20 @@
                                 }
 
                                 /*
-                            |--------------------------------------------------------------------------
-                            | BADGE
-                            |--------------------------------------------------------------------------
-                            */
+                                    |--------------------------------------------------------------------------
+                                    | BADGE
+                                    |--------------------------------------------------------------------------
+                                    */
 
-                                $d60Class =
-                                    'success';
+                                $d60Class = 'success';
 
-                                $alertText =
-                                    'NORMAL';
+                                $alertText = 'NORMAL';
 
                                 /*
-                            |--------------------------------------------------------------------------
-                            | 21 - 40
-                            |--------------------------------------------------------------------------
-                            */
+                                    |--------------------------------------------------------------------------
+                                    | 21 - 40
+                                    |--------------------------------------------------------------------------
+                                    */
 
                                 if (
                                     $requestDays >= 21 &&
@@ -135,10 +137,10 @@
                                 }
 
                                 /*
-                            |--------------------------------------------------------------------------
-                            | 41 - 60
-                            |--------------------------------------------------------------------------
-                            */
+                                    |--------------------------------------------------------------------------
+                                    | 41 - 60
+                                    |--------------------------------------------------------------------------
+                                    */
 
                                 if (
                                     $requestDays >= 41 &&
@@ -153,10 +155,10 @@
                                 }
 
                                 /*
-                            |--------------------------------------------------------------------------
-                            | 61+
-                            |--------------------------------------------------------------------------
-                            */
+                                    |--------------------------------------------------------------------------
+                                    | 61+
+                                    |--------------------------------------------------------------------------
+                                    */
 
                                 if (
                                     $requestDays > 60
@@ -170,10 +172,10 @@
                                 }
 
                                 /*
-                            |--------------------------------------------------------------------------
-                            | STATUS
-                            |--------------------------------------------------------------------------
-                            */
+                                    |--------------------------------------------------------------------------
+                                    | STATUS
+                                    |--------------------------------------------------------------------------
+                                    */
 
                                 $statusClass =
                                     'secondary';
@@ -200,13 +202,47 @@
 
                                 <tr>
 
+                                    <!-- OBSERVATION -->
+
+                                    <td>
+
+                                        <?php if (!empty($request['observation'])): ?>
+
+                                            <button
+                                                type="button"
+
+                                                class="btn-action"
+
+                                                data-bs-toggle="popover"
+
+                                                data-bs-trigger="hover focus"
+
+                                                data-bs-placement="right"
+
+                                                title="Observação"
+
+                                                data-bs-content="<?= esc($request['observation']) ?>">
+
+                                                <i class="bi bi-chat-left-text"></i>
+
+                                            </button>
+
+                                        <?php else: ?>
+
+                                            <span class="text-muted" style="text-align: center; margin-left: 15px;">
+
+                                                #
+
+                                            </span>
+
+                                        <?php endif; ?>
+
+                                    </td>
                                     <!-- SOLICITAÇÃO -->
 
                                     <td>
 
-                                        <?= esc(
-                                            $request['request_type_name']
-                                        ) ?>
+                                        <?= esc($request['request_type_name']) ?>
 
                                     </td>
 
@@ -214,9 +250,7 @@
 
                                     <td>
 
-                                        <?= esc(
-                                            $patient['specialty_name']
-                                        ) ?>
+                                        <?= esc($patient['specialty_name']) ?>
 
                                     </td>
 
@@ -224,15 +258,7 @@
 
                                     <td>
 
-                                        <?= date(
-
-                                            'd/m/Y',
-
-                                            strtotime(
-                                                $request['created_at']
-                                            )
-
-                                        ) ?>
+                                        <?= date('d/m/Y', strtotime($request['created_at'])) ?>
 
                                     </td>
 
@@ -243,9 +269,7 @@
                                         <span
                                             class="custom-badge <?= $statusClass ?>">
 
-                                            <?= esc(
-                                                $request['request_status']
-                                            ) ?>
+                                            <?= esc($request['request_status']) ?>
 
                                         </span>
 
@@ -283,11 +307,67 @@
 
                                         <div class="d-flex gap-2">
 
-                                            <button class="btn-action">
+                                            <?php if (
+                                                $request['request_status']
+                                                != 'COMPLETED'
+                                            ): ?>
 
-                                                <i class="bi bi-eye"></i>
+                                                <!-- EDIT -->
 
-                                            </button>
+                                                <button
+                                                    class="btn-action btnPatientEditRequest"
+
+                                                    data-id="<?= $request['id'] ?>"
+
+                                                    data-request_type_id="<?= $request['request_type_id'] ?>"
+
+                                                    data-scheduled_date="<?= $request['scheduled_date'] ?>"
+
+                                                    data-alert_offset_days="<?= $request['alert_offset_days'] ?>"
+
+                                                    data-alert_date="<?= $request['alert_date'] ?>"
+
+                                                    data-request_status="<?= $request['request_status'] ?>"
+
+                                                    data-observation="<?= esc($request['observation']) ?>">
+
+                                                    <i class="bi bi-pencil"></i>
+
+                                                </button>
+
+                                                <!-- FINALIZE -->
+
+                                                <button
+                                                    class="btn-action btn-success btnPatientFinalizeRequest"
+
+                                                    data-id="<?= $request['id'] ?>">
+
+                                                    <i class="bi bi-check-circle"></i>
+
+                                                </button>
+
+                                                <!-- DELETE -->
+
+                                                <button
+                                                    class="btn-action btn-action-danger btnPatientDeleteRequest"
+
+                                                    data-id="<?= $request['id'] ?>">
+
+                                                    <i class="bi bi-trash"></i>
+
+                                                </button>
+
+                                            <?php else: ?>
+
+                                                <!-- COMPLETED -->
+
+                                                <span class="custom-badge success">
+
+                                                    Finalizado
+
+                                                </span>
+
+                                            <?php endif; ?>
 
                                         </div>
 
@@ -312,7 +392,6 @@
 
                         <?php endif; ?>
                         </tbody>
-
 
                     </table>
 

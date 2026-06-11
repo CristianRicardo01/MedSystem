@@ -27,6 +27,7 @@
 <script src="<?= base_url('assets/js/requests.js') ?>"></script>
 <script src="<?= base_url('assets/js/specialties.js') ?>"></script>
 <script src="<?= base_url('assets/js/patient-requests.js') ?>"></script>
+<script src="<?= base_url('assets/js/hospitalization.js') ?>"></script>
 
 <!-- BOOTSTRAP POPOVER -->
 <script src="<?= base_url('assets/js/popover.js') ?>"></script>

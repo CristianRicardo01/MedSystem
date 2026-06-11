@@ -1,8 +1,6 @@
 <!-- MODAL EDIT REQUEST -->
 
-<div class="modal fade"
-    id="modalEditPatientRequest"
-    tabindex="-1">
+<div class="modal fade" id="modalEditPatientRequest" tabindex="-1">
 
     <div class="modal-dialog modal-dialog-centered modal-lg">
 
@@ -121,36 +119,6 @@
                             </div>
 
                         </div>
-
-                        <!-- STATUS -->
-
-                        <!-- <div class="col-md-6">
-
-                            <label class="form-label">
-
-                                Status
-
-                            </label>
-
-                            <select name="request_status"
-                                id="edit_request_status"
-                                class="form-select form-select-lg">
-
-                                <option value="PENDING">
-
-                                    Em andamento
-
-                                </option>
-
-                                <option value="COMPLETED">
-
-                                    Finalizado
-
-                                </option>
-
-                            </select>
-
-                        </div> -->
 
                         <!-- OBS -->
 

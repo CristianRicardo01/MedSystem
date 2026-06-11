@@ -140,7 +140,7 @@
 
                         $statusClass = 'primary';
 
-                        if ($patient['status'] == 'AGUARDANDO_EXAMES') {
+                        if ($patient['status'] == 'AGUARDANDO EXAMES') {
 
                             $statusClass = 'warning';
                         }

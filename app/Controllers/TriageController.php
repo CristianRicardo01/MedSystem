@@ -228,7 +228,6 @@ class TriageController extends BaseController
 
             'first_consultation_date' => 'required',
 
-
         ];
 
         /*
@@ -583,14 +582,13 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $this->patientFlowService
-                ->createObservation(
+            $this->patientFlowService->createObservation(
 
-                    $patientId,
+                $patientId,
 
-                    $observation
+                $observation
 
-                );
+            );
 
             return $this->response->setJSON([
 
@@ -743,7 +741,7 @@ class TriageController extends BaseController
 
                     'observation' => $observation,
 
-                    'created_by' => 1,
+                    'created_by' => userId(),
 
                     'flow_type' => 'TRIAGE',
                 ]);
@@ -980,8 +978,7 @@ class TriageController extends BaseController
 
                 'status' => false,
 
-                'message' =>
-                'Solicitação não encontrada'
+                'message' => 'Solicitação não encontrada'
 
             ]);
         }
@@ -994,8 +991,7 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $this->patientRequestModel
-                ->delete($id);
+            $this->patientRequestModel->delete($id);
 
             /*
             |--------------------------------------------------------------------------
@@ -1003,18 +999,17 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $this->patientFlowService
-                ->createTimeline(
+            $this->patientFlowService->createTimeline(
 
-                    $request['patient_id'],
+                $request['patient_id'],
 
-                    null,
+                null,
 
-                    'SOLICITACAO REMOVIDA',
+                'SOLICITACAO REMOVIDA',
 
-                    'Solicitação removida'
+                'Solicitação removida'
 
-                );
+            );
 
             /*
             |--------------------------------------------------------------------------
@@ -1026,8 +1021,7 @@ class TriageController extends BaseController
 
                 'status' => true,
 
-                'message' =>
-                'Solicitação removida com sucesso'
+                'message' => 'Solicitação removida com sucesso'
 
             ]);
         } catch (\Exception $e) {
@@ -1056,8 +1050,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $id = $this->request
-            ->getPost('id');
+        $id = $this->request->getPost('id');
 
         /*
         |--------------------------------------------------------------------------
@@ -1065,8 +1058,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $request = $this->patientRequestModel
-            ->find($id);
+        $request = $this->patientRequestModel->find($id);
 
         if (!$request) {
 
@@ -1100,8 +1092,7 @@ class TriageController extends BaseController
 
                 'status' => false,
 
-                'message' =>
-                'Solicitação já finalizada'
+                'message' => 'Solicitação já finalizada'
 
             ]);
         }
@@ -1114,16 +1105,13 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $this->patientRequestModel
-                ->update($id, [
+            $this->patientRequestModel->update($id, [
 
-                    'request_status' =>
-                    'COMPLETED',
+                'request_status' => 'COMPLETED',
 
-                    'completed_at' =>
-                    date('Y-m-d')
+                'completed_at' => date('Y-m-d')
 
-                ]);
+            ]);
 
             /*
             |--------------------------------------------------------------------------
@@ -1131,8 +1119,7 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $requestType =
-                $this->requestTypeModel
+            $requestType = $this->requestTypeModel
                 ->find(
 
                     $request['request_type_id']
@@ -1145,22 +1132,21 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $this->patientFlowService
-                ->createTimeline(
+            $this->patientFlowService->createTimeline(
 
-                    $request['patient_id'],
+                $request['patient_id'],
 
-                    null,
+                null,
 
-                    'EXAME FINALIZADO',
+                'EXAME FINALIZADO',
 
-                    'Exame ' .
+                'Exame ' .
 
-                        $requestType['name'] .
+                    $requestType['name'] .
 
-                        ' finalizado'
+                    ' finalizado'
 
-                );
+            );
 
             /*
             |--------------------------------------------------------------------------
@@ -1172,8 +1158,7 @@ class TriageController extends BaseController
 
                 'status' => true,
 
-                'message' =>
-                'Exame finalizado com sucesso'
+                'message' => 'Exame finalizado com sucesso'
 
             ]);
         } catch (\Exception $e) {
@@ -1202,8 +1187,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $patientId = $this->request
-            ->getPost('patient_id');
+        $patientId = $this->request->getPost('patient_id');
 
         /*
         |--------------------------------------------------------------------------
@@ -1211,8 +1195,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $patient = $this->patientModel
-            ->find($patientId);
+        $patient = $this->patientModel->find($patientId);
 
         if (!$patient) {
 
@@ -1232,8 +1215,7 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $pendingRequests =
-            $this->patientRequestModel
+        $pendingRequests = $this->patientRequestModel
 
             ->where('patient_id', $patientId)
 
@@ -1270,16 +1252,15 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $this->patientModel
-                ->update($patientId, [
+            $this->patientModel->update($patientId, [
 
-                    'flow_type' => 'PATIENT',
+                'flow_type' => 'PATIENT',
 
-                    'status' => 'EM FILA',
+                'status' => 'EM FILA',
 
-                    'current_sector' => 'CENTRAL PACIENTE',
+                'current_sector' => 'CENTRAL PACIENTE',
 
-                ]);
+            ]);
 
             /*
             |--------------------------------------------------------------------------
@@ -1287,18 +1268,17 @@ class TriageController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            $this->patientFlowService
-                ->createTimeline(
+            $this->patientFlowService->createTimeline(
 
-                    $patientId,
+                $patientId,
 
-                    null,
+                null,
 
-                    'TRANSFERENCIA',
+                'TRANSFERENCIA',
 
-                    'Paciente transferido para fila principal'
+                'Paciente transferido para fila principal'
 
-                );
+            );
 
             /*
             |--------------------------------------------------------------------------
@@ -1310,8 +1290,7 @@ class TriageController extends BaseController
 
                 'status' => true,
 
-                'message' =>
-                'Paciente transferido com sucesso'
+                'message' => 'Paciente transferido com sucesso'
 
             ]);
         } catch (\Exception $e) {
@@ -1320,8 +1299,7 @@ class TriageController extends BaseController
 
                 'status' => false,
 
-                'message' =>
-                $e->getMessage()
+                'message' => $e->getMessage()
 
             ]);
         }

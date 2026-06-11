@@ -187,6 +187,29 @@
 
 }
 
+.timeline-item.info .timeline-dot {
+
+    background: #009688;
+
+}
+
+.timeline-item.danger .timeline-dot {
+
+    background: #f02a34;
+
+}
+
+.timeline-item.danger-emphasis .timeline-dot {
+
+    background: #ff8086;
+
+}
+.timeline-item.danger-indigo .timeline-dot {
+
+    background: #6610f2;
+
+}
+
 .btn-lg {
 
     transition: all .3s ease;
