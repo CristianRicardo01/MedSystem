@@ -1,6 +1,4 @@
-<div class="table-container"
-    data-aos="fade-up"
-    data-aos-delay="200">
+<div class="table-container" data-aos="fade-up" data-aos-delay="200">
 
     <!-- HEADER -->
 
@@ -52,154 +50,116 @@
             </thead>
 
             <tbody>
+                <?php if (!empty($users)): ?>
 
-                <!-- ITEM -->
+                    <?php foreach ($users as $user): ?>
 
-                <tr>
+                        <tr>
 
-                    <td>
+                            <td>
 
-                        <div class="d-flex align-items-center gap-3">
+                                <div class="d-flex align-items-center gap-3">
 
-                            <div>
+                                    <div>
 
-                                <strong>
-                                    Administrador
-                                </strong>
+                                        <strong>
 
-                                <small class="d-block text-muted">
-                                    Último acesso hoje
-                                </small>
+                                            <?= esc($user['name']) ?>
 
-                            </div>
+                                        </strong>
 
-                        </div>
+                                        <small class="d-block text-muted">
 
-                    </td>
+                                            <?= !empty($user['last_login'])
 
-                    <td>
+                                                ? 'Último acesso: ' .
+                                                date(
+                                                    'd/m/Y H:i',
+                                                    strtotime(
+                                                        $user['last_login']
+                                                    )
+                                                )
 
-                        admin@sistema.com
+                                                : 'Nunca acessou'; ?>
 
-                    </td>
+                                        </small>
 
-                    <td>
+                                    </div>
 
-                        <span class="custom-badge primary">
+                                </div>
 
-                            Administrador
+                            </td>
 
-                        </span>
+                            <td>
 
-                    </td>
+                                <?= esc($user['email']) ?>
 
-                    <td>
+                            </td>
 
-                        <span class="custom-badge success">
+                            <td>
 
-                            Ativo
+                                <span class="custom-badge primary">
 
-                        </span>
+                                    <?= esc($user['role']) ?>
 
-                    </td>
+                                </span>
 
-                    <td>
+                            </td>
 
-                        <div class="d-flex gap-2">
+                            <td>
 
-                            <button class="btn-action"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEditUser">
+                                <span class="custom-badge <?= $user['status'] == 'ACTIVE' ? 'success' : 'danger' ?>">
 
-                                <i class="bi bi-pencil"></i>
+                                    <?= $user['status'] == 'ACTIVE'
+                                        ? 'Ativo'
+                                        : 'Inativo' ?>
 
-                            </button>
+                                </span>
 
-                            <button class="btn-action btn-action-danger">
+                            </td>
 
-                                <i class="bi bi-trash"></i>
+                            <td>
 
-                            </button>
+                                <div class="d-flex gap-2">
 
-                        </div>
+                                    <button
+                                        class="btn-action btnEditUser"
+                                        data-id="<?= $user['id'] ?>">
 
-                    </td>
+                                        <i class="bi bi-pencil"></i>
 
-                </tr>
+                                    </button>
 
-                <!-- ITEM -->
+                                    <button
+                                        class="btn-action btn-action-danger btnDeleteUser"
+                                        data-id="<?= $user['id'] ?>">
 
-                <tr>
+                                        <i class="bi bi-trash"></i>
 
-                    <td>
+                                    </button>
 
-                        <div class="d-flex align-items-center gap-3">
+                                </div>
 
-                            <div>
+                            </td>
 
-                                <strong>
-                                    Maria Souza
-                                </strong>
+                        </tr>
 
-                                <small class="d-block text-muted">
-                                    Último acesso ontem
-                                </small>
+                    <?php endforeach; ?>
 
-                            </div>
+                <?php else: ?>
 
-                        </div>
+                    <tr>
 
-                    </td>
+                        <td colspan="5"
+                            class="text-center py-5 text-muted">
 
-                    <td>
+                            Nenhum usuoario encontrado.
 
-                        maria@sistema.com
+                        </td>
 
-                    </td>
+                    </tr>
 
-                    <td>
-
-                        <span class="custom-badge warning">
-
-                            Usuário
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <span class="custom-badge success">
-
-                            Ativo
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <div class="d-flex gap-2">
-
-                            <button class="btn-action"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEditUser">
-
-                                <i class="bi bi-pencil"></i>
-
-                            </button>
-                            <button class="btn-action btn-action-danger">
-
-                                <i class="bi bi-trash"></i>
-
-                            </button>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-
+                <?php endif; ?>
             </tbody>
 
         </table>

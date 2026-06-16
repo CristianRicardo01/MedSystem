@@ -1,6 +1,4 @@
-<div class="modal fade"
-    id="modalUser"
-    tabindex="-1">
+<div class="modal fade" id="modalUser" tabindex="-1">
 
     <div class="modal-dialog modal-lg modal-dialog-centered">
 
@@ -22,16 +20,13 @@
 
                 </div>
 
-                <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"> </button>
 
             </div>
 
             <!-- FORM -->
 
-            <form>
+            <form id="formUser">
 
                 <div class="modal-body px-4">
 
@@ -50,6 +45,8 @@
                                 <i class="bi bi-person"></i>
 
                                 <input type="text"
+                                    name="name"
+                                    id="user_name"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o nome">
 
@@ -70,6 +67,8 @@
                                 <i class="bi bi-envelope"></i>
 
                                 <input type="email"
+                                    name="email"
+                                    id="user_email"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o email">
 
@@ -78,27 +77,52 @@
                         </div>
 
                         <!-- PERFIL -->
-
                         <div class="col-md-6">
-
                             <label class="form-label">
                                 Perfil
                             </label>
 
-                            <select class="form-select form-select-lg">
+                            <select
+                                class="form-select form-select-lg"
+                                name="role"
+                                id="user_role">
 
-                                <option>
+                                <option value="">
+                                    Selecione
+                                </option>
+                                
+                                <option value="ADMIN">
+
                                     Administrador
+
                                 </option>
 
-                                <option>
-                                    Usuário
+                                <option value="REGULACAO">
+
+                                    Regulação
+
+                                </option>
+
+                                <option value="TRIAGEM">
+
+                                    Triagem
+
+                                </option>
+
+                                <option value="CONSULTA">
+
+                                    Consulta
+
+                                </option>
+
+                                <option value="VISUALIZADOR">
+
+                                    Visualizador
+
                                 </option>
 
                             </select>
-
                         </div>
-
                         <!-- STATUS -->
 
                         <div class="col-md-6">
@@ -107,14 +131,21 @@
                                 Status
                             </label>
 
-                            <select class="form-select form-select-lg">
+                            <select
+                                class="form-select form-select-lg"
+                                name="status"
+                                id="user_status">
 
-                                <option>
+                                <option value="ACTIVE">
+
                                     Ativo
+
                                 </option>
 
-                                <option>
+                                <option value="INACTIVE">
+
                                     Inativo
+
                                 </option>
 
                             </select>
@@ -133,7 +164,10 @@
 
                                 <i class="bi bi-lock"></i>
 
-                                <input type="password"
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="user_password"
                                     class="form-control form-control-lg"
                                     placeholder="Digite a senha">
 
@@ -153,7 +187,10 @@
 
                                 <i class="bi bi-shield-lock"></i>
 
-                                <input type="password"
+                                <input
+                                    type="password"
+                                    name="confirm_password"
+                                    id="confirm_password"
                                     class="form-control form-control-lg"
                                     placeholder="Confirme a senha">
 
@@ -169,15 +206,15 @@
 
                 <div class="modal-footer border-0 p-4">
 
-                    <button type="button"
-                        class="btn btn-light btn-lg rounded-4"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-light btn-lg rounded-4" data-bs-dismiss="modal">
 
                         Cancelar
 
                     </button>
 
-                    <button type="submit"
+                    <button
+                        type="submit"
+                        id="btnSaveUser"
                         class="btn btn-primary btn-lg rounded-4 px-4">
 
                         <i class="bi bi-check-circle me-2"></i>

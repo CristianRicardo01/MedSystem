@@ -208,6 +208,9 @@ class TriageController extends BaseController
     */
     public function store()
     {
+        if (!can('triage.create')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | VALIDATION
@@ -495,6 +498,9 @@ class TriageController extends BaseController
 
     public function updatePatient()
     {
+        if (!can('triage.update')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         $id = $this->request
             ->getPost('id');
 
@@ -570,6 +576,9 @@ class TriageController extends BaseController
     */
     public function storeObservation()
     {
+        if (!can('triage.observation')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         try {
 
             $patientId = $this->request->getPost('patient_id');
@@ -616,6 +625,9 @@ class TriageController extends BaseController
     */
     public function storeRequest()
     {
+        if (!can('triage.requests.create')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | DATA
@@ -815,6 +827,9 @@ class TriageController extends BaseController
 
     public function updateRequest()
     {
+        if (!can('triage.requests.update')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -954,6 +969,9 @@ class TriageController extends BaseController
 
     public function deleteRequest()
     {
+        if (!can('triage.requests.delete')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | ID
@@ -1044,6 +1062,9 @@ class TriageController extends BaseController
 
     public function finalizeRequest()
     {
+        if (!can('triage.request.finalize')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | ID
@@ -1181,6 +1202,9 @@ class TriageController extends BaseController
 
     public function transferPatient()
     {
+        if (!can('triage.transfer')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | PATIENT
@@ -1312,6 +1336,9 @@ class TriageController extends BaseController
     */
     public function pdf($id)
     {
+        if (!can('triage.pdf')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         $patient = $this->patientModel->find($id);
 
         $patientRequests = $this->patientRequestModel

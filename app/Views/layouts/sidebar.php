@@ -17,96 +17,140 @@
             Principal
         </div>
 
-        <a href="<?= base_url('/dashboard') ?>"
-            class="sidebar-link <?= activeMenu('dashboard') ?>">
+        <!-- Dashboard -->
+        <?php if (can('dashboard.view')) : ?>
 
-            <i class="bi bi-grid"></i>
-            Dashboard
+            <a href="<?= base_url('/dashboard') ?>"
+                class="sidebar-link <?= activeMenu('dashboard') ?>">
 
-        </a>
+                <i class="bi bi-grid"></i>
 
-        <a href="<?= base_url('patients') ?>"
-            class="sidebar-link <?= activeMenu('patients') ?>">
+                Dashboard
 
-            <i class="bi bi-people"></i>
-            Pacientes
+            </a>
 
-        </a>
+        <?php endif; ?>
 
-        <a href="<?= base_url('triage') ?>"
-            class="sidebar-link <?= activeMenu('triage') ?>">
+        <!-- Pacientes -->
+        <?php if (can('patients.view')) : ?>
+            <a href="<?= base_url('patients') ?>"
+                class="sidebar-link <?= activeMenu('patients') ?>">
 
-            <i class="bi bi-clipboard2-pulse"></i>
+                <i class="bi bi-people"></i>
+                Pacientes
 
-            Central Triagem
+            </a>
+        <?php endif; ?>
 
-        </a>
+        <!-- Central Triagem -->
+        <?php if (can('triage.view')) : ?>
+            <a href="<?= base_url('triage') ?>"
+                class="sidebar-link <?= activeMenu('triage') ?>">
 
-        <a href="<?= base_url('appointments') ?>"
-            class="sidebar-link <?= activeMenu('appointments') ?>">
+                <i class="bi bi-clipboard2-pulse"></i>
 
-            <i class="bi bi-calendar-check"></i>
-            Consultas
+                Central Triagem
 
-        </a>
+            </a>
+        <?php endif; ?>
 
-        <a href="<?= base_url('hospitalization') ?>"
-            class="sidebar-link <?= activeMenu('hospitalization') ?>">
+        <!-- Consultas -->
+        <?php if (can('appointments.view')) : ?>
+            <a href="<?= base_url('appointments') ?>"
+                class="sidebar-link <?= activeMenu('appointments') ?>">
 
-            <i class="bi bi-hospital"></i>
-            Internações
+                <i class="bi bi-calendar-check"></i>
+                Consultas
 
-        </a>
+            </a>
+        <?php endif; ?>
 
+        <!-- Internações -->
+        <?php if (can('hospitalization.view')) : ?>
+            <a href="<?= base_url('hospitalization') ?>"
+                class="sidebar-link <?= activeMenu('hospitalization') ?>">
 
-        <div class="menu-title">
-            Gestão
-        </div>
+                <i class="bi bi-hospital"></i>
+                Internações
 
-        <a href="<?= base_url('settings/requests') ?>"
-            class="sidebar-link <?= activeMenu('requests') ?>">
+            </a>
+        <?php endif; ?>
 
-            <i class="bi bi-clipboard2-pulse"></i>
+        <?php if (
+            can('requests.view') ||
+            can('specialties.view') ||
+            isAdmin()
+        ) : ?>
 
-            Solicitações
+            <div class="menu-title">
+                Gestão
+            </div>
 
-        </a>
+        <?php endif; ?>
 
-        <a href="<?= base_url('settings/specialties') ?>"
-            class="sidebar-link <?= activeMenu('specialties') ?>">
+        <!-- Solicitações -->
+        <?php if (can('requests.view')) : ?>
 
-            <i class="bi bi-heart-pulse"></i>
+            <a href="<?= base_url('settings/requests') ?>"
+                class="sidebar-link <?= activeMenu('requests') ?>">
 
-            Especialidades
+                <i class="bi bi-clipboard2-pulse"></i>
 
-        </a>
+                Solicitações
 
-        <a href="<?= base_url('#') ?>"
-            class="sidebar-link <?= activeMenu('#') ?>">
+            </a>
+        <?php endif; ?>
 
-            <i class="bi bi-file-earmark-medical"></i>
-            Relatórios
+        <!-- Especialidades -->
+        <?php if (can('specialties.view')) : ?>
 
-        </a>
+            <a href="<?= base_url('settings/specialties') ?>"
+                class="sidebar-link <?= activeMenu('specialties') ?>">
 
-        <a href="<?= base_url('#') ?>"
-            class="sidebar-link <?= activeMenu('#') ?>">
+                <i class="bi bi-heart-pulse"></i>
 
-            <i class="bi  bi-gear"></i>
-            Configurações
+                Especialidades
 
-        </a>
+            </a>
+        <?php endif; ?>
 
-        <a href="<?= base_url('settings/users') ?>"
-            class="sidebar-link <?= activeMenu('users') ?>">
+        <!-- Relatórios -->
+        <?php if (can('#.view')) : ?>
 
-            <i class="bi bi-people"></i>
+            <a href="<?= base_url('#') ?>"
+                class="sidebar-link <?= activeMenu('#') ?>">
 
-            Usuários
+                <i class="bi bi-file-earmark-medical"></i>
+                Relatórios
 
-        </a>
+            </a>
+        <?php endif; ?>
+
+        <!-- Configurações -->
+        <?php if (can('#.view')) : ?>
+
+            <a href="<?= base_url('#') ?>"
+                class="sidebar-link <?= activeMenu('#') ?>">
+
+                <i class="bi  bi-gear"></i>
+                Configurações
+
+            </a>
+        <?php endif; ?>
+
+        <!-- USUÁRIOS -->
+        <?php if (can('users.view')) : ?>
+            <a href="<?= base_url('settings/users') ?>"
+                class="sidebar-link <?= activeMenu('users') ?>">
+
+                <i class="bi bi-people"></i>
+
+                Usuários
+
+            </a>
+        <?php endif; ?>
+
         <!-- LOGOUT -->
-
         <div class="sidebar-footer">
 
             <a href="<?= base_url('logout') ?>"

@@ -143,6 +143,9 @@ class PatientsController extends BaseController
     */
     public function store()
     {
+        if (!can('patients.create')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | DATA
@@ -322,6 +325,9 @@ class PatientsController extends BaseController
     */
     public function storeRequest()
     {
+        if (!can('patients.create')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | DATA
@@ -474,6 +480,9 @@ class PatientsController extends BaseController
     */
     public function update()
     {
+        if (!can('patients.update')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | ID
@@ -642,6 +651,9 @@ class PatientsController extends BaseController
     */
     public function updateData()
     {
+        if (!can('patients.update')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         $id = $this->request->getPost('id');
 
         $patient = $this->patientModel->find($id);
@@ -714,6 +726,9 @@ class PatientsController extends BaseController
     */
     public function updateRequest()
     {
+        if (!can('patients.update')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | DATA
@@ -1041,6 +1056,10 @@ class PatientsController extends BaseController
     */
     public function storeObservation()
     {
+        if (!can('patients.observation')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
+
         $patientId = $this->request->getPost('patient_id');
 
         $observation = $this->request->getPost('observation');
@@ -1105,6 +1124,9 @@ class PatientsController extends BaseController
     */
     public function finalizeRequest()
     {
+        if (!can('patients.request.finalize')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | ID
@@ -1147,7 +1169,7 @@ class PatientsController extends BaseController
                 'request_status' => 'COMPLETED',
 
                 'completed_at' => date('Y-m-d H:i:s')
-                
+
             ]
 
         );
@@ -1211,6 +1233,9 @@ class PatientsController extends BaseController
     */
     public function deleteRequest()
     {
+        if (!can('triage.requests.delete')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         /*
         |--------------------------------------------------------------------------
         | ID
@@ -1304,6 +1329,16 @@ class PatientsController extends BaseController
     */
     public function hospitalize()
     {
+        if (!can('patients.hospitalize')) {
+
+            return $this->response->setJSON([
+
+                'status' => false,
+
+                'message' => 'Sem permissão.'
+
+            ]);
+        }
         $patientId = $this->request->getPost('patient_id');
 
         $observation = $this->request->getPost('observation');
@@ -1431,6 +1466,9 @@ class PatientsController extends BaseController
     */
     public function returnPatient()
     {
+        if (!can('patients.hospitalize')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         $patientId = $this->request->getPost('patient_id');
 
         $observation = $this->request->getPost('observation');
@@ -1553,6 +1591,9 @@ class PatientsController extends BaseController
     */
     public function finalizePatient()
     {
+        if (!can('patients.finalize')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         $patientId = $this->request->getPost('patient_id');
 
         $observation = $this->request->getPost('observation');

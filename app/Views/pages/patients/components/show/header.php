@@ -96,28 +96,31 @@
             <?php else: ?>
 
                 <!-- FINALIZAR -->
+                <?php if (can('patients.finalize')) : ?>
+                    <button
+                        class="btn btn-success btn-lg rounded-4 px-4 shadow-sm btnFinalizePatient"
+                        data-id="<?= $patient['id'] ?>">
 
-                <button
-                    class="btn btn-success btn-lg rounded-4 px-4 shadow-sm btnFinalizePatient"
-                    data-id="<?= $patient['id'] ?>">
+                        <i class="bi bi-check-circle me-2"></i>
 
-                    <i class="bi bi-check-circle me-2"></i>
+                        Finalizar
 
-                    Finalizar
-
-                </button>
+                    </button>
+                <?php endif; ?>
 
                 <!-- INTERNAÇÃO -->
+                <?php if (can('patients.hospitalize')) : ?>
 
-                <button
-                    class="btn btn-danger btn-lg rounded-4 px-4 shadow-sm btnHospitalizePatient"
-                    data-id="<?= $patient['id'] ?>">
+                    <button
+                        class="btn btn-danger btn-lg rounded-4 px-4 shadow-sm btnHospitalizePatient"
+                        data-id="<?= $patient['id'] ?>">
 
-                    <i class="bi bi-hospital me-2"></i>
+                        <i class="bi bi-hospital me-2"></i>
 
-                    Internação
+                        Internação
 
-                </button>
+                    </button>
+                <?php endif; ?>
 
             <?php endif; ?>
 

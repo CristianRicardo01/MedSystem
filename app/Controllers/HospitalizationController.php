@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\PatientModel;
 use App\Models\SpecialtyModel;
-use CodeIgniter\HTTP\ResponseInterface;
 
 class HospitalizationController extends BaseController
 {

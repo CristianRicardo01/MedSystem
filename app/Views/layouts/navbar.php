@@ -52,13 +52,13 @@
             <div class="d-none d-md-block">
 
                 <strong>
-                    Administrador
+                    <?= userName() ?>
                 </strong>
 
                 <br>
 
                 <small class="text-muted">
-                    Online
+                    <?= userEmail() ?>
                 </small>
 
             </div>

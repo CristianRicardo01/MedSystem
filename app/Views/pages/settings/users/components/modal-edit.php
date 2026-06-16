@@ -31,7 +31,9 @@
 
             <!-- FORM -->
 
-            <form>
+            <form id="formEditUser">
+
+                <input type="hidden" name="id" id="edit_user_id">
 
                 <div class="modal-body px-4">
 
@@ -49,8 +51,10 @@
 
                                 <i class="bi bi-person"></i>
 
-                                <input type="text"
-                                    value="Administrador"
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="edit_user_name"
                                     class="form-control form-control-lg">
 
                             </div>
@@ -69,8 +73,10 @@
 
                                 <i class="bi bi-envelope"></i>
 
-                                <input type="email"
-                                    value="admin@sistema.com"
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="edit_user_email"
                                     class="form-control form-control-lg">
 
                             </div>
@@ -85,14 +91,29 @@
                                 Perfil
                             </label>
 
-                            <select class="form-select form-select-lg">
+                            <select
+                                name="role"
+                                id="edit_user_role"
+                                class="form-select form-select-lg">
 
-                                <option selected>
+                                <option value="ADMIN">
                                     Administrador
                                 </option>
 
-                                <option>
-                                    Usuário
+                                <option value="REGULACAO">
+                                    Regulação
+                                </option>
+
+                                <option value="TRIAGEM">
+                                    Triagem
+                                </option>
+
+                                <option value="CONSULTA">
+                                    Consulta
+                                </option>
+
+                                <option value="VISUALIZADOR">
+                                    Visualizador
                                 </option>
 
                             </select>
@@ -107,13 +128,16 @@
                                 Status
                             </label>
 
-                            <select class="form-select form-select-lg">
+                            <select
+                                name="status"
+                                id="edit_user_status"
+                                class="form-select form-select-lg">
 
-                                <option selected>
+                                <option value="ACTIVE">
                                     Ativo
                                 </option>
 
-                                <option>
+                                <option value="INACTIVE">
                                     Inativo
                                 </option>
 
@@ -133,9 +157,12 @@
 
                                 <i class="bi bi-lock"></i>
 
-                                <input type="password"
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="edit_user_password"
                                     class="form-control form-control-lg"
-                                    placeholder="Digite a nova senha">
+                                    placeholder="Nova senha (opcional)">
 
                             </div>
 
@@ -153,9 +180,12 @@
 
                                 <i class="bi bi-shield-lock"></i>
 
-                                <input type="password"
+                                <input
+                                    type="password"
+                                    name="confirm_password"
+                                    id="edit_confirm_password"
                                     class="form-control form-control-lg"
-                                    placeholder="Confirme a nova senha">
+                                    placeholder="Confirmar senha">
 
                             </div>
 
@@ -177,7 +207,9 @@
 
                     </button>
 
-                    <button type="submit"
+                    <button
+                        type="submit"
+                        id="btnUpdateUser"
                         class="btn btn-primary btn-lg rounded-4 px-4">
 
                         <i class="bi bi-check-circle me-2"></i>

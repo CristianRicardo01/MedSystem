@@ -47,6 +47,9 @@ class SpecialtiesController extends BaseController
 
     public function store()
     {
+        if (!can('specialties.create')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         try {
 
             $this->specialtyModel->insert([
@@ -92,6 +95,9 @@ class SpecialtiesController extends BaseController
 
     public function update($id)
     {
+        if (!can('specialties.update')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         try {
 
             $this->specialtyModel->update($id, [
@@ -137,6 +143,9 @@ class SpecialtiesController extends BaseController
 
     public function delete($id)
     {
+        if (!can('specialties.delete')) {
+            return redirect()->back()->with('error', 'Sem permissão.');
+        }
         $this->specialtyModel->delete($id);
 
         return redirect()

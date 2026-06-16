@@ -22,6 +22,8 @@
 <script src="<?= base_url('assets/js/municipiosdinamicos.js') ?>"></script>
 <!-- TRIAGE -->
 <script src="<?= base_url('assets/js/patient.js') ?>"></script>
+<!-- TRIAGE -->
+<script src="<?= base_url('assets/js/settings/users.js') ?>"></script>
 
 <!-- SOLICITAÇÕES -->
 <script src="<?= base_url('assets/js/requests.js') ?>"></script>

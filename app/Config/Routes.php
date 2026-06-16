@@ -6,8 +6,11 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
-// AUTH
-
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
 $routes->get('/', 'Auth\AuthController::login');
 
 $routes->get('/login', 'Auth\AuthController::login');
@@ -16,113 +19,210 @@ $routes->post('/login/auth', 'Auth\AuthController::auth');
 
 $routes->get('/logout', 'Auth\AuthController::logout');
 
-$routes->get('/dashboard', 'Home::index');
-$routes->get('/hospitalization', 'hospitalizationController::index');
-$routes->get('/appointments', 'AppointmentsController::index');
+
+/*
+|--------------------------------------------------------------------------
+| HOSPITALIZATION
+|--------------------------------------------------------------------------
+*/
+$routes->group('hospitalization', ['filter' => ['auth', 'permission:hospitalization.view']], function ($routes) {
+
+    $routes->get('/', 'hospitalizationController::index');
+});
+
+/*
+|--------------------------------------------------------------------------
+| APPOINTMENTS CALENDARIO
+|--------------------------------------------------------------------------
+*/
+$routes->group('appointments', ['filter' => ['auth', 'permission:appointments.view']], function ($routes) {
+
+    $routes->get('/', 'AppointmentsController::index');
+});
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD
+|--------------------------------------------------------------------------
+*/
+
+$routes->group('dashboard', ['filter' => ['auth', 'permission:dashboard.view']], function ($routes) {
+
+    $routes->get('/', 'Home::index');
+});
+
+/*
+|--------------------------------------------------------------------------
+| USERS
+|--------------------------------------------------------------------------
+*/
+$routes->group('users', ['filter' => ['auth', 'permission:users.view']], function ($routes) {
+
+    $routes->post('store', 'Settings\UsersController::store');
+
+    $routes->post('update', 'Settings\UsersController::update');
+
+    $routes->post('delete', 'Settings\UsersController::delete');
+
+    $routes->get('edit/(:num)', 'Settings\UsersController::edit/$1');
+});
+
+/*
+|--------------------------------------------------------------------------
+| SETTING USERS
+|--------------------------------------------------------------------------
+*/
+$routes->group('settings', ['filter' => ['auth', 'permission:settings.view']], function ($routes) {
+
+    $routes->get(
+        'users',
+        'Settings\UsersController::index',
+        [
+            'filter' => 'permission:users.view'
+        ]
+    );
+});
 
 /*
 |--------------------------------------------------------------------------
 | PATIENT REQUESTS
 |--------------------------------------------------------------------------
 */
-$routes->get('/patients', 'PatientsController::index');
 
-$routes->post('/patients/store', 'PatientsController::store');
+$routes->group('patients', ['filter' => ['auth', 'permission:patients.view']], function ($routes) {
 
-$routes->post('/patients/update', 'PatientsController::update');
+    $routes->get('/', 'PatientsController::index');
 
-$routes->post('/patients/update-data', 'PatientsController::updateData');
+    $routes->post('store', 'PatientsController::store');
 
-$routes->get('/patients/show/(:num)', 'PatientsController::show/$1');
+    $routes->post('update', 'PatientsController::update');
 
-$routes->post('/patients/observation/store', 'PatientsController::storeObservation');
+    $routes->post('update-data', 'PatientsController::updateData');
 
-$routes->post('/patients/request/store', 'PatientsController::storeRequest');
+    $routes->get('show/(:num)', 'PatientsController::show/$1');
 
-$routes->post('/patients/request/update', 'PatientsController::updateRequest');
+    $routes->post('observation/store', 'PatientsController::storeObservation');
 
-$routes->post('/patients/request/finalize', 'PatientsController::finalizeRequest');
+    $routes->post('request/store', 'PatientsController::storeRequest');
 
-$routes->post('/patients/request/delete', 'PatientsController::deleteRequest');
+    $routes->post('request/update', 'PatientsController::updateRequest');
 
-$routes->post('/patients/hospitalize', 'PatientsController::hospitalize');
+    $routes->post('request/finalize', 'PatientsController::finalizeRequest');
 
-$routes->post('/patients/return', 'PatientsController::returnPatient');
+    $routes->post('request/delete', 'PatientsController::deleteRequest');
 
-$routes->get('/patients/pdf/(:num)', 'PatientsController::generatePdf/$1');
+    $routes->post('hospitalize', 'PatientsController::hospitalize');
 
-$routes->post('/patients/finalize', 'PatientsController::finalizePatient');
+    $routes->post('return', 'PatientsController::returnPatient');
+
+    $routes->get('pdf/(:num)', 'PatientsController::generatePdf/$1');
+
+    $routes->post('finalize', 'PatientsController::finalizePatient');
+});
+
 /*
 |--------------------------------------------------------------------------
 | TRIAGE REQUESTS
 |--------------------------------------------------------------------------
 */
+$routes->group('triage', ['filter' => ['auth', 'permission:triage.view']], function ($routes) {
 
-$routes->get('/triage', 'TriageController::index');
+    $routes->get('/', 'TriageController::index');
 
-$routes->get('/triage/show/(:num)', 'TriageController::show/$1');
+    $routes->get('show/(:num)', 'TriageController::show/$1');
 
-$routes->post('/triage/store', 'TriageController::store');
+    $routes->post('store', 'TriageController::store');
 
-$routes->post('/triage/observation/store', 'TriageController::storeObservation');
+    $routes->post('observation/store', 'TriageController::storeObservation');
 
-$routes->post('/triage/store-request', 'TriageController::storeRequest');
+    $routes->post('store-request', 'TriageController::storeRequest');
 
-$routes->post('/triage/update-request', 'TriageController::updateRequest');
+    $routes->post('update-request', 'TriageController::updateRequest');
 
-$routes->post('/triage/finalize-request', 'TriageController::finalizeRequest');
+    $routes->post('finalize-request', 'TriageController::finalizeRequest');
 
-$routes->post('/triage/delete-request', 'TriageController::deleteRequest');
+    $routes->post('delete-request', 'TriageController::deleteRequest');
 
-$routes->post('/triage/transfer-patient', 'TriageController::transferPatient');
+    $routes->post('transfer-patient', 'TriageController::transferPatient');
 
-$routes->get('/triage/edit/(:num)', 'TriageController::edit/$1');
+    $routes->get('edit/(:num)', 'TriageController::edit/$1');
 
-$routes->post('triage/update-patient', 'TriageController::updatePatient');
+    $routes->post('update-patient', 'TriageController::updatePatient');
 
-$routes->get('/triage/pdf/(:num)', 'TriageController::generatePdf/$1');
+    $routes->get('pdf/(:num)', 'TriageController::generatePdf/$1');
+});
 
-// REQUESTS REQUESTS
+/*
+|--------------------------------------------------------------------------
+| REQUESTS REQUESTS
+|--------------------------------------------------------------------------
+*/
+$routes->group('settings', ['filter' => ['auth', 'permission:settings.view']], function ($routes) {
 
-$routes->get('settings/requests', 'Settings\RequestsController::index');
+    $routes->get('/requests', 'Settings\RequestsController::index');
 
-$routes->get('/settings/users/', 'Settings\UsersController::index');
+    $routes->get('users/', 'Settings\UsersController::index');
 
-$routes->post('/settings/requests/store', 'Settings\RequestsController::store');
+    $routes->post('requests/store', 'Settings\RequestsController::store');
 
-$routes->post('/settings/requests/update/(:num)', 'Settings\RequestsController::update/$1');
+    $routes->post('requests/update/(:num)', 'Settings\RequestsController::update/$1');
 
-$routes->get('/settings/requests/delete/(:num)', 'Settings\RequestsController::delete/$1');
+    $routes->get('requests/delete/(:num)', 'Settings\RequestsController::delete/$1');
 
-$routes->post('/settings/requests/update/(:num)', 'Settings\RequestsController::update/$1');
+    $routes->post('requests/update/(:num)', 'Settings\RequestsController::update/$1');
 
-$routes->get('/settings/requests/delete/(:num)', 'Settings\RequestsController::delete/$1');
+    $routes->get('requests/delete/(:num)', 'Settings\RequestsController::delete/$1');
+});
 
-// REQUESTS SPECIALTIES
+/*
+|--------------------------------------------------------------------------
+| REQUESTS SPECIALTIES
+|--------------------------------------------------------------------------
+*/
+$routes->group('settings', ['filter' => ['auth', 'permission:settings.view']], function ($routes) {
 
-$routes->get('/settings/specialties', 'Settings\SpecialtiesController::index');
+    $routes->get('specialties', 'Settings\SpecialtiesController::index');
 
-$routes->post('/settings/specialties/store', 'Settings\SpecialtiesController::store');
+    $routes->post('specialties/store', 'Settings\SpecialtiesController::store');
 
-$routes->post('/settings/specialties/update/(:num)', 'Settings\SpecialtiesController::update/$1');
+    $routes->post('specialties/update/(:num)', 'Settings\SpecialtiesController::update/$1');
 
-$routes->get('/settings/specialties/delete/(:num)', 'Settings\SpecialtiesController::delete/$1');
+    $routes->get('specialties/delete/(:num)', 'Settings\SpecialtiesController::delete/$1');
+});
 
 
-// DOMPDF
+/*
+|--------------------------------------------------------------------------
+| API LOCATION
+|--------------------------------------------------------------------------
+*/
+$routes->group('api', ['filter' => 'auth'], function ($routes) {
 
-$routes->get('triage/pdf/(:num)', 'TriageController::generatePdf/$1');
+    $routes->get('states', 'LocationController::states');
+});
 
-// API PARA O IBGE. COMENTAR PARA NAO FAZER O INSERT NO BANCO 
+/*
+|--------------------------------------------------------------------------
+| LOCATION
+|--------------------------------------------------------------------------
+*/
+$routes->group('location', ['filter' => 'auth'], function ($routes) {
 
-// $routes->get('location/import', 'LocationController::import');
+    $routes->get('states', 'LocationController::states');
 
-// $routes->get('location/import-states', 'LocationController::importStates');
+    $routes->post('/import-cities/(:num)', 'LocationController::importCities/$1');
 
-$routes->get('api/states', 'LocationController::states');
+    $routes->get('cities-by-state/(:num)', 'LocationController::citiesByState/$1');
+});
 
-$routes->post('location/import-cities/(:num)', 'LocationController::importCities/$1');
+/*
+|--------------------------------------------------------------------------
+| API PARA O IBGE. COMENTAR PARA NAO FAZER O INSERT NO BANCO 
+|--------------------------------------------------------------------------
+*/
+$routes->group('location', ['filter' => 'auth'], function ($routes) {
 
-$routes->get('location/states', 'LocationController::states');
+    // $routes->get('import', 'LocationController::import');
 
-$routes->get('location/cities-by-state/(:num)', 'LocationController::citiesByState/$1');
+    // $routes->get('import-states', 'LocationController::importStates');
+});

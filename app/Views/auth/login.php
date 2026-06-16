@@ -86,8 +86,27 @@
 
                 <!-- FORM -->
 
-                <form action="<?= base_url('login/auth') ?>"
-                    method="POST">
+                <?php if (session()->getFlashdata('error')) : ?>
+
+                    <div class="alert alert-danger">
+
+                        <?= session()->getFlashdata('error') ?>
+
+                    </div>
+
+                <?php endif; ?>
+
+                <?php if (session()->getFlashdata('success')) : ?>
+
+                    <div class="alert alert-success">
+
+                        <?= session()->getFlashdata('success') ?>
+
+                    </div>
+
+                <?php endif; ?>
+                
+                <form action="<?= base_url('login/auth') ?>" method="POST">
 
                     <!-- EMAIL -->
 
