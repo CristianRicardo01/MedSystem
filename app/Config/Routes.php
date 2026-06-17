@@ -226,3 +226,11 @@ $routes->group('location', ['filter' => 'auth'], function ($routes) {
 
     // $routes->get('import-states', 'LocationController::importStates');
 });
+
+/*
+|--------------------------------------------------------------------------
+| ALERTS
+|--------------------------------------------------------------------------
+*/
+
+$routes->get('alerts', 'AlertsController::index', ['filter' => 'auth']);

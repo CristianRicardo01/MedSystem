@@ -33,16 +33,25 @@
                 placeholder="Pesquisar...">
 
         </div>
+        <div class="dropdown">
 
-        <button class="btn position-relative">
+            <button class="btn position-relative" data-bs-toggle="dropdown">
 
-            <i class="bi bi-bell fs-5"></i>
+                <i class="bi bi-bell fs-5"></i>
 
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                3
-            </span>
+                <span id="alertCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    0
+                </span>
 
-        </button>
+            </button>
+            <div
+                id="alertsContainer"
+                class="dropdown-menu dropdown-menu-end p-0"
+                style="width:350px;">
+
+            </div>
+
+        </div>
 
         <div class="profile-box">
 

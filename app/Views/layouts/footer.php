@@ -14,6 +14,8 @@
 <!-- JQUERY MASK -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
+<!-- ALERTS -->
+<script src="<?= base_url('assets/js/alerts.js') ?>"></script>
 <!-- TRIAGE -->
 <script src="<?= base_url('assets/js/triage.js') ?>"></script>
 <!-- MASCARA -->
