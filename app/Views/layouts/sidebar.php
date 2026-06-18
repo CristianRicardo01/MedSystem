@@ -55,15 +55,15 @@
         <?php endif; ?>
 
         <!-- Consultas -->
-        <?php if (can('appointments.view')) : ?>
-            <a href="<?= base_url('appointments') ?>"
-                class="sidebar-link <?= activeMenu('appointments') ?>">
+        <!-- <1?php if (can('appointments.view')) : ?>
+            <a href="<1?= base_url('appointments') ?>"
+                class="sidebar-link <1?= activeMenu('appointments') ?>">
 
                 <i class="bi bi-calendar-check"></i>
                 Consultas
 
             </a>
-        <?php endif; ?>
+        <1?php endif; ?> -->
 
         <!-- Internações -->
         <?php if (can('hospitalization.view')) : ?>
@@ -115,19 +115,19 @@
         <?php endif; ?>
 
         <!-- Relatórios -->
-        <?php if (can('#.view')) : ?>
+        <!-- <1?php if (can('#.view')) : ?>
 
-            <a href="<?= base_url('#') ?>"
-                class="sidebar-link <?= activeMenu('#') ?>">
+            <a href="<1?= base_url('#') ?>"
+                class="sidebar-link <1?= activeMenu('#') ?>">
 
                 <i class="bi bi-file-earmark-medical"></i>
                 Relatórios
 
             </a>
-        <?php endif; ?>
+        <1?php endif; ?> -->
 
         <!-- Configurações -->
-        <?php if (can('indicators.view')) : ?>
+        <?php if (can('reports.indicators.view')) : ?>
 
             <a href="<?= base_url('reports/indicators') ?>"
                 class="sidebar-link <?= activeMenu('indicators') ?>">

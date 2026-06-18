@@ -40,6 +40,10 @@
 <!-- AOS -->
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
+<!-- chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="<?= base_url('assets/js/Chart.js') ?>"></script>
+
 <script>
     AOS.init({
 

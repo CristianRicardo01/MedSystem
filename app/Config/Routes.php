@@ -179,8 +179,8 @@ $routes->group('triage', ['filter' => ['auth', 'permission:triage.view']], funct
 |--------------------------------------------------------------------------
 */
 $routes->group('settings', ['filter' => ['auth', 'permission:settings.view']], function ($routes) {
-
-    $routes->get('/requests', 'Settings\RequestsController::index');
+    
+    $routes->get('requests/', 'Settings\RequestsController::index');
 
     $routes->get('users/', 'Settings\UsersController::index');
 

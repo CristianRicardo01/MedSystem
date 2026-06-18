@@ -31,56 +31,74 @@
             <!-- TIMELINE -->
 
             <div class="timeline-modern">
+                <?php if (!empty($statusHistory)): ?>
 
-                <?php foreach ($statusHistory as $item): ?>
+                    <?php foreach ($statusHistory as $item): ?>
 
-                    <?php
-                    // Helper para definir classes e ícones com base no status da triagem
-                    helper('timeline');
+                        <?php
+                        // Helper para definir classes e ícones com base no status da triagem
+                        helper('timeline');
 
-                    $config = getTimelineConfig($item['new_status']);
+                        $config = getTimelineConfig($item['new_status']);
 
-                    ?>
+                        ?>
 
-                    <div class="timeline-item <?= $config['class'] ?>">
+                        <div class="timeline-item <?= $config['class'] ?>">
 
-                        <div class="timeline-dot"></div>
+                            <div class="timeline-dot"></div>
 
-                        <div>
+                            <div>
 
-                            <strong>
+                                <strong>
 
-                                <i class="bi <?= $config['icon'] ?>"></i>
+                                    <i class="bi <?= $config['icon'] ?>"></i>
 
-                                <?= esc($item['new_status']) ?>
+                                    <?= esc($item['new_status']) ?>
 
-                            </strong>
+                                </strong>
 
-                            <p class="text-muted mb-1">
+                                <p class="text-muted mb-1">
 
-                                <?= date(
-                                    'd/m/Y H:i',
-                                    strtotime($item['created_at'])
-                                ) ?>
+                                    <?= date(
+                                        'd/m/Y H:i',
+                                        strtotime($item['created_at'])
+                                    ) ?>
 
-                            </p>
+                                </p>
 
-                            <?php if (!empty($item['observation'])): ?>
+                                <?php if (!empty($item['observation'])): ?>
 
-                                <small class="text-muted">
+                                    <small class="text-muted">
 
-                                    <?= esc($item['observation']) ?>
+                                        <?= esc($item['observation']) ?>
 
-                                </small>
+                                    </small>
 
-                            <?php endif; ?>
+                                <?php endif; ?>
+
+                            </div>
 
                         </div>
 
+                    <?php endforeach; ?>
+                <?php else: ?>
+
+                    <!-- EMPTY -->
+
+                    <div class="text-center py-5">
+
+                        <i class="bi bi-clock-history fs-1 text-muted"></i>
+
+                        <p class="text-muted mt-3 mb-0">
+
+                            Nenhum histórico encontrado.
+
+                        </p>
+
                     </div>
 
-                <?php endforeach; ?>
-
+                <?php endif; ?>
+                
             </div>
 
         </div>
