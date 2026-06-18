@@ -472,4 +472,81 @@ class UsersController extends BaseController
 
         ]);
     }
+
+    public function profile()
+    {
+        $user = $this->userModel->find(
+            userId()
+        );
+
+        return view(
+            'pages/settings/users/show',
+            [
+                'user' => $user
+            ]
+        );
+    }
+
+    public function changePassword()
+    {
+        $user = $this->userModel->find(
+            userId()
+        );
+
+        $currentPassword = $this->request->getPost(
+            'current_password'
+        );
+
+        $newPassword = $this->request->getPost(
+            'password'
+        );
+
+        $confirmPassword = $this->request->getPost(
+            'password_confirmation'
+        );
+
+        if (
+            !password_verify(
+                $currentPassword,
+                $user['password']
+            )
+        ) {
+
+            return redirect()
+                ->back()
+                ->with(
+                    'error',
+                    'Senha atual inválida.'
+                );
+        }
+
+        if (
+            $newPassword !== $confirmPassword
+        ) {
+
+            return redirect()
+                ->back()
+                ->with(
+                    'error',
+                    'As senhas não coincidem.'
+                );
+        }
+
+        $this->userModel->update(
+            userId(),
+            [
+                'password' => password_hash(
+                    $newPassword,
+                    PASSWORD_DEFAULT
+                )
+            ]
+        );
+
+        return redirect()
+            ->back()
+            ->with(
+                'success',
+                'Senha alterada com sucesso.'
+            );
+    }
 }

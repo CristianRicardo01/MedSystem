@@ -127,13 +127,14 @@
         <?php endif; ?>
 
         <!-- Configurações -->
-        <?php if (can('#.view')) : ?>
+        <?php if (can('indicators.view')) : ?>
 
-            <a href="<?= base_url('#') ?>"
-                class="sidebar-link <?= activeMenu('#') ?>">
+            <a href="<?= base_url('reports/indicators') ?>"
+                class="sidebar-link <?= activeMenu('indicators') ?>">
 
-                <i class="bi  bi-gear"></i>
-                Configurações
+                <i class="bi bi-bar-chart"></i>
+
+                Indicadores
 
             </a>
         <?php endif; ?>

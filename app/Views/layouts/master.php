@@ -21,6 +21,10 @@
         <!-- CONTENT -->
         <section class="content-area">
 
+            <!-- NAVBAR -->
+            <?= $this->include('layouts/errors') ?>
+            
+            <!-- CONTENT -->
             <?= $this->renderSection('content') ?>
 
         </section>

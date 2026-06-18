@@ -22,6 +22,7 @@
 <script src="<?= base_url('assets/js/mascara.js') ?>"></script>
 <!-- MUNICIPIOS -->
 <script src="<?= base_url('assets/js/municipiosdinamicos.js') ?>"></script>
+<script src="<?= base_url('assets/js/auth.js') ?>"></script>
 <!-- TRIAGE -->
 <script src="<?= base_url('assets/js/patient.js') ?>"></script>
 <!-- TRIAGE -->

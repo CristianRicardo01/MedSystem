@@ -60,16 +60,56 @@
 
             <div class="d-none d-md-block">
 
-                <strong>
-                    <?= userName() ?>
-                </strong>
+                <div class="dropdown">
 
-                <br>
+                    <a
+                        href="#"
+                        class="dropdown-toggle text-decoration-none text-dark"
+                        data-bs-toggle="dropdown">
 
-                <small class="text-muted">
-                    <?= userEmail() ?>
-                </small>
+                        <strong>
+                            <?= userName() ?>
+                        </strong>
 
+                        <br>
+
+                        <small class="text-muted">
+                            <?= userEmail() ?>
+                        </small>
+
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+
+                            <a class="dropdown-item" href="<?= base_url('profile') ?>">
+
+                                <i class=" bi bi-person"></i>
+
+                                Meu Perfil
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                href="<?= base_url('logout') ?>">
+
+                                <i class="bi bi-box-arrow-right"></i>
+
+                                Sair
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
             </div>
 
         </div>

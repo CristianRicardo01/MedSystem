@@ -72,16 +72,37 @@ $routes->group('users', ['filter' => ['auth', 'permission:users.view']], functio
 | SETTING USERS
 |--------------------------------------------------------------------------
 */
-$routes->group('settings', ['filter' => ['auth', 'permission:settings.view']], function ($routes) {
-
-    $routes->get(
-        'users',
-        'Settings\UsersController::index',
-        [
-            'filter' => 'permission:users.view'
+$routes->get(
+    'profile',
+    'Settings\UsersController::profile',
+    [
+        'filter' => [
+            'auth',
+            'permission:profile.view'
         ]
-    );
+    ]
+);
+
+$routes->post(
+    'profile/change-password',
+    'Settings\UsersController::changePassword',
+    [
+        'filter' => [
+            'auth',
+            'permission:profile.view'
+        ]
+    ]
+);
+/*
+|--------------------------------------------------------------------------
+| SETTINGS USERS SHOW
+|--------------------------------------------------------------------------
+*/
+$routes->group('profile', ['filter' => ['auth', 'permission:profile.view']], function ($routes) {
+
+    $routes->get('/', 'Settings\UsersController::profile',);
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -234,3 +255,14 @@ $routes->group('location', ['filter' => 'auth'], function ($routes) {
 */
 
 $routes->get('alerts', 'AlertsController::index', ['filter' => 'auth']);
+
+/*
+|--------------------------------------------------------------------------
+| INDICADORES
+|--------------------------------------------------------------------------
+*/
+
+$routes->group('reports', ['filter' => ['auth', 'permission:reports.indicators.view']], function ($routes) {
+
+    $routes->get('indicators', 'Reports\IndicatorsController::index');
+});

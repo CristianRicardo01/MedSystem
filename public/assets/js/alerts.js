@@ -1,19 +1,19 @@
 console.log("CARREGADO ALERTS");
 
 function loadAlerts() {
-  console.log("ENTROU NA FUNÇÃO");
+  // console.log("ENTROU NA FUNÇÃO");
 
   $.get(BASE_URL + "alerts", function (response) {
-    console.log("RESPOSTA:");
-    console.log("TIPO:", typeof response);
-    console.log("RESPONSE:", response);
-    console.log("LENGTH:", response.length);
-    console.table(response);
-    console.log("ARRAY?", Array.isArray(response));
-    console.log(response);
-    response.forEach(function (alert) {
-      console.log(alert.title, alert.message, alert.flow_type);
-    });
+    // console.log("RESPOSTA:");
+    // console.log("TIPO:", typeof response);
+    // console.log("RESPONSE:", response);
+    // console.log("LENGTH:", response.length);
+    // console.table(response);
+    // console.log("ARRAY?", Array.isArray(response));
+    // console.log(response);
+    // response.forEach(function (alert) {
+    //   console.log(alert.title, alert.message, alert.flow_type);
+    // });
     $("#alertCount").text(response.length);
 
     let html = "";
