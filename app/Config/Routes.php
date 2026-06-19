@@ -27,7 +27,7 @@ $routes->get('/logout', 'Auth\AuthController::logout');
 */
 $routes->group('hospitalization', ['filter' => ['auth', 'permission:hospitalization.view']], function ($routes) {
 
-    $routes->get('/', 'hospitalizationController::index');
+    $routes->get('/', 'HospitalizationController::index');
 });
 
 /*
@@ -241,12 +241,12 @@ $routes->group('location', ['filter' => 'auth'], function ($routes) {
 | API PARA O IBGE. COMENTAR PARA NAO FAZER O INSERT NO BANCO 
 |--------------------------------------------------------------------------
 */
-$routes->group('location', ['filter' => 'auth'], function ($routes) {
+// $routes->group('location', ['filter' => 'auth'], function ($routes) {
 
     // $routes->get('import', 'LocationController::import');
 
     // $routes->get('import-states', 'LocationController::importStates');
-});
+// });
 
 /*
 |--------------------------------------------------------------------------

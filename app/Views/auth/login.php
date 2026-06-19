@@ -11,7 +11,9 @@
     <title>
         Login | Sistema Hospitalar
     </title>
-
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="<?= base_url('assets/img/favicon.png') ?>">
+    
     <!-- BOOTSTRAP -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
@@ -105,7 +107,7 @@
                     </div>
 
                 <?php endif; ?>
-                
+
                 <form action="<?= base_url('login/auth') ?>" method="POST">
 
                     <!-- EMAIL -->
