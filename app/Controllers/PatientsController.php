@@ -117,22 +117,64 @@ class PatientsController extends BaseController
 
         /*
         |--------------------------------------------------------------------------
+        | CARDS
+        |--------------------------------------------------------------------------
+        */
+        $data = [
+
+            'patientsInAttendance' => 0,
+
+            'hospitalizedPatients' => 0,
+
+            'finalizedPatients' => 0,
+
+            'pendingRequests' => 0,
+
+        ];
+
+        $data['patientsInAttendance'] = $this->patientModel
+            ->where('flow_type', 'PATIENT')
+            ->where('status', 'EM ATENDIMENTO')
+            ->countAllResults();
+
+        $data['hospitalizedPatients'] = $this->patientModel
+            ->where('flow_type', 'PATIENT')
+            ->where('status', 'INTERNADO')
+            ->countAllResults();
+
+        $data['finalizedPatients'] = $this->patientModel
+            ->where('flow_type', 'PATIENT')
+            ->where('status', 'FINALIZADO')
+            ->countAllResults();
+
+        $data['pendingRequests'] = $this->patientRequestModel
+            ->where('flow_type', 'PATIENT')
+            ->where('request_status', 'PENDING')
+            ->countAllResults();
+
+        /*
+        |--------------------------------------------------------------------------
         | RETURN
         |--------------------------------------------------------------------------
         */
 
         return view(
-
             'pages/patients/index',
-
             [
 
                 'patients' => $patients,
 
                 'specialties' => $specialties,
 
-            ]
+                'patientsInAttendance' => $data['patientsInAttendance'],
 
+                'hospitalizedPatients' => $data['hospitalizedPatients'],
+
+                'finalizedPatients' => $data['finalizedPatients'],
+
+                'pendingRequests' => $data['pendingRequests'],
+
+            ]
         );
     }
 

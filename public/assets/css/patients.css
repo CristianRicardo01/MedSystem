@@ -82,6 +82,10 @@
     background: linear-gradient(135deg, #D8B892, #EAD7BE);
     color: #5d4037;
 }
+.yellow-card {
+    background: linear-gradient(135deg, #fce046, #eae3be);
+    color: #5d4037;
+}
 
 /* =========================
     TABLE
