@@ -16,7 +16,7 @@
 
 </p>
 
-<p align="center">  <img src="./assets/img/image.png" alt="Dashboard Hospitalar" width="800" /></p>
+<p align="center">  <img src="public/assets/img/image.png" alt="Dashboard Hospitalar" width="800" /></p>
 
 ---
 
