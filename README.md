@@ -16,6 +16,10 @@
 
 </p>
 
+<p align="center">
+  <img src="assets/hero.png" alt="Understand Anything — Turn any codebase into an interactive knowledge graph" width="800" />
+</p>
+
 ---
 
 ## 📋 Sobre o Projeto
