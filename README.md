@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/image.png" width="800" />
+  <img src="assets/img/image.png" width="800" />
 </p>
 
 ---
