@@ -179,7 +179,7 @@ $routes->group('triage', ['filter' => ['auth', 'permission:triage.view']], funct
 |--------------------------------------------------------------------------
 */
 $routes->group('settings', ['filter' => ['auth', 'permission:settings.view']], function ($routes) {
-    
+
     $routes->get('requests/', 'Settings\RequestsController::index');
 
     $routes->get('users/', 'Settings\UsersController::index');
@@ -266,3 +266,22 @@ $routes->group('reports', ['filter' => ['auth', 'permission:reports.indicators.v
 
     $routes->get('indicators', 'Reports\IndicatorsController::index');
 });
+
+/*
+|--------------------------------------------------------------------------
+| INSTALADOR
+|--------------------------------------------------------------------------
+*/
+
+if (ENVIRONMENT !== 'production') {
+
+    $routes->get(
+        'install',
+        'InstallController::index'
+    );
+
+    $routes->post(
+        'install/run',
+        'InstallController::run'
+    );
+};
