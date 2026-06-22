@@ -6014,9 +6014,18 @@ ALTER TABLE `states`
 ALTER TABLE `users`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---
--- Constraints for dumped tables
---
+
+ALTER TABLE patients
+  ADD UNIQUE uk_patients_cpf (cpf);
+
+ALTER TABLE patients
+  ADD UNIQUE uk_patients_medical_record (medical_record);
+
+ALTER TABLE patients
+  ADD UNIQUE KEY uk_patients_phone (phone);
+
+ALTER TABLE specialties
+  ADD UNIQUE KEY uk_specialty_name (name);
 
 --
 -- Constraints for table `cities`

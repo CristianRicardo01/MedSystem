@@ -186,22 +186,86 @@ class PatientsController extends BaseController
     public function store()
     {
         if (!can('patients.create')) {
-            return redirect()->back()->with('error', 'Sem permissão.');
+
+
+            return redirect()
+                ->back()
+                ->with('error', 'Sem permissão.');
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA VALIDATION
+        |--------------------------------------------------------------------------
+        */
+
+        $medicalRecord = trim(
+            $this->request->getPost('medical_record')
+        );
+
+        $cpf = trim(
+            $this->request->getPost('cpf') ?? ''
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | PRONTUÁRIO
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $this->patientModel
+            ->where('medical_record', $medicalRecord)
+            ->first()
+        ) {
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Prontuário já cadastrado.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CPF
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            !empty($cpf)
+            &&
+            $this->patientModel
+            ->where('cpf', $cpf)
+            ->first()
+        ) {
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'CPF já cadastrado.'
+                );
+        }
+
         /*
         |--------------------------------------------------------------------------
         | DATA
         |--------------------------------------------------------------------------
         */
+
         $acceptedAt = date('Y-m-d');
 
         $data = [
 
             'name' => $this->request->getPost('name'),
 
-            'medical_record' => $this->request->getPost('medical_record'),
+            'medical_record' => $medicalRecord,
 
-            'cpf' => $this->request->getPost('cpf'),
+            'cpf' => $cpf,
 
             'phone' => $this->request->getPost('phone'),
 
@@ -233,132 +297,85 @@ class PatientsController extends BaseController
 
         ];
 
-        /*
-        |--------------------------------------------------------------------------
-        | INSERT
-        |--------------------------------------------------------------------------
-        */
+        try {
 
-        $patientId = $this->patientModel->insert($data);
+            /*
+            |--------------------------------------------------------------------------
+            | INSERT
+            |--------------------------------------------------------------------------
+            */
 
-        /*
-        |--------------------------------------------------------------------------
-        | MOVEMENT
-        |--------------------------------------------------------------------------
-        */
+            $patientId = $this->patientModel
+                ->insert($data);
 
-        $this->patientMovementModel->insert([
+            /*
+            |--------------------------------------------------------------------------
+            | MOVEMENT
+            |--------------------------------------------------------------------------
+            */
 
-            'patient_id' => $patientId,
+            $this->patientMovementModel->insert([
 
-            'movement_type' => 'CADASTRO REALIZADO',
+                'patient_id' => $patientId,
 
-            'sector' => 'PACIENTE',
+                'movement_type' => 'CADASTRO REALIZADO',
 
-            'description' => 'Paciente cadastrado no sistema',
+                'sector' => 'PACIENTE',
 
-            'created_by' => userId(),
+                'description' => 'Paciente cadastrado no sistema',
 
-            'flow_type' => 'PATIENT',
+                'created_by' => userId(),
 
-        ]);
+                'flow_type' => 'PATIENT',
 
-        // $scheduledDate = $this->request->getPost('scheduled_date');
+            ]);
 
-        // $alertDate = $this->request->getPost('alert_date');
+            /*
+            |--------------------------------------------------------------------------
+            | STATUS HISTORY
+            |--------------------------------------------------------------------------
+            */
 
-        // $alertOffset = $this->request->getPost('alert_offset_days');
+            $this->patientStatusHistoryModel->insert([
 
+                'patient_id' => $patientId,
 
-        /*
-        |--------------------------------------------------------------------------
-        | CALCULATE ALERT DATE
-        |--------------------------------------------------------------------------
-        */
+                'old_status' => null,
 
-        // if (!empty($scheduledDate)) {
+                'new_status' => 'EM ATENDIMENTO',
 
-        //     $alertDate = date(
+                'observation' => 'Cadastro inicial do paciente',
 
-        //         'Y-m-d',
+                'changed_by' => userId(),
 
-        //         strtotime(
-        //             $scheduledDate .
-        //                 ' ' .
-        //                 $alertOffset .
-        //                 ' days'
-        //         )
+                'flow_type' => 'PATIENT',
 
-        //     );
-        // } else {
+            ]);
 
-        //     $alertOffset = 0;
-        // }
+            /*
+            |--------------------------------------------------------------------------
+            | SUCCESS
+            |--------------------------------------------------------------------------
+            */
 
-        $this->patientRequestModel->insert([
+            return redirect()
+                ->to('/patients')
+                ->with(
+                    'success',
+                    'Paciente cadastrado com sucesso.'
+                );
+        } catch (\Exception $e) {
 
-            'patient_id' => $patientId,
-
-            'request_type_id' => $requestTypeId,
-
-            'request_status' => 'PENDING',
-
-            'requested_at' => date('Y-m-d'),
-
-            // 'scheduled_date' => $scheduledDate,
-
-            // 'alert_offset_days' => $alertOffset,
-
-            // 'alert_date' => $alertDate,
-
-            'observation' => $observation,
-
-            'created_by' => userId(),
-
-            'flow_type' => 'PATIENT',
-
-        ]);
-        /*
-        |--------------------------------------------------------------------------
-        | STATUS HISTORY
-        |--------------------------------------------------------------------------
-        */
-
-        $this->patientStatusHistoryModel->insert([
-
-            'patient_id' => $patientId,
-
-            'old_status' => null,
-
-            'new_status' => 'EM ATENDIMENTO',
-
-            'observation' => 'Cadastro inicial do paciente',
-
-            'changed_by' => userId(),
-
-            'flow_type' => 'PATIENT',
-
-        ]);
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | SUCCESS
-        |--------------------------------------------------------------------------
-        */
-
-        return redirect()
-
-            ->to('/patients')
-
-            ->with(
-
-                'success',
-
-                'Paciente cadastrado com sucesso.'
-
-            );
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with(
+                    'error',
+                    $e->getMessage()
+                );
+        }
     }
+
 
     /*
     |--------------------------------------------------------------------------

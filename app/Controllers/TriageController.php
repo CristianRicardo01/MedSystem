@@ -253,6 +253,50 @@ class TriageController extends BaseController
         }
 
         try {
+            $medicalRecord = trim(
+                $this->request->getPost('medical_record')
+            );
+
+            $cpf = trim(
+                $this->request->getPost('cpf') ?? ''
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | PRONTUÁRIO
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $this->patientModel
+                ->where('medical_record', $medicalRecord)
+                ->first()
+            ) {
+
+                return $this->response->setJSON([
+                    'status'  => false,
+                    'message' => 'Prontuário já cadastrado.'
+                ]);
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | CPF
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                !empty($cpf) &&
+                $this->patientModel
+                ->where('cpf', $cpf)
+                ->first()
+            ) {
+
+                return $this->response->setJSON([
+                    'status'  => false,
+                    'message' => 'CPF já cadastrado.'
+                ]);
+            }
 
             $patientId = $this->patientFlowService
                 ->createTriagePatient(

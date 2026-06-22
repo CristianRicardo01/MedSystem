@@ -50,20 +50,32 @@ class SpecialtiesController extends BaseController
         if (!can('specialties.create')) {
             return redirect()->back()->with('error', 'Sem permissão.');
         }
+
         try {
+
+            $name = trim(
+                $this->request->getPost('name')
+            );
+
+            $exists = $this->specialtyModel
+                ->where('name', $name)
+                ->first();
+
+            if ($exists) {
+
+                return $this->response->setJSON([
+                    'status'  => false,
+                    'message' => 'Esta especialidade já está cadastrada.'
+                ]);
+            }
 
             $this->specialtyModel->insert([
 
-                'name' => trim(
-                    $this->request->getPost('name')
-                ),
+                'name' => trim($this->request->getPost('name')),
 
-                'description' => trim(
-                    $this->request->getPost('description')
-                ),
+                'description' => trim($this->request->getPost('description')),
 
-                'status' => $this->request
-                    ->getPost('status'),
+                'status' => $this->request->getPost('status'),
 
             ]);
 
@@ -71,8 +83,7 @@ class SpecialtiesController extends BaseController
 
                 'status' => true,
 
-                'message' =>
-                'Especialidade criada com sucesso'
+                'message' => 'Especialidade criada com sucesso'
 
             ]);
         } catch (\Exception $e) {
