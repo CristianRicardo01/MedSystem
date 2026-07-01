@@ -1385,6 +1385,7 @@ class TriageController extends BaseController
         }
         $patient = $this->patientModel->find($id);
 
+
         $patientRequests = $this->patientRequestModel
 
             ->select('
@@ -1444,6 +1445,7 @@ class TriageController extends BaseController
             )
 
             ->find($id);
+        // dd($patient);
 
         /*
         |--------------------------------------------------------------------------
@@ -1460,6 +1462,8 @@ class TriageController extends BaseController
             ->orderBy('id', 'DESC')
 
             ->findAll();
+
+        // dd($observations);
 
         /*
         |--------------------------------------------------------------------------
@@ -1487,6 +1491,7 @@ class TriageController extends BaseController
 
             ->findAll();
 
+        // dd($patientRequests);
         /*
         |--------------------------------------------------------------------------
         | TIMELINE
@@ -1503,6 +1508,7 @@ class TriageController extends BaseController
 
             ->findAll();
 
+        // dd($timeline);
         /*
         |--------------------------------------------------------------------------
         | VIEW
@@ -1527,6 +1533,8 @@ class TriageController extends BaseController
 
         );
 
+        // dd($html);
+
         /*
         |--------------------------------------------------------------------------
         | DOMPDF
@@ -1537,13 +1545,21 @@ class TriageController extends BaseController
 
         $options->set('isRemoteEnabled', true);
 
+        // dd($options);
+
         $dompdf = new Dompdf($options);
 
+        // dd($dompdf);
+
         $dompdf->loadHtml($html);
+
+        // dd('HTML carregado');
 
         $dompdf->setPaper('A4', 'portrait');
 
         $dompdf->render();
+
+        // dd('PDF renderizado');
 
         /*
         |--------------------------------------------------------------------------
@@ -1551,16 +1567,23 @@ class TriageController extends BaseController
         |--------------------------------------------------------------------------
         */
 
-        $dompdf->stream(
+        // $dompdf->stream(
 
-            'paciente-' . $patient['id'],
+        //     'paciente-' . $patient['id'],
 
-            [
+        //     [
 
-                'Attachment' => false
+        //         'Attachment' => false
 
-            ]
+        //     ]
 
-        );
+        // );
+        $pdf = $dompdf->output();
+
+        // dd(substr($pdf, 0, 30));
+
+        return $this->response
+            ->setHeader('Content-Type', 'application/pdf')
+            ->setBody($pdf);
     }
 }

@@ -59,8 +59,7 @@ class RequestsController extends BaseController
 
                 'status' => false,
 
-                'message' =>
-                'Exames internos precisam ter prazo maior que 0'
+                'message' => 'Exames internos precisam ter prazo maior que 0'
 
             ]);
         }
@@ -137,8 +136,7 @@ class RequestsController extends BaseController
 
                 'status' => true,
 
-                'message' =>
-                'Solicitação criada com sucesso'
+                'message' => 'Solicitação criada com sucesso'
 
             ]);
         } catch (\Exception $e) {
@@ -189,8 +187,7 @@ class RequestsController extends BaseController
 
                 'status' => false,
 
-                'message' =>
-                'Exames internos precisam ter prazo maior que 0'
+                'message' => 'Exames internos precisam ter prazo maior que 0'
 
             ]);
         }
@@ -233,10 +230,10 @@ class RequestsController extends BaseController
         try {
 
             /*
-        |--------------------------------------------------------------------------
-        | UPDATE
-        |--------------------------------------------------------------------------
-        */
+            |--------------------------------------------------------------------------
+            | UPDATE
+            |--------------------------------------------------------------------------
+            */
 
             $this->requestModel->update($id, [
 

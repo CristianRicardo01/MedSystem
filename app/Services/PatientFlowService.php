@@ -94,19 +94,31 @@ class PatientFlowService
         |--------------------------------------------------------------------------
         */
 
+        // if (!empty($data['observations'])) {
+
+        //     $this->observationModel->insert([
+
+        //         'patient_id' => $patientId,
+
+        //         'observation' => $data['observations'],
+
+        //         'created_by' => userId(),
+
+        //     ]);
+        // }
+
         if (!empty($data['observations'])) {
 
-            $this->observationModel->insert([
+            $this->createObservation(
 
-                'patient_id' => $patientId,
+                $patientId,
 
-                'observation' => $data['observations'],
+                $data['observations'],
 
-                'created_by' => userId(),
+                'TRIAGE'
 
-            ]);
+            );
         }
-
         /*
         |--------------------------------------------------------------------------
         | TIMELINE
@@ -310,7 +322,7 @@ class PatientFlowService
             'observation' => $observation,
 
             'changed_by' => userId(),
-            
+
             'flow_type' => $flowType,
 
         ]);

@@ -6027,6 +6027,10 @@ ALTER TABLE patients
 ALTER TABLE specialties
   ADD UNIQUE KEY uk_specialty_name (name);
 
+ALTER TABLE `patient_requests`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `request_types`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for table `cities`
 --

@@ -43,9 +43,9 @@
 
             <div>
 
-                <small>Internados</small>
+                <small>Finalizados</small>
 
-                <h3><?= $hospitalizedPatients ?></h3>
+                <h3><?= $finalizedPatients ?></h3>
 
 
             </div>
@@ -75,3 +75,4 @@
     </div>
 
 </div>
+
