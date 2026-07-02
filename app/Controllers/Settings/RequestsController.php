@@ -15,21 +15,55 @@ class RequestsController extends BaseController
         $this->requestModel = new RequestTypeModel();
     }
 
+    // public function index()
+    // {
+    //     $requests = $this->requestModel
+
+    //         ->orderBy('id', 'DESC')
+
+    //         ->findAll();
+
+    //     return view('pages/settings/requests/index', [
+
+    //         'requests' => $requests
+
+    //     ]);
+    // }
     public function index()
     {
-        $requests = $this->requestModel
 
-            ->orderBy('id', 'DESC')
+        $perPage = (int) ($this->request->getGet('perPage') ?? 10);
 
-            ->findAll();
+        $allowed = [10, 25, 50, 100];
+
+        if (!in_array($perPage, $allowed)) {
+            $perPage = 10;
+        }
+        $search = trim($this->request->getGet('search') ?? '');
+
+        $builder = $this->requestModel
+            ->orderBy('id', 'DESC');
+
+        if (!empty($search)) {
+
+            $builder->groupStart()
+                ->like('name', $search)
+                ->orLike('description', $search)
+                ->groupEnd();
+        }
 
         return view('pages/settings/requests/index', [
 
-            'requests' => $requests
+            'requests' => $builder->paginate($perPage),
+
+            'pager'    => $this->requestModel->pager,
+
+            'search'   => $search,
+
+            'perPage' => $perPage,
 
         ]);
     }
-
     public function store()
     {
         if (!can('requests.create')) {

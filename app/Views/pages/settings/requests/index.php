@@ -28,14 +28,17 @@
 
             <!-- SEARCH -->
 
-            <div class="table-search">
+            <form method="GET" class="table-search">
 
                 <i class="bi bi-search"></i>
 
-                <input type="text"
+                <input
+                    type="text"
+                    name="search"
+                    value="<?= esc($search ?? '') ?>"
                     placeholder="Pesquisar solicitação...">
 
-            </div>
+            </form>
 
         </div>
 
