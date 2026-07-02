@@ -273,6 +273,8 @@ class PatientsController extends BaseController
 
             'accepted_at' => $acceptedAt,
 
+            'first_service_date' => $this->request->getPost('first_service_date'),
+
             'first_consultation_date' => date(
 
                 'Y-m-d',
@@ -600,6 +602,8 @@ class PatientsController extends BaseController
             'phone' => $this->request->getPost('phone'),
 
             'specialty_id' => $this->request->getPost('specialty_id'),
+
+            'first_service_date' => $this->request->getPost('first_service_date'),
 
             // 'first_consultation_date' => $this->request->getPost('first_consultation_date'),
 

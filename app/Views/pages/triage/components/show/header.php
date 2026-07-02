@@ -164,12 +164,6 @@ if ($patient['status'] == 'NEGADO') {
 
             </a>
 
-            <a href="<?= base_url('triage/mpdf/' . $patient['id']) ?>" target="_blank" class="btn btn-light btn-lg rounded-4 shadow-sm btnPdfPatient">
-
-                <i class="bi bi-file-earmark-pdf"></i>
-
-            </a>
-
         </div>
 
     </div>

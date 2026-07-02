@@ -39,6 +39,7 @@
                     <th>Paciente</th>
                     <th>Prontuário</th>
                     <th>Primeira Consulta</th>
+                    <!-- <th>Primeira Consulta2</th> -->
                     <th>Exames Pronto</th>
                     <th>60D</th>
                     <th>Status</th>
@@ -98,8 +99,7 @@
                                 </span>
 
                             </td>
-
-                            <!-- DATA -->
+                            <!-- DATA 2 -->
 
                             <td>
                                 <?php if (
@@ -118,12 +118,38 @@
                                     <?= date(
                                         'd/m/Y',
                                         strtotime(
-                                            $patient['first_consultation_date']
+                                            $patient['first_service_date']
                                         )
                                     ) ?>
 
                                 <?php endif; ?>
                             </td>
+                            <!-- DATA -->
+
+                            <!-- <td>
+                                <1?php if (
+                                    $patient['status']
+                                    == 'EM FILA'
+                                ): ?>
+
+                                    <span class="text-muted">
+
+                                        --
+
+                                    </span>
+
+                                <1?php else: ?>
+
+                                    <1?= date(
+                                        'd/m/Y',
+                                        strtotime(
+                                            $patient['first_consultation_date']
+                                        )
+                                    ) ?>
+
+                                <1?php endif; ?>
+                            </td> -->
+
 
                             <!-- EXAMES -->
 
@@ -355,7 +381,7 @@
                                     <?php else: ?>
 
                                         <!-- EDITAR -->
-
+                                        <!-- <1?= $patient['first_service_date'] ?> -->
                                         <button
 
                                             class="btn-action btnEditPatientData"
@@ -378,7 +404,7 @@
 
                                             data-has_exams="<?= $patient['has_exams'] ?>"
 
-                                            data-first_consultation_date="<?= $patient['first_consultation_date'] ?>">
+                                            data-first_service_date="<?= $patient['first_service_date'] ?>">
 
                                             <i class="bi bi-pencil"></i>
 
@@ -401,7 +427,7 @@
                         </tr>
 
                     <?php endforeach; ?>
-                    
+
                 <?php else: ?>
 
                     <tr>

@@ -35,6 +35,8 @@ $(document).on("click", ".btnCompletePatient", function () {
 
   $("#edit_has_exams").val(button.data("has_exams"));
 
+  $("#edit_first_service_date").val(button.data("first_service_date"));
+
   $("#edit_first_consultation_date").val(
     button.data("first_consultation_date"),
   );
@@ -96,6 +98,8 @@ $(document).on("click", ".btnEditPatientData", function () {
   $("#edit_data_specialty_id").val(button.data("specialty_id"));
 
   $("#edit_data_has_exams").val(button.data("has_exams"));
+
+  $("#edit_data_first_service_date").val(button.data("first_service_date"));
 
   $("#edit_data_first_consultation_date").val(
     button.data("first_consultation_date"),

@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalEditPatientData" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalCompletePatient" tabindex="-1" aria-hidden="true">
 
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
 
@@ -31,7 +31,7 @@
             <!-- FORM -->
             <form id="formEditPatientData" action="<?= base_url('patients/update-data') ?>" method="POST">
 
-                <input type="hidden" name="id" id="edit_data_id">
+                <input type="hidden" name="id" id="edit_id">
 
                 <div class="modal-body px-4">
 
@@ -55,7 +55,7 @@
 
                                 <input type="text"
                                     name="name" required
-                                    id="edit_data_name"
+                                    id="edit_name"
                                     class="form-control form-control-lg"
                                     placeholder="Digite o nome completo">
 
@@ -71,7 +71,7 @@
 
                                 <input type="text"
                                     name="medical_record" required
-                                    id="edit_data_medical_record"
+                                    id="edit_medical_record"
                                     class="form-control form-control-lg"
                                     placeholder="Número do prontuário">
 
@@ -87,7 +87,7 @@
 
                                 <input type="text"
                                     name="cpf"
-                                    id="edit_data_cpf"
+                                    id="edit_cpf"
                                     class="form-control form-control-lg"
                                     placeholder="Número do CPF">
 
@@ -103,7 +103,7 @@
 
                                 <select class="form-select form-select-lg"
                                     name="specialty_id"
-                                    id="edit_data_specialty_id">
+                                    id="edit_specialty_id">
 
                                     <option value="">
                                         Selecione
@@ -138,7 +138,7 @@
 
                                 <input type="date"
                                     name="first_consultation_date" required
-                                    id="edit_data_first_consultation_date"
+                                    id="edit_first_consultation_date"
                                     class="form-control form-control-lg">
 
                             </div>
@@ -165,7 +165,7 @@
                                     Exames Prontos
                                 </label>
 
-                                <select class="form-select form-select-lg" name="has_exams" id="edit_data_has_exams">
+                                <select class="form-select form-select-lg" name="has_exams" id="edit_has_exams">
                                     <option selected disabled>
                                         Selecione
                                     </option>
@@ -193,7 +193,7 @@
 
                                 <input type="text"
                                     name="phone"
-                                    id="edit_data_phone"
+                                    id="edit_phone"
                                     class="form-control form-control-lg"
                                     placeholder="69 99999-9999">
 
@@ -223,7 +223,7 @@
                                 <select
                                     class="form-select form-select-lg"
                                     name="state" required
-                                    id="edit_data_state_id">
+                                    id="edit_state_id">
                                     <option selected disabled>
                                         Selecione
                                     </option>
@@ -242,7 +242,7 @@
                                 <select
                                     class="form-select form-select-lg"
                                     name="city"
-                                    id="edit_data_city_id"
+                                    id="edit_city_id"
                                     required>
                                     <option selected disabled>
                                         Selecione o município
