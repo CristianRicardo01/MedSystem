@@ -89,9 +89,9 @@ class PatientsController extends BaseController
             |--------------------------------------------------------------------------
             */
 
-            // ->where('patients.flow_type !=', 'TRIAGE') // Removido para exibir pacientes que vieram da triagem
+            ->where('patients.flow_type', 'PATIENT') // Removido para exibir pacientes que vieram da triagem
 
-            ->where('patients.status =', 'EM ATENDIMENTO') // Exibir apenas pacientes em atendimento
+            // ->where('patients.status =', 'EM ATENDIMENTO') // Exibir apenas pacientes em atendimento
 
             ->orderBy(
                 'patients.id',
@@ -745,16 +745,41 @@ class PatientsController extends BaseController
 
             'specialty_id' => $this->request->getPost('specialty_id'),
 
-            // 'first_consultation_date' => $this->request->getPost('first_consultation_date'),
-
             'has_exams' => $this->request->getPost('has_exams'),
 
             'state' => $this->request->getPost('state'),
 
             'city' => $this->request->getPost('city'),
+
+            /*
+            |--------------------------------------------------------------------------
+            | ACEITE
+            |--------------------------------------------------------------------------
+            */
+
+            'status' => 'EM ATENDIMENTO',
+
+            'accepted_at' => date('Y-m-d H:i:s'),
+
+            'current_sector' => 'PATIENTS',
+
         ];
 
         $this->patientModel->update($id, $data);
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $id,
+
+            'old_status' => 'EM FILA',
+
+            'new_status' => 'EM ATENDIMENTO',
+
+            'description' => 'Paciente aceito pela Central de Pacientes',
+
+            'created_by' => userId(),
+
+        ]);
 
         $this->patientMovementModel->insert([
 
@@ -762,9 +787,9 @@ class PatientsController extends BaseController
 
             'sector' => 'PACIENTE',
 
-            'movement_type' => 'DADOS ATUALIZADOS',
+            'movement_type' => 'ACEITE',
 
-            'description' => 'Dados cadastrais atualizados',
+            'description' => 'Paciente aceito na Central de Pacientes',
 
             'created_by' => userId(),
 
@@ -1081,7 +1106,11 @@ class PatientsController extends BaseController
         | REQUEST TYPES
         |--------------------------------------------------------------------------
         */
-        $requestTypes = $this->requestTypeModel->findAll();
+        $requestTypes = $this->requestTypeModel
+
+            ->orderBy('name', 'ASC')
+
+            ->findAll();
 
         /*
         |--------------------------------------------------------------------------
@@ -1385,6 +1414,101 @@ class PatientsController extends BaseController
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE OBSERVATION
+    |--------------------------------------------------------------------------
+    */
+    public function updateObservation()
+    {
+        $id = $this->request->getPost('id');
+
+        $observation = $this->patientObservationModel->find($id);
+
+        if (!$observation) {
+
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Observação não encontrada.'
+            ]);
+        }
+
+        $this->patientObservationModel->update($id, [
+
+            'observation' => $this->request->getPost('observation')
+
+        ]);
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $observation['patient_id'],
+
+            'old_status' => null,
+
+            'new_status' => 'OBSERVAÇÃO',
+
+            'observation' => 'Observação editada.',
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT'
+
+        ]);
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Observação atualizada.'
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELET OBSERVATION
+    |--------------------------------------------------------------------------
+    */
+    public function deleteObservation()
+    {
+        $id = $this->request->getPost('id');
+
+        $observation = $this->patientObservationModel->find($id);
+
+        if (!$observation) {
+
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Observação não encontrada.'
+            ]);
+        }
+
+        $this->patientObservationModel->delete($id);
+
+        $this->patientStatusHistoryModel->insert([
+
+            'patient_id' => $observation['patient_id'],
+
+            'old_status' => null,
+
+            'new_status' => 'OBSERVAÇÃO',
+
+            'observation' => 'Observação removida.',
+
+            'changed_by' => userId(),
+
+            'flow_type' => 'PATIENT'
+
+        ]);
+
+        return $this->response->setJSON([
+
+            'status' => true,
+
+            'message' => 'Observação removida com sucesso.'
+
+        ]);
+    }
     /*
     |--------------------------------------------------------------------------
     | HOSPITALIZE PATIENT

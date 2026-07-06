@@ -407,3 +407,21 @@ $(document).on("change", "#edit_external", function () {
     deadline.prop("readonly", false);
   }
 });
+
+$(function () {
+  // Nova Solicitação
+  $("#request_type_id").select2({
+    dropdownParent: $("#modalPatientRequest"),
+    placeholder: "Pesquisar solicitação...",
+    allowClear: true,
+    width: "100%",
+  });
+
+  // Editar Solicitação
+  $("#edit_request_type_id").select2({
+    dropdownParent: $("#modalEditPatientRequest"),
+    placeholder: "Pesquisar solicitação...",
+    allowClear: true,
+    width: "100%",
+  });
+});

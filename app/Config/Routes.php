@@ -139,6 +139,9 @@ $routes->group('patients', ['filter' => ['auth', 'permission:patients.view']], f
     $routes->get('pdf/(:num)', 'PatientsController::generatePdf/$1');
 
     $routes->post('finalize', 'PatientsController::finalizePatient');
+
+    $routes->post('observation/update', 'PatientsController::updateObservation');
+    $routes->post('observation/delete', 'PatientsController::deleteObservation');
 });
 
 /*
@@ -243,9 +246,9 @@ $routes->group('location', ['filter' => 'auth'], function ($routes) {
 */
 // $routes->group('location', ['filter' => 'auth'], function ($routes) {
 
-    // $routes->get('import', 'LocationController::import');
+// $routes->get('import', 'LocationController::import');
 
-    // $routes->get('import-states', 'LocationController::importStates');
+// $routes->get('import-states', 'LocationController::importStates');
 // });
 
 /*

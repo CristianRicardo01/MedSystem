@@ -50,7 +50,8 @@
 
                             </label>
 
-                            <select name="request_type_id" id="patient_request_type_id" required class="form-select form-select-lg">
+                           
+                             <select name="request_type_id" id="patient_request_type_id" required class="form-select form-select-lg">
 
                                 <option value="">
 
@@ -74,7 +75,6 @@
                                 <?php endforeach; ?>
 
                             </select>
-
                         </div>
 
                         <!-- DATA DO EXAME -->

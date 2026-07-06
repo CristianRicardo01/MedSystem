@@ -15,20 +15,6 @@ class RequestsController extends BaseController
         $this->requestModel = new RequestTypeModel();
     }
 
-    // public function index()
-    // {
-    //     $requests = $this->requestModel
-
-    //         ->orderBy('id', 'DESC')
-
-    //         ->findAll();
-
-    //     return view('pages/settings/requests/index', [
-
-    //         'requests' => $requests
-
-    //     ]);
-    // }
     public function index()
     {
 
@@ -64,6 +50,7 @@ class RequestsController extends BaseController
 
         ]);
     }
+    
     public function store()
     {
         if (!can('requests.create')) {

@@ -188,7 +188,8 @@ class PatientFlowService
 
             'current_sector' => 'PATIENTS',
 
-            'accepted_at' => date('Y-m-d H:i:s'),
+            // ainda não foi aceito (Assim o D60 só começa quando realmente houver o aceite.)
+            'accepted_at' => null,
 
             'triage_transferred_at' => date('Y-m-d H:i:s')
 

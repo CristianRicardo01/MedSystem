@@ -15,6 +15,7 @@
 <?= $this->include('pages/patients/components/show/modal-observation') ?>
 <?= $this->include('pages/patients/components/show/modal-request') ?>
 <?= $this->include('pages/patients/components/show/modal-edit-request-patients') ?>
+<?= $this->include('pages/patients/components/show/modal-edit-observation') ?>
 <?= $this->include('pages/patients/components/show/modal-hospitalize-patient') ?>
 <?= $this->include('pages/patients/components/show/modalReturnPatient') ?>
 <?= $this->include('pages/patients/components/show/modalFinalizePatient') ?>

@@ -38,9 +38,7 @@
 
             <form id="formPatientRequest">
 
-                <input type="hidden"
-                    name="patient_id"
-                    value="<?= $patient['id'] ?>">
+                <input type="hidden" name="patient_id" value="<?= $patient['id'] ?>">
 
                 <div class="modal-body px-4">
 

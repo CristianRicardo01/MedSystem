@@ -15,7 +15,7 @@
                     </h3>
 
                     <p class="text-muted mb-0">
-                        Atualize os dados cadastrais do paciente.
+                        Completar e atualize os dados cadastrais do paciente.
                     </p>
 
                 </div>
@@ -32,7 +32,7 @@
             <form id="formEditPatientData" action="<?= base_url('patients/update-data') ?>" method="POST">
 
                 <input type="hidden" name="id" id="edit_id">
-
+                
                 <div class="modal-body px-4">
 
                     <!-- DADOS PRINCIPAIS -->

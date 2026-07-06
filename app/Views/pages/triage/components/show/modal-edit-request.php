@@ -37,9 +37,7 @@
 
             <form id="formEditPatientRequest">
 
-                <input type="hidden"
-                    name="id"
-                    id="edit_request_id">
+                <input type="hidden" name="id" id="edit_request_id">
 
                 <div class="modal-body px-4">
 

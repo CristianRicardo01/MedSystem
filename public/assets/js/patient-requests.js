@@ -1459,3 +1459,146 @@ $(document).on("click", ".btnTransferPatient", function () {
     }
   });
 });
+
+/**
+ * BUTTON EDIT OBSERVATION
+ * BUTTON DELETE OBSERVATION
+ * FORM EDIT OBSERVATION
+ */
+$(document).on("click", ".btnEditObservation", function () {
+  $("#edit_observation_id").val($(this).data("id"));
+
+  $("#edit_observation").val($(this).data("observation"));
+
+  $("#modalEditObservation").modal("show");
+});
+
+/**
+ * FORM EDIT OBSERVATION
+ */
+$(document).on("submit", "#formEditObservation", function (e) {
+  e.preventDefault();
+
+  let form = $(this);
+
+  $.ajax({
+    url: form.attr("action"),
+
+    type: "POST",
+
+    data: form.serialize(),
+
+    dataType: "json",
+
+    success: function (response) {
+      if (response.status) {
+        Swal.fire({
+          icon: "success",
+          title: "Sucesso",
+          text: response.message,
+        });
+
+        bootstrap.Modal.getInstance(
+          document.getElementById("modalEditObservation"),
+        ).hide();
+
+        setTimeout(() => {
+          location.reload();
+        }, 800);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Erro",
+          text: response.message,
+        });
+      }
+    },
+
+    error: function (xhr) {
+      console.log(xhr.responseText);
+    },
+  });
+});
+
+/**
+ * DELETE OBSERVATION
+ */
+$(document).on("click", ".btnDeleteObservation", function () {
+  let id = $(this).data("id");
+
+  Swal.fire({
+    title: "Deseja remover?",
+
+    text: "Essa ação não poderá ser desfeita.",
+
+    icon: "warning",
+
+    showCancelButton: true,
+
+    confirmButtonText: "Sim",
+
+    cancelButtonText: "Cancelar",
+
+    confirmButtonColor: "#dc3545",
+  }).then((result) => {
+    if (!result.isConfirmed) return;
+
+    $.ajax({
+      url: BASE_URL + "patients/observation/delete",
+
+      type: "POST",
+
+      data: {
+        id: id,
+      },
+
+      dataType: "json",
+
+      success: function (response) {
+        if (response.status) {
+          Swal.fire({
+            icon: "success",
+            title: "Sucesso",
+            text: response.message,
+          });
+
+          setTimeout(() => {
+            location.reload();
+          }, 800);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Erro",
+            text: response.message,
+          });
+        }
+      },
+
+      error: function (xhr) {
+        console.log(xhr.responseText);
+      },
+    });
+  });
+});
+
+/**
+ * SELECT2 MODAL
+ * SELECT2 MODAL EDIT
+ */
+$(function () {
+  // Modal Nova Solicitação
+  $("#patient_request_type_id").select2({
+    dropdownParent: $("#modalPatientRequest"),
+    placeholder: "Pesquisar solicitação...",
+    allowClear: true,
+    width: "100%",
+  });
+
+  // Modal Editar Solicitação
+  $("#edit_patient_request_type_id").select2({
+    dropdownParent: $("#modalPatientEditRequest"),
+    placeholder: "Pesquisar solicitação...",
+    allowClear: true,
+    width: "100%",
+  });
+});

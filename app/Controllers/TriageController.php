@@ -489,14 +489,9 @@ class TriageController extends BaseController
 
         $requestTypes = $this->requestTypeModel
 
-            ->where('status', 'ACTIVE')
-
-            ->where('flow_type', 'TRIAGE')
-
             ->orderBy('name', 'ASC')
 
             ->findAll();
-
 
         /*
         |--------------------------------------------------------------------------

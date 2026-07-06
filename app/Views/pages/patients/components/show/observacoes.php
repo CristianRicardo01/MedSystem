@@ -64,23 +64,38 @@
 
                                 <div class="d-flex justify-content-between align-items-start mb-2">
 
-                                    <strong>
+                                    <strong>Observação</strong>
 
-                                        Observação
+                                    <div>
 
-                                    </strong>
+                                        <small class="text-muted me-3">
+                                            <?= date('d/m/Y H:i', strtotime($observation['created_at'])) ?>
+                                        </small>
 
-                                    <small class="text-muted">
+                                        <button
+                                            class="btn btn-sm btn-outline-primary btnEditObservation"
 
-                                        <?= date(
-                                            'd/m/Y H:i',
-                                            strtotime($observation['created_at'])
-                                        ) ?>
+                                            data-id="<?= $observation['id'] ?>"
 
-                                    </small>
+                                            data-observation="<?= esc($observation['observation']) ?>">
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </button>
+
+                                        <button
+
+                                            class="btn btn-sm btn-outline-danger btnDeleteObservation"
+
+                                            data-id="<?= $observation['id'] ?>">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </button>
+
+                                    </div>
 
                                 </div>
-
                                 <!-- CONTENT -->
 
                                 <div class="observation-box">
