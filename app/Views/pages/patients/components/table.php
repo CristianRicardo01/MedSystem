@@ -16,9 +16,23 @@
 
         </div>
 
-        <div>
+        <div class="d-flex gap-2">
 
-            <button class="btn btn-light">
+            <form method="GET">
+
+                <input
+                    type="text"
+                    name="search"
+                    value="<?= esc($search ?? '') ?>"
+                    class="form-control"
+                    placeholder="Pesquisar paciente...">
+
+            </form>
+
+            <button
+                class="btn btn-light"
+                data-bs-toggle="collapse"
+                data-bs-target="#patientFilters">
 
                 <i class="bi bi-funnel"></i>
 
@@ -28,6 +42,99 @@
 
     </div>
 
+    <div class="collapse mt-3" id="patientFilters">
+
+        <div class="card card-body">
+
+            <form method="GET">
+
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <label class="form-label">
+                            Status
+                        </label>
+
+                        <select
+                            name="status"
+                            class="form-select">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option
+                                value="EM ATENDIMENTO"
+                                <?= ($status ?? '') == 'EM ATENDIMENTO' ? 'selected' : '' ?>>
+
+                                Em Atendimento
+
+                            </option>
+
+                            <option
+                                value="EM FILA"
+                                <?= ($status ?? '') == 'EM FILA' ? 'selected' : '' ?>>
+
+                                Em Fila
+
+                            </option>
+
+                        </select>
+
+                    </div>
+                    <div class="col-md-3">
+
+                        <label class="form-label">
+                            Primeira Consulta
+                        </label>
+
+                        <select
+                            name="first_service_order"
+                            class="form-select">
+
+                            <option value="">
+                                Padrão
+                            </option>
+
+                            <option
+                                value="ASC"
+                                <?= ($firstServiceOrder ?? '') == 'ASC' ? 'selected' : '' ?>>
+
+                                Mais Antigas Primeiro
+
+                            </option>
+
+                            <option
+                                value="DESC"
+                                <?= ($firstServiceOrder ?? '') == 'DESC' ? 'selected' : '' ?>>
+
+                                Mais Recentes Primeiro
+
+                            </option>
+
+                        </select>
+
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+
+                        <button class="btn btn-primary">
+
+                            <i class="bi bi-search"></i>
+
+                            Filtrar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
     <div class="table-responsive">
 
         <table class="table align-middle patient-table">
@@ -445,6 +552,84 @@
             </tbody>
 
         </table>
+
+    </div>
+
+    <!-- CENTRO -->
+
+    <?php
+    $total = $pager->getTotal();
+    $perPageAtual = $pager->getPerPage();
+    $current = $pager->getCurrentPage();
+
+    $inicio = (($current - 1) * $perPageAtual) + 1;
+    $fim = min($current * $perPageAtual, $total);
+    ?>
+
+    <div class="table-footer">
+
+        <!-- ESQUERDA -->
+        <div class="table-left">
+
+            <form method="GET" class="d-flex align-items-center gap-2">
+
+                <?php if (!empty($search)): ?>
+                    <input type="hidden"
+                        name="search"
+                        value="<?= esc($search) ?>">
+                <?php endif; ?>
+
+                <label class="mb-0 text-muted">
+                    Mostrar
+                </label>
+
+                <select
+                    class="form-select form-select-sm"
+                    name="perPage"
+                    onchange="this.form.submit()">
+
+                    <option value="10" <?= $perPage == 10 ? 'selected' : '' ?>>10</option>
+                    <option value="25" <?= $perPage == 25 ? 'selected' : '' ?>>25</option>
+                    <option value="50" <?= $perPage == 50 ? 'selected' : '' ?>>50</option>
+                    <option value="100" <?= $perPage == 100 ? 'selected' : '' ?>>100</option>
+
+                </select>
+
+                <span class="text-muted">
+                    registros
+                </span>
+
+            </form>
+
+        </div>
+
+        <!-- CENTRO -->
+        <div class="table-center">
+
+            <i class="bi bi-database me-2"></i>
+
+            Mostrando
+
+            <strong><?= $inicio ?></strong>
+
+            -
+
+            <strong><?= $fim ?></strong>
+
+            de
+
+            <strong><?= $total ?></strong>
+
+            registros
+
+        </div>
+
+        <!-- DIREITA -->
+        <div class="table-right">
+
+            <?= $pager->links() ?>
+
+        </div>
 
     </div>
 

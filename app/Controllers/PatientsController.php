@@ -58,24 +58,42 @@ class PatientsController extends BaseController
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | INDEX
-    |--------------------------------------------------------------------------
-    */
+|--------------------------------------------------------------------------
+| INDEX
+|--------------------------------------------------------------------------
+*/
     public function index()
     {
+        /*
+        |--------------------------------------------------------------------------
+        | FILTROS
+        |--------------------------------------------------------------------------
+        */
+
+        $search = trim($this->request->getGet('search') ?? '');
+
+        $status = $this->request->getGet('status') ?? '';
+
+        $perPage = (int) ($this->request->getGet('perPage') ?? 10);
+
+        if (!in_array($perPage, [10, 25, 50, 100])) {
+            $perPage = 10;
+        }
+
+        $firstServiceOrder = $this->request->getGet('first_service_order');
+
         /*
         |--------------------------------------------------------------------------
         | PATIENTS
         |--------------------------------------------------------------------------
         */
 
-        $patients =
-            $this->patientModel->select('
-                patients.*,
+        $builder = $this->patientModel
 
-                specialties.name as specialty_name
-            ')
+            ->select('
+            patients.*,
+            specialties.name as specialty_name
+        ')
 
             ->join(
                 'specialties',
@@ -83,22 +101,91 @@ class PatientsController extends BaseController
                 'left'
             )
 
-            /*
-            |--------------------------------------------------------------------------
-            | REMOVE TRIAGE
-            |--------------------------------------------------------------------------
-            */
+            ->where(
+                'patients.flow_type',
+                'PATIENT'
+            );
 
-            ->where('patients.flow_type', 'PATIENT') // Removido para exibir pacientes que vieram da triagem
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
 
-            // ->where('patients.status =', 'EM ATENDIMENTO') // Exibir apenas pacientes em atendimento
+        if (!empty($search)) {
 
-            ->orderBy(
+            $builder
+
+                ->groupStart()
+
+                ->like('patients.name', $search)
+
+                ->orLike('patients.medical_record', $search)
+
+                ->orLike('patients.cpf', $search)
+
+                ->orLike('specialties.name', $search)
+
+                ->groupEnd();
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER STATUS
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($status)) {
+
+            $builder->where(
+                'patients.status',
+                $status
+            );
+        }
+
+
+        if (in_array($firstServiceOrder, ['ASC', 'DESC'])) {
+
+            $builder->orderBy(
+                'patients.first_service_date',
+                $firstServiceOrder
+            );
+        } else {
+
+            $builder->orderBy(
                 'patients.id',
                 'DESC'
-            )
+            );
+        }
 
-            ->findAll();
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINATION
+        |--------------------------------------------------------------------------
+        */
+
+        $patients = $builder->paginate($perPage);
+
+        $pager = $this->patientModel->pager;
+
+        /*
+        |--------------------------------------------------------------------------
+        | FOOTER
+        |--------------------------------------------------------------------------
+        */
+
+        $total = $pager->getTotal();
+
+        $currentPage = $pager->getCurrentPage();
+
+        $inicio = $total
+            ? (($currentPage - 1) * $perPage) + 1
+            : 0;
+
+        $fim = min(
+            $currentPage * $perPage,
+            $total
+        );
 
         /*
         |--------------------------------------------------------------------------
@@ -120,36 +207,37 @@ class PatientsController extends BaseController
         | CARDS
         |--------------------------------------------------------------------------
         */
-        $data = [
 
-            'patientsInAttendance' => 0,
+        $patientsInAttendance = $this->patientModel
 
-            'hospitalizedPatients' => 0,
-
-            'finalizedPatients' => 0,
-
-            'pendingRequests' => 0,
-
-        ];
-
-        $data['patientsInAttendance'] = $this->patientModel
             ->where('flow_type', 'PATIENT')
+
             ->where('status', 'EM ATENDIMENTO')
+
             ->countAllResults();
 
-        $data['hospitalizedPatients'] = $this->patientModel
+        $hospitalizedPatients = $this->patientModel
+
             ->where('flow_type', 'PATIENT')
+
             ->where('status', 'INTERNADO')
+
             ->countAllResults();
 
-        $data['finalizedPatients'] = $this->patientModel
+        $finalizedPatients = $this->patientModel
+
             ->where('flow_type', 'PATIENT')
+
             ->where('status', 'FINALIZADO')
+
             ->countAllResults();
 
-        $data['pendingRequests'] = $this->patientRequestModel
+        $pendingRequests = $this->patientRequestModel
+
             ->where('flow_type', 'PATIENT')
+
             ->where('request_status', 'PENDING')
+
             ->countAllResults();
 
         /*
@@ -159,22 +247,40 @@ class PatientsController extends BaseController
         */
 
         return view(
+
             'pages/patients/index',
+
             [
 
                 'patients' => $patients,
 
+                'pager' => $pager,
+
+                'search' => $search,
+
+                'status' => $status,
+
+                'perPage' => $perPage,
+
+                'inicio' => $inicio,
+
+                'fim' => $fim,
+
+                'total' => $total,
+
                 'specialties' => $specialties,
 
-                'patientsInAttendance' => $data['patientsInAttendance'],
+                'patientsInAttendance' => $patientsInAttendance,
 
-                'hospitalizedPatients' => $data['hospitalizedPatients'],
+                'hospitalizedPatients' => $hospitalizedPatients,
 
-                'finalizedPatients' => $data['finalizedPatients'],
+                'finalizedPatients' => $finalizedPatients,
 
-                'pendingRequests' => $data['pendingRequests'],
+                'pendingRequests' => $pendingRequests,
+
 
             ]
+
         );
     }
 
