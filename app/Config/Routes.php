@@ -141,6 +141,7 @@ $routes->group('patients', ['filter' => ['auth', 'permission:patients.view']], f
     $routes->post('finalize', 'PatientsController::finalizePatient');
 
     $routes->post('observation/update', 'PatientsController::updateObservation');
+    
     $routes->post('observation/delete', 'PatientsController::deleteObservation');
 });
 

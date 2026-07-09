@@ -58,10 +58,10 @@ class PatientsController extends BaseController
     }
 
     /*
-|--------------------------------------------------------------------------
-| INDEX
-|--------------------------------------------------------------------------
-*/
+    |--------------------------------------------------------------------------
+    | INDEX
+    |--------------------------------------------------------------------------
+    */
     public function index()
     {
         /*
@@ -854,7 +854,7 @@ class PatientsController extends BaseController
             'has_exams' => $this->request->getPost('has_exams'),
 
             'first_service_date' => $this->request->getPost('first_service_date'),
-            
+
             'state' => $this->request->getPost('state'),
 
             'city' => $this->request->getPost('city'),
@@ -870,7 +870,7 @@ class PatientsController extends BaseController
             'accepted_at' => date('Y-m-d H:i:s'),
 
             'current_sector' => 'PATIENTS',
-            
+
 
         ];
 
@@ -2020,6 +2020,7 @@ class PatientsController extends BaseController
     */
     public function pdf($id)
     {
+
         $patient = $this->patientModel->find($id);
 
         $patientRequests = $this->patientRequestModel
@@ -2201,26 +2202,15 @@ class PatientsController extends BaseController
         */
 
         $html = view(
-
             'pdf/patient',
-
             [
-
                 'patient' => $patient,
-
                 'observations' => $observations,
-
                 'patientRequests' => $patientRequests,
-
                 'timeline' => $timeline,
-
                 'hospitalizations' => $hospitalizations,
-
                 'deadlineDate' => $deadlineDate,
-
-
             ]
-
         );
 
         /*
@@ -2248,15 +2238,18 @@ class PatientsController extends BaseController
         */
 
         $dompdf->stream(
-
-            'paciente-' . $patient['id'],
-
+            'paciente-' . $patient['id'] . '.pdf',
             [
-
                 'Attachment' => false
-
             ]
-
         );
+
+        $pdf = $dompdf->output();
+
+        return $this->response
+            ->setStatusCode(200)
+            ->setContentType('application/pdf')
+            ->setHeader('Content-Disposition', 'inline; filename="paciente.pdf"')
+            ->setBody($pdf);
     }
 }
