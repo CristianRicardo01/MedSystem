@@ -137,8 +137,8 @@
                                 </label>
 
                                 <input type="date"
-                                    name="first_consultation_date" required
-                                    id="edit_first_consultation_date"
+                                    name="first_service_date" required
+                                    id="edit_first_service_date"
                                     class="form-control form-control-lg">
 
                             </div>

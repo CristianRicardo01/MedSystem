@@ -853,6 +853,8 @@ class PatientsController extends BaseController
 
             'has_exams' => $this->request->getPost('has_exams'),
 
+            'first_service_date' => $this->request->getPost('first_service_date'),
+            
             'state' => $this->request->getPost('state'),
 
             'city' => $this->request->getPost('city'),
@@ -868,6 +870,7 @@ class PatientsController extends BaseController
             'accepted_at' => date('Y-m-d H:i:s'),
 
             'current_sector' => 'PATIENTS',
+            
 
         ];
 
