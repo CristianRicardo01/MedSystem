@@ -115,59 +115,16 @@
         <?php endif; ?>
 
         <!-- Relatórios -->
-        <?php if (can('reports.view')) : ?>
+        <?php if (can('reports.indicators.view')) : ?>
 
-            <li class="nav-item">
+            <a href="<?= base_url('reports/home') ?>"
+                class="sidebar-link <?= activeMenu('reports') ?>">
 
-                <a class="sidebar-link collapsed"
-                    data-bs-toggle="collapse"
-                    href="#reportsMenu">
+                <i class="bi bi-file-earmark-bar-graph"></i>
 
-                    <i class="bi bi-file-earmark-bar-graph"></i>
+                Relatórios
 
-                    <span>Relatórios</span>
-
-                    <i class="bi bi-chevron-down ms-auto"></i>
-
-                </a>
-
-                <div class="collapse <?= activeCollapse('reports') ?>" id="reportsMenu">
-
-                    <ul class="btn-toggle-nav list-unstyled">
-
-                        <li>
-                            <a href="<?= base_url('reports/exams') ?>"
-                                class="<?= activeMenu('reports/exams') ?>">
-                                Exames
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="<?= base_url('reports/patients') ?>"
-                                class="<?= activeMenu('reports/patients') ?>">
-                                Pacientes
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="<?= base_url('reports/consultations') ?>"
-                                class="<?= activeMenu('reports/consultations') ?>">
-                                Consultas
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="<?= base_url('reports/sla') ?>"
-                                class="<?= activeMenu('reports/sla') ?>">
-                                SLA 60 dias
-                            </a>
-                        </li>
-
-                    </ul>
-
-                </div>
-
-            </li>
+            </a>
 
         <?php endif; ?>
 

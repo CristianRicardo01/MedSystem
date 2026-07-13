@@ -141,7 +141,7 @@ $routes->group('patients', ['filter' => ['auth', 'permission:patients.view']], f
     $routes->post('finalize', 'PatientsController::finalizePatient');
 
     $routes->post('observation/update', 'PatientsController::updateObservation');
-    
+
     $routes->post('observation/delete', 'PatientsController::deleteObservation');
 });
 
@@ -269,8 +269,19 @@ $routes->get('alerts', 'AlertsController::index', ['filter' => 'auth']);
 $routes->group('reports', ['filter' => ['auth', 'permission:reports.indicators.view']], function ($routes) {
 
     $routes->get('indicators', 'Reports\IndicatorsController::index');
+
+    /**
+     * DashboardController
+     */
+    $routes->get('home', 'Reports\DashboardController::index'); //Dashboard
+    $routes->get('patients', 'Reports\PatientsController::index');
+    $routes->get('exams', 'Reports\ExamsController::index');
+    $routes->get('consultations', 'Reports\ConsultationsController::index');
+    $routes->get('sla', 'Reports\SlaController::index');
+    $routes->get('indicators', 'Reports\IndicatorsController::index');
 });
 
+$routes->group('reports', function ($routes) {});
 /*
 |--------------------------------------------------------------------------
 | INSTALADOR
