@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+<!-- favicon -->
+<link rel="icon" type="image/png" href="<?= base_url('assets/img/favicon.png') ?>">
 
 <head>
 

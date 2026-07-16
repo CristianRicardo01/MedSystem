@@ -266,22 +266,33 @@ $routes->get('alerts', 'AlertsController::index', ['filter' => 'auth']);
 |--------------------------------------------------------------------------
 */
 
-$routes->group('reports', ['filter' => ['auth', 'permission:reports.indicators.view']], function ($routes) {
+$routes->group('indicators', ['filter' => ['auth', 'permission:indicators.view']], function ($routes) {
+    $routes->get('/', 'Reports\IndicatorsController::index');
+});
 
-    $routes->get('indicators', 'Reports\IndicatorsController::index');
+/*
+|--------------------------------------------------------------------------
+| RELATÓRIOS
+|--------------------------------------------------------------------------
+*/
+$routes->group('reports', ['filter' => ['auth', 'permission:reports.view']], function ($routes) {
 
     /**
      * DashboardController
      */
-    $routes->get('home', 'Reports\DashboardController::index'); //Dashboard
+    $routes->get('home', 'Reports\DashboardController::index');
+
+    //RELATÓRIOS
     $routes->get('patients', 'Reports\PatientsController::index');
     $routes->get('exams', 'Reports\ExamsController::index');
+    $routes->get('exams/search', 'Reports\ExamsController::search');
     $routes->get('consultations', 'Reports\ConsultationsController::index');
     $routes->get('sla', 'Reports\SlaController::index');
-    $routes->get('indicators', 'Reports\IndicatorsController::index');
+
+    //PDFs
+    $routes->get('exams/pdf', 'Reports\ExamsController::pdf');
 });
 
-$routes->group('reports', function ($routes) {});
 /*
 |--------------------------------------------------------------------------
 | INSTALADOR

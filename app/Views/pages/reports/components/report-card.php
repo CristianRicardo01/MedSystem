@@ -1,34 +1,4 @@
 <div class="col-xl-4 col-lg-6 col-md-6">
-    <style>
-        .report-icon {
-            width: 60px;
-            height: 60px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 16px;
-
-            font-size: 28px;
-        }
-
-        .report-card {
-
-            transition: .25s;
-
-            cursor: pointer;
-
-        }
-    
-        .report-card:hover {
-
-            transform: translateY(-6px);
-
-            box-shadow: 0 12px 30px rgba(0, 0, 0, .10);
-
-        }
-    </style>
 
     <div class="card h-100 shadow-sm border-0 report-card">
 

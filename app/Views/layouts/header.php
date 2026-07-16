@@ -25,6 +25,8 @@
 
 <link rel="stylesheet" href="<?= base_url('assets/css/patients.css') ?>">
 
+<link rel="stylesheet" href="<?= base_url('assets/css/reports.css') ?>">
+
 <link rel="stylesheet" href="<?= base_url('assets/css/hospitalization.css') ?>">
 
 <link rel="stylesheet" href="<?= base_url('assets/css/show.css') ?>">

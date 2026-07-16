@@ -1,5 +1,5 @@
 <script>
-    const BASE_URL = "<?= base_url() ?>/";
+    const BASE_URL = "<?= rtrim(base_url(), '/') ?>/";
 </script>
 
 <!-- JQUERY -->
@@ -29,6 +29,9 @@
 <!-- TRIAGE -->
 <script src="<?= base_url('assets/js/settings/users.js') ?>"></script>
 
+<!-- REPOTS -->
+<script src="<?= base_url('assets/js/reports/reports.js') ?>"></script>
+<script src="<?= base_url('assets/js/reports/exams.js') ?>"></script>
 <!-- SOLICITAÇÕES -->
 <script src="<?= base_url('assets/js/requests.js') ?>"></script>
 <script src="<?= base_url('assets/js/specialties.js') ?>"></script>

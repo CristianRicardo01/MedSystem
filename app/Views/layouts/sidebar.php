@@ -115,7 +115,7 @@
         <?php endif; ?>
 
         <!-- Relatórios -->
-        <?php if (can('reports.indicators.view')) : ?>
+        <?php if (can('reports.view')) : ?>
 
             <a href="<?= base_url('reports/home') ?>"
                 class="sidebar-link <?= activeMenu('reports') ?>">
@@ -129,9 +129,9 @@
         <?php endif; ?>
 
         <!-- Configurações -->
-        <?php if (can('reports.indicators.view')) : ?>
+        <?php if (can('indicators.view')) : ?>
 
-            <a href="<?= base_url('reports/indicators') ?>"
+            <a href="<?= base_url('/indicators') ?>"
                 class="sidebar-link <?= activeMenu('indicators') ?>">
 
                 <i class="bi bi-bar-chart"></i>
